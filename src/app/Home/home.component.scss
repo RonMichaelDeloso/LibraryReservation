@@ -1,56 +1,122 @@
-.login-container {
-  height: 100vh;
-  background: #e6d8b9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.card {
-  background: #f5f2eb;
-  padding: 40px;
-  width: 350px;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  text-align: center;
+.container{
+  display:flex;
+  height:100vh;
+  background:#e5dcc9;
+}
 
-  h2 {
-    margin-bottom: 20px;
+/* Sidebar */
+
+.sidebar{
+  width:220px;
+  background:#e8dfcf;
+  padding:20px;
+  border-right:1px solid #c7bca7;
+
+  .logo{
+    font-size:20px;
+    margin-bottom:25px;
   }
-}
 
-.input-group {
-  margin-bottom: 15px;
+  .menu{
+    list-style:none;
 
-  input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    outline: none;
+    li{
+      padding:10px;
+      margin-bottom:10px;
+      border-radius:8px;
+      cursor:pointer;
+    }
 
-    &:focus {
-      border-color: #d49a32;
+    .active{
+      background:#d6c6a6;
+      font-weight:bold;
+    }
+
+    li:hover{
+      background:#d6c6a6;
     }
   }
 }
 
-button {
-  width: 100%;
-  padding: 10px;
-  background: #d49a32;
-  border: none;
-  border-radius: 20px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
+/* Main */
 
-  &:hover {
-    background: #c18728;
+.main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Topbar */
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 20px;
+  background:#cfa46b;
+
+  .title{
+    font-size:18px;
+    font-weight:bold;
   }
 }
 
-.message {
-  margin-top: 15px;
-  color: red;
+/* Content */
+
+.content{
+  padding:30px;
+  position:relative;
+
+  h2{
+    margin-bottom:10px;
+  }
+}
+
+/* Profile */
+
+.profile{
+  position:absolute;
+  left:-35px;
+  top:-35px;
+
+  img{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    border:6px solid #1e88e5;
+  }
+}
+
+/* Search */
+
+.search{
+  margin:10px 0 30px;
+
+  input{
+    width:300px;
+    padding:6px 10px;
+    border-radius:10px;
+    border:1px solid #999;
+  }
+}
+
+/* Books */
+
+.books{
+  display:flex;
+  gap:40px;
+}
+
+.book-card{
+  width:150px;
+  height:200px;
+  background:#c9c9c9;
+  border-radius:5px;
 }
