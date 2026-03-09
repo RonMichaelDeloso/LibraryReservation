@@ -3,26 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="home.component.scss">
-  <title>Library Management</title>
+  <title>Document</title>
 </head>
 <body>
-  <div>
-    <Header class="Header">
-      <h1 class="title">Library</h1>
+  <div class="container">
 
-      <div>
-        <span>USER1</span>
+  <aside class="sidebar">
+    <h2 class="logo">Library</h2>
+
+    <ul class="menu">
+      <li class="active">🏠 Home</li>
+      <li routerLink="/notification">🔔 Notification</li>
+      <li>📚 Book</li>
+      <li>⚙️ Settings</li>
+    </ul>
+  </aside>
+  
+  <div class="main">
+
+    <header class="topbar">
+      <div class="title">Library</div>
+
+      <div class="user">
+        USER1 👤
       </div>
-    </Header>
+    </header>
+   
+    <section class="content">
+
+      <h2>Library</h2>
+
+      <div class="search">
+        <input type="text" placeholder="Search books...">
+      </div>
+
+      <div class="books">
+
+        <div class="book-card"></div>
+        <div class="book-card"></div>
+        <div class="book-card"></div>
+        <div class="book-card"></div>
+
+      </div>
+
+    </section>
+
   </div>
 
-  <div>
-    <aside class="sidebar">
-      <div></div>
-    </aside>
-  </div>
+</div>
 </body>
 </html>
-
-    
