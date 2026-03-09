@@ -1,0 +1,136 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  background-color: #e8e0cf;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #ece4d6;
+  padding: 20px;
+  border-right: 1px solid #d0c6b4;
+}
+
+.logo {
+  font-size: 20px;
+  margin-bottom: 25px;
+}
+
+.menu {
+  list-style: none;
+}
+
+.menu li {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.menu li:hover {
+  background-color: rgb(215, 196, 165);
+}
+
+.menu .active {
+  background-color: rgb(215, 196, 165);
+  font-weight: bold;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  background-color: rgb(210, 168, 110);
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 20px;
+  color: rgb(0, 0, 0);
+}
+
+.content {
+  padding: 30px;
+}
+
+.account-card {
+  width: 700px;
+  margin-top: 15px;
+  background-color: rgb(210, 168, 110);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.card-header {
+  background-color: rgb(239, 239, 239);
+  padding: 10px 15px;
+  font-weight: bold;
+}
+
+.account-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile img {
+  width: 50px;
+  border-radius: 50%;
+}
+
+.profile h4 {
+  font-size: 14px;
+}
+
+.profile p {
+  font-size: 12px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.change {
+  background-color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.save {
+  background-color: rgb(156, 107, 46);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.notification-card {
+  width: 350px;
+  height: 200px;
+  margin-top: 25px;
+  background-color: rgb(210, 168, 110);
+  border-radius: 15px;
+}
+
+.notification-body {
+  padding: 20px;
+}
