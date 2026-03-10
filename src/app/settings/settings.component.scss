@@ -8,19 +8,19 @@
 .container {
   display: flex;
   height: 100vh;
-  background-color: #e8e0cf;
+  background-color: rgb(255, 247, 228);
 }
 
 .sidebar {
   width: 220px;
-  background-color: #ece4d6;
-  padding: 20px;
-  border-right: 1px solid #d0c6b4;
+ background:rgb(224, 201, 166);
+  padding: 50px;
+  border-right: 1px solid rgb(255, 247, 228);
 }
 
 .logo {
   font-size: 20px;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 }
 
 .menu {
@@ -28,19 +28,28 @@
 }
 
 .menu li {
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 10px;
   border-radius: 8px;
+  display: flex;
+  gap:10px;
   cursor: pointer;
+    align-items:center;
+
+   &:hover{
+      background:#d4b48c;
+    }
+
 }
 
 .menu li:hover {
-  background-color: rgb(215, 196, 165);
+  background-color: rgba(226, 181, 86, 0.729);
 }
 
 .menu .active {
-  background-color: rgb(215, 196, 165);
-  font-weight: bold;
+  width: 170px;;
+  padding: 12px 12px;
+ background:rgb(212, 180, 140);
 }
 
 .main {
@@ -49,12 +58,20 @@
   flex-direction: column;
 }
 
-.topbar {
-  background-color: rgb(210, 168, 110);
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 20px;
-  color: rgb(0, 0, 0);
+.topbar{
+  background:rgb(202, 164, 108);
+  padding:12px 24px;
+  width: 2000px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.search{
+  width:650px;
+  padding:5px 10px;
+  border-radius:15px;
+  border:1px solid #999;
 }
 
 .content {

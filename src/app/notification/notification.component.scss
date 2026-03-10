@@ -8,12 +8,12 @@
 .container{
   display:flex;
   height:100vh;
-  background:#e6dbc7;
+  background:rgb(230, 219, 199);
 }
 
 .sidebar{
   width:220px;
-  background:#e0c9a6;
+  background:rgb(224, 201, 166);
   padding:20px;
 
   .logo{
@@ -34,13 +34,12 @@
       align-items:center;
 
       &:hover{
-        background:#d4b48c;
+        background:rgb(212, 180, 140);
       }
     }
 
     .active{
-      background:#d4b48c;
-      font-weight:bold;
+      background:rgb(212, 180, 140);
     }
   }
 }
@@ -56,10 +55,20 @@
   justify-content:space-between;
   align-items:center;
   padding:10px 20px;
-  background:#cfa46b;
+  background:rgb(207, 164, 107);
+
+ .search{
+   width: 250px;
+   padding:5px 10px;
+   border-radius:15px;
+   border:1px solid #999;
+  }
+
+
+
 
   input{
-    width:50%;
+    width:570%;
     padding:6px 10px;
     border-radius:10px;
     border:none;
@@ -67,6 +76,7 @@
 
   .user{
     font-size:14px;
+    
   }
 }
 
@@ -79,7 +89,7 @@
 }
 
 .notification-card{
-  background:#f5f5f5;
+  background:rgb(245, 245, 245);
   padding:15px;
   border-radius:10px;
   display:flex;

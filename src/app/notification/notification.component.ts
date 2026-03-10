@@ -5,7 +5,7 @@ import { RouterLink } from "@angular/router";
   selector: 'app-notification',
   standalone: true,
   templateUrl: './notification.component.html',
-  styleUrl: './notification.component.scss',
+  styleUrls: ['./notification.component.scss']  ,
   imports: [RouterLink]
 })
 export class NotificationComponent {

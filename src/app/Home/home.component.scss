@@ -1,6 +1,6 @@
 
 .Header{
-  background-color:#c89a5b;
+  background-color:rgb(200, 154, 91);
   height: 60%;
   width: 100%;
   display: flex;
@@ -10,14 +10,14 @@
 }
 
 .title{
-  color: white;
+  color: black;
   font-size: 20px;
   margin: 0;
 }
 
 .sidebar{
   width: 260px;
-  background-color: #ffffff;
+  background-color: rgb(255, 255, 255);
   border-radius: 0 20px 20px 0;
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.03);
 }
@@ -35,13 +35,11 @@
   background:#e5dcc9;
 }
 
-/* Sidebar */
-
 .sidebar{
   width:220px;
-  background:#e8dfcf;
+  background:rgb(224, 201, 166);
   padding:20px;
-  border-right:1px solid #c7bca7;
+  border-right:1px solid rgb(199, 188, 167);
 
   .logo{
     font-size:20px;
@@ -69,30 +67,24 @@
   }
 }
 
-/* Main */
-
 .main{
   flex:1;
   display:flex;
   flex-direction:column;
 }
 
-/* Topbar */
-
 .topbar{
   display:flex;
   justify-content:space-between;
   align-items:center;
   padding:12px 20px;
-  background:#cfa46b;
+  background:rgb(207, 164, 107);
 
   .title{
     font-size:18px;
     font-weight:bold;
   }
 }
-
-/* Content */
 
 .content{
   padding:30px;
@@ -103,8 +95,6 @@
   }
 }
 
-/* Profile */
-
 .profile{
   position:absolute;
   left:-35px;
@@ -114,11 +104,9 @@
     width:70px;
     height:70px;
     border-radius:50%;
-    border:6px solid #1e88e5;
+    border:6px solid rgb(30, 136, 229);
   }
 }
-
-/* Search */
 
 .search{
   margin:10px 0 30px;
@@ -127,11 +115,9 @@
     width:300px;
     padding:6px 10px;
     border-radius:10px;
-    border:1px solid #999;
+    border:1px solid rgb(153, 153, 153);
   }
 }
-
-/* Books */
 
 .books{
   display:flex;
@@ -141,6 +127,6 @@
 .book-card{
   width:150px;
   height:200px;
-  background:#c9c9c9;
+  background:rgb(201, 201, 201);
   border-radius:5px;
 }

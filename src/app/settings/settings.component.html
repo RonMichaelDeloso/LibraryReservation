@@ -2,22 +2,26 @@
   <aside class="sidebar">
     <div class="logo">Library</div>
     <ul class="menu">
-      <li routerLink="/home">Home</li>
-      <li routerLink="/notification">Notification</li>
-      <li routerLink="/booking"> Booking</li>
-      <li routerLink="/list"> List</li>
-      <li class="active"> Settings</li>
-      <li routerLink="/add-books"> Add Books</li>
-    </ul>
+  <li routerLink="/home" routerLinkActive="active">
+    Home
+  </li>
+  <li routerLink="/notification" routerLinkActive="active">
+    Notification
+  </li>
+  <li routerLink="/book" routerLinkActive="active">
+    Booking
+  </li>
+  <li routerLink="/settings" routerLinkActive="active">
+    Settings
+  </li>
+</ul>
   </aside>
   <div class="main">
     <header class="topbar">
-      <input class="search" type="text" placeholder="Search">
-      <div class="user">
-        <span>USER1</span>
-        <div class="icon"></div>
-      </div>
+      <div class="title">Library</div>
+      <div class="user">USER</div>
     </header>
+    <input class="search" type="text" placeholder="Search">
     <section class="content">
       <h2>Settings</h2>
       <div class="account-card">
