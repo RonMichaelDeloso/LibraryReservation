@@ -42,7 +42,6 @@ export class SignupComponent {
     return null;
   }
 
-  // Getter methods for form controls
   get username() { return this.signupForm.get('username'); }
   get email() { return this.signupForm.get('email'); }
   get studentId() { return this.signupForm.get('studentId'); }
@@ -58,27 +57,22 @@ export class SignupComponent {
 
     this.isLoading = true;
     this.message = '';
-
-    // Remove confirmPassword before sending to API
     const signupData = { ...this.signupForm.value };
     delete signupData.confirmPassword;
-
-    // Direct HTTP call to signup API
+    
     this.http.post('http://localhost:3000/api/signup', signupData)
       .subscribe({
         next: (res: any) => {
           this.isLoading = false;
           this.message = res.message || "Account created successfully!";
           this.messageType = 'success';
-          
-          // Clear form
           this.signupForm.reset();
           
-          // Redirect to login after 2 seconds
           setTimeout(() => {
             this.router.navigate(['/login']);
           }, 2000);
         },
+
         error: (err) => {
           this.isLoading = false;
           console.error('Signup error', err);
