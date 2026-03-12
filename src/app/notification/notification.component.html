@@ -1,28 +1,29 @@
-<div class="container">
+<div class="layout">
   <aside class="sidebar">
-    <h2 class="logo">Library</h2>
+    <div class="logo">Library</div>
     <ul class="menu">
       <li routerLink="/home">Home</li>
-      <li class="active">Notification</li>
-      <li>Book</li>
-      <li> Settings</li>
+      <li routerLink="/notification" routerLinkActive="active">Notification</li>
+      <li routerLink="/book">Book</li>
+      <li routerLink="/settings" >Settings</li>
     </ul>
   </aside>
-  <main class="main">
+  <div class="main">
     <header class="topbar">
-      <div class="title">Library</div>
-      <div class="user">USER1</div>
+      <div></div>
+      <div class="user">
+        USER1
+      </div>
     </header>
-    <input type="text" placeholder="Search..." />
-    <section class="content">
-      <h2>Notification</h2>
+    <div class="content">
+      <h1>Notification</h1>
       <div class="notification-card">
-        <span class="icon"></span>
-        <p>
+        <div class="bell"></div>
+        <p class="text">
           Your book is ready to pick up go to the Main campus library
         </p>
-        <button class="close" (click)="removeNotification()">✕</button>
+        <button class="close">×</button>
       </div>
-    </section>
-  </main>
+    </div>
+  </div>
 </div>

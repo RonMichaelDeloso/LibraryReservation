@@ -1,53 +1,44 @@
-<div class="container">
-  <aside class="sidebar">
+<div class="page">
+  <div class="topbar">
     <div class="logo">Library</div>
-    <ul class="menu">
-  <li routerLink="/home" routerLinkActive="active">
-    Home
-  </li>
-  <li routerLink="/notification" routerLinkActive="active">
-    Notification
-  </li>
-  <li routerLink="/book" routerLinkActive="active">
-    Booking
-  </li>
-  <li routerLink="/settings" routerLinkActive="active">
-    Settings
-  </li>
-</ul>
-  </aside>
-  <div class="main">
-    <header class="topbar">
-      <div class="title">Library</div>
-      <div class="user">USER</div>
-    </header>
-    <input class="search" type="text" placeholder="Search">
-    <section class="content">
+    <div class="user">USER1</div>
+  </div>
+  <div class="layout">
+    <div class="sidebar">
+      <ul>
+        <li routerLink="/home" >Home</li>
+        <li routerLink="/notification">Notification</li>
+        <li routerLink="/booking">Booking</li>
+        <li routerLink="/list"> List</li>
+        <li routerLink="/settings" routerLinkActive="active">Settings</li>
+        <li routerLink="/add-books" >Add Books</li>
+      </ul>
+    </div>
+    <div class="content">
+      <div class="search">
+        <input type="text" placeholder="Search">
+      </div>
       <h2>Settings</h2>
       <div class="account-card">
         <div class="card-header">
-          <span><p>Account Settings</p></span>
+           Account Settings
         </div>
         <div class="account-body">
-          <div class="profile">
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
-            <div class="info">
-              <h4>Ron Michael Deloso</h4>
-              <p>Ron.MichaelDeloso@gmail.com</p>
-            </div>
+          <div class="info">
+            <h4>Ron Michael Deloso</h4>
+            <p>Ron.MichelDeloso@gmail.com</p>
           </div>
-
           <div class="buttons">
-            <button class="change"(click)="changePassword()">Change Password</button>
-            <button class="save"(click)="saveChanges()">Save Change</button>
+            <button class="password-btn">Change Password</button>
+            <button class="save-btn">Save Change</button>
           </div>
         </div>
       </div>
       <div class="notification-card">
         <div class="card-header">
-          <span><p>Notification Settings</p></span>
+           Notification Settings
         </div>
       </div>
-    </section>
+    </div>
   </div>
 </div>

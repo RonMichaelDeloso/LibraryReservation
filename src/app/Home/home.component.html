@@ -1,53 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <div class="container">
-
-  <aside class="sidebar">
-    <h2 class="logo">Library</h2>
-
-    <ul class="menu">
-
-  <li routerLink="/home" routerLinkActive="active">
-    Home
-  </li>
-  <li routerLink="/notification" routerLinkActive="active">
-    Notification
-  </li>
-  <li routerLink="/book" routerLinkActive="active">
-    Booking
-  </li>
-  <li routerLink="/settings" routerLinkActive="active">
-    Settings
-  </li>
-</ul>
-  </aside>
-  <div class="main">
-    <header class="topbar">
-      <div class="title">Library</div>
-      <div class="user">
-        USER1
-      </div>
-    </header>
-    <section class="content">
+<div class="page">
+  <div class="topbar">
+    <div class="logo">Library</div>
+    <div class="user">USER1</div>
+  </div>
+  <div class="layout">
+    <div class="sidebar">
+      <ul>
+        <li routerLink="/home" routerLinkActive="active">Home</li>
+        <li routerLink="/notification">Notification</li>
+        <li routerLink="/book">Book</li>
+        <li routerLink="/settings">Settings</li>
+      </ul>
+    </div>
+    <div class="content">
       <h2>Library</h2>
       <div class="search">
-        <input type="text" placeholder="Search books...">
+        <input type="text" placeholder="Search">
       </div>
       <div class="books">
-        <div class="book-card"></div>
-        <div class="book-card"></div>
-        <div class="book-card"></div>
-        <div class="book-card"></div>
-
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
       </div>
-    </section>
+    </div>
   </div>
 </div>
-</body>
-</html>
