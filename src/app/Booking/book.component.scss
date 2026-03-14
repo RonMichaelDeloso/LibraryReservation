@@ -108,28 +108,20 @@
     border:6px solid #1e88e5;
   }
 }
-
-
-.search{
-  margin:10px 0 30px;
-
-  input{
+ input{
     width:300px;
     padding:6px 10px;
     border-radius:10px;
     border:1px solid #999;
   }
-}
+
+  .notification-card{
+    width: 500px;
+    height: 50px;
+    padding: 6px 10px;
+    background-color: rgb(238, 238, 238);
+  }
 
 
-.books{
-  display:flex;
-  gap:40px;
-}
 
-.book-card{
-  width:150px;
-  height:200px;
-  background:#c9c9c9;
-  border-radius:5px;
-}
+

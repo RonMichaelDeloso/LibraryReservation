@@ -1,20 +1,38 @@
-<div class="container">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notification</title>
+</head>
+<body>
+  <div class="main">
+
+    <header class="topbar">
+      <div class="title">Library</div>
+
+      <div class="user">
+        USER1 👤
+      </div>
+
+    </header>
+
+    <div class="container">
+
   <aside class="sidebar">
-    <h2 class="logo">Library</h2>
+
     <ul class="menu">
-      <li routerLink="/home">Home</li>
-      <li class="active">Notification</li>
-      <li>Book</li>
-      <li> Settings</li>
+      <li routerLink="/home">🏠 Home</li>
+      <li class="active">🔔 Notification</li>
+      <li routerLink="/book">📚 Book</li>
+      <li routerLink="/settings">⚙️ Settings</li>
     </ul>
   </aside>
-  <main class="main">
-    <header class="topbar">
-      <input type="text" placeholder="Search..." />
-      <div class="user">USER1</div>
-    </header>
-    <section class="content">
+  
+  <section class="content">
+
       <h2>Notification</h2>
+
       <div class="notification-card">
         <span class="icon"></span>
         <p>
@@ -22,6 +40,10 @@
         </p>
         <button class="close" (click)="removeNotification()">✕</button>
       </div>
+
     </section>
-  </main>
-</div>
+  </div>
+    </div>
+
+</body>
+</html>

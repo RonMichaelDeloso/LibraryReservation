@@ -38,7 +38,7 @@
   background-color: rgb(215, 196, 165);
 }
 
-.menu .active {
+.active {
   background-color: rgb(215, 196, 165);
   font-weight: bold;
 }
@@ -47,14 +47,6 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-}
-
-.topbar {
-  background-color: rgb(210, 168, 110);
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 20px;
-  color: rgb(0, 0, 0);
 }
 
 .content {
@@ -133,4 +125,19 @@
 
 .notification-body {
   padding: 20px;
+}
+ 
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 20px;
+  background:#cfa46b;
+
+  .title{
+    font-size:18px;
+    font-weight:bold;
+    color: white;
+    margin: 0;
+  }
 }
