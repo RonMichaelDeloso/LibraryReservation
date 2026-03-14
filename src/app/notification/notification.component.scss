@@ -25,9 +25,37 @@
   color: white;
 }
 
+<<<<<<< HEAD
 .menu {
   list-style: none;
   padding: 20px;
+=======
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 20px;
+  background:rgb(207, 164, 107);
+
+ .search{
+   width: 250px;
+   padding:5px 10px;
+   border-radius:15px;
+   border:1px solid #999;
+  }
+
+  input{
+    width:570%;
+    padding:6px 10px;
+    border-radius:10px;
+    border:none;
+  }
+
+  .user{
+    font-size:14px;
+    
+  }
+>>>>>>> 05a0df70de9e91461205f498f29d8336390b7757
 }
 
 .menu li {
@@ -50,6 +78,7 @@
 }
 
 
+<<<<<<< HEAD
 .main {
   flex: 1;
   display: flex;
@@ -109,3 +138,12 @@
   font-size: 20px;
   cursor: pointer;
 }
+=======
+  .close{
+    border:none;
+    background:none;
+    font-size:16px;
+    cursor:pointer;
+  }
+}
+>>>>>>> 05a0df70de9e91461205f498f29d8336390b7757
