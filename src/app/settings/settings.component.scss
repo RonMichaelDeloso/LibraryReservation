@@ -2,43 +2,79 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: Arial;
 }
 
-.container {
-  display: flex;
+.page {
   height: 100vh;
-  background-color: #e8e0cf;
+  background: rgb(232, 221, 201);
 }
 
-.sidebar {
-  width: 220px;
-  background-color: #ece4d6;
-  padding: 20px;
-  border-right: 1px solid #d0c6b4;
+.topbar {
+  height: 50px;
+  background: rgb(207, 164, 106);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  color: white;
 }
 
 .logo {
-  font-size: 20px;
-  margin-bottom: 25px;
+  font-weight: bold;
 }
 
-.menu {
+.search {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: white;
+  border-radius: 10px;
+  padding: 3px 10px;
+  width: 350px;
+}
+
+.search input {
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+
+
+.layout {
+  display: flex;
+  height: calc(100vh - 50px);
+}
+
+
+
+.sidebar {
+  width: 220px;
+  background: rgb(242, 232, 216);
+  padding: 20px 15px;
+  border-right: 1px solid #ddd;
+}
+
+.sidebar ul {
   list-style: none;
 }
 
-.menu li {
-  padding: 10px;
+.sidebar li {
+  padding: 10px 15px;
   margin-bottom: 10px;
-  border-radius: 8px;
   cursor: pointer;
+  color: rgb(154, 106, 50);
+  border-radius: 12px;
 }
 
-.menu li:hover {
-  background-color: rgb(215, 196, 165);
-}
-
-.active {
+.menu .active {
   background-color: rgb(215, 196, 165);
   font-weight: bold;
 }
@@ -49,21 +85,37 @@
   flex-direction: column;
 }
 
+.topbar {
+  background-color: rgb(210, 168, 110);
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 20px;
+  color: rgb(0, 0, 0);
+}
+
 .content {
+  flex: 1;
   padding: 30px;
 }
 
+.content h2 {
+  margin-bottom: 20px;
+}
+
+
 .account-card {
-  width: 700px;
-  margin-top: 15px;
-  background-color: rgb(210, 168, 110);
-  border-radius: 15px;
-  overflow: hidden;
+  background: rgb(207, 164, 106);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 30px;
 }
 
 .card-header {
-  background-color: rgb(239, 239, 239);
+  background: rgb(241, 241, 241);
   padding: 10px 15px;
+  border-radius: 20px;
+  width: 250px;
+  margin-bottom: 15px;
   font-weight: bold;
 }
 
@@ -71,60 +123,51 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
 }
 
-.profile {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+
+
+.info h4 {
+  margin-bottom: 4px;
 }
 
-.profile img {
-  width: 50px;
-  border-radius: 50%;
-}
-
-.profile h4 {
-  font-size: 14px;
-}
-
-.profile p {
+.info p {
   font-size: 12px;
+  color: rgb(51, 51, 51);
 }
+
+
 
 .buttons {
   display: flex;
   gap: 10px;
 }
 
-.change {
-  background-color: white;
+.password-btn {
+  background: rgb(241, 241, 241);
   border: none;
-  padding: 6px 12px;
+  padding: 8px 15px;
   border-radius: 15px;
   cursor: pointer;
 }
 
-.save {
-  background-color: rgb(156, 107, 46);
+.save-btn {
+  background: rgb(140, 90, 30);
   color: white;
   border: none;
-  padding: 6px 12px;
+  padding: 8px 15px;
   border-radius: 15px;
   cursor: pointer;
 }
 
-.notification-card {
-  width: 350px;
-  height: 200px;
-  margin-top: 25px;
-  background-color: rgb(210, 168, 110);
-  border-radius: 15px;
-}
 
-.notification-body {
+
+.notification-card {
+  background: rgb(207, 164, 106);
+  border-radius: 20px;
+  height: 200px;
   padding: 20px;
+  width: 380px;
 }
  
 .topbar{

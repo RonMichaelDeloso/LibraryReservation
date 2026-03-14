@@ -17,22 +17,38 @@
 
 .sidebar{
   width: 260px;
-  height: 100%;
   background-color: #ffffff;
+  border-radius: 0 20px 20px 0;
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.03);
 }
 
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family: Arial, Helvetica, sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
 }
 
-.container{
-  display:flex;
-  height:100vh;
-  background:#e5dcc9;
+.page{
+height:100vh;
+background:rgb(232, 221, 201);
+}
+
+.topbar{
+height:50px;
+background:rgb(207, 164, 106);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 20px;
+color:white;
+font-weight:bold;
+}
+
+.user{
+display:flex;
+align-items:center;
+gap:5px;
 }
 
 
@@ -68,11 +84,15 @@
   }
 }
 
+/* Main */
+
 .main{
   flex:1;
   display:flex;
   flex-direction:column;
 }
+
+/* Topbar */
 
 .topbar{
   display:flex;
@@ -87,6 +107,8 @@
   }
 }
 
+/* Content */
+
 .content{
   padding:30px;
   position:relative;
@@ -95,6 +117,8 @@
     margin-bottom:10px;
   }
 }
+
+/* Profile */
 
 .profile{
   position:absolute;
@@ -109,6 +133,7 @@
   }
 }
 
+/* Search */
 
 .search{
   margin:10px 0 30px;
@@ -121,15 +146,20 @@
   }
 }
 
+/* Books */
 
 .books{
-  display:flex;
-  gap:40px;
+display:flex;
+gap:40px;
 }
 
-.book-card{
-  width:150px;
-  height:200px;
-  background:#c9c9c9;
-  border-radius:5px;
+.card{
+width:170px;
+height:210px;
+background:rgb(207, 207, 207);
+border-radius:4px;
 }
+
+
+
+
