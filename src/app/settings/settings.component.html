@@ -1,63 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Library Settings</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="main">
+   <div class="main">
 
     <header class="topbar">
       <div class="title">Library</div>
-
-      <div class="user">
-        USER1 👤
-      </div>
+      <div class="user">USER1 👤</div>
     </header>
-  <div class="container">
 
-  <aside class="sidebar">
+    <div class="container">
+      <aside class="sidebar">
+        <ul class="menu">
+          <li>🏠 Home</li>
+          <li>🔔 Notification</li>
+          <li>📚 Book</li>
+          <li class="active">⚙️ Settings</li>
+        </ul>
+      </aside>
 
-    <ul class="menu">
-      <li routerLink="/home">🏠 Home</li>
-      <li routerLink="/notification">🔔 Notification</li>
-      <li routerLink="/book">📚 Book</li>
-      <li class="active">⚙️ Settings</li>
-    </ul>
-  </aside>
+      <section class="content">
+        <h2>Settings</h2>
 
-<div>
-  <section class="content">
-    <h2>Settings</h2>
-    <div class="account-card">
-      <div class="card-header">
-        <span><p>Account Settings</p></span>
-      </div>
-      <div class="Account-body">
-        <div class="profile">
-          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
-          <div class="info">
-            <h4>USER1</h4>
-            <P>user01@gmail.com</P>
+        <div class="account-card">
+          <div class="card-header">
+            <p>Account Settings</p>
+          </div>
+
+          <div class="account-row">
+            
+            <div class="profile-pair">
+             
+              <div class="profile-block">
+                <img 
+                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" 
+                  alt="user01 avatar"
+                />
+                <div class="info">
+                  <h4>USER1</h4>
+                  <p>user01@gmail.com</p>
+                </div>
+              </div>
+
+              
+              <div class="profile-block ron">
+                <img 
+                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" 
+                  alt="Ron avatar"
+                />
+                <div class="info">
+                  <h4>Ron Michael Deloso</h4>
+                  <p class="email-muted">Ron.MichelDeloso@gmail.com</p>
+                  
+                </div>
+              </div>
+            </div>
+
+            <div class="action-buttons">
+              <button class="password-btn" onclick="alert('Change password flow')">Change Password</button>
+              <button class="save-btn" onclick="alert('Changes saved (demo)')">Save Change</button>
+            </div>
           </div>
         </div>
 
-        <div class="buttons">
-          <button class="change"(click)="changePassword()">Change Password</button>
-            <button class="save"(click)="saveChanges()">Save Change</button>
+    
+        <div class="notification-card">
+          <div class="card-header">
+            <p>Notification Settings</p>
+          </div>
+      
+          <p style="color: #fff; padding-left: 5px; opacity: 0.8;">🔔 Email alerts · push · weekly digest</p>
         </div>
-      </div>
+
+      
+      </section>
     </div>
-    <div class="notification-card">
-      <div class="card-header">
-        <span><p>Notification Settings</p></span>
-      </div>
-    </div>
-  </section>
-</div>
-  
-</div>
-</div>
+  </div>
 </body>
 </html>
