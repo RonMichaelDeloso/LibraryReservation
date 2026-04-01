@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Library Settings</title>
+</head>
+<body>
+   <div class="main">
+
+    <header class="topbar">
+      <div class="title">Library</div>
+      <div class="user">USER1 👤</div>
+    </header>
+
+    <div class="container">
+      <aside class="sidebar">
+        <ul class="menu">
+          <li routerLink="/adhome">🏠 Home</li>
+          <li routerLink="/adnot">🔔 Notification</li>
+          <li routerLink="/list">📚 List</li>
+          <li class="active">⚙️ Settings</li>
+        </ul>
+      </aside>
+
+      <section class="content">
+        <h2>Settings</h2>
+
+        <div class="account-card">
+          <div class="card-header">
+            <p>Account Settings</p>
+          </div>
+
+          <div class="account-row">
+            
+            <div class="profile-pair">
+             
+              <div class="profile-block">
+                <img 
+                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" 
+                  alt="user01 avatar"
+                />
+                <div class="info">
+                  <h4>USER1</h4>
+                  <p>user01@gmail.com</p>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="action-buttons">
+              <button class="password-btn" onclick="alert('Change password flow')">Change Password</button>
+              <button class="save-btn" onclick="alert('Changes saved (demo)')">Save Change</button>
+            </div>
+          </div>
+        </div>
+
+    
+        <div class="notification-card">
+          <div class="card-header">
+            <p>Notification Settings</p>
+          </div>
+      
+          <p style="color: #fff; padding-left: 5px; opacity: 0.8;">🔔 Email alerts · push · weekly digest</p>
+        </div>
+
+      
+      </section>
+    </div>
+  </div>
+</body>
+</html>

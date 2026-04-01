@@ -6,6 +6,10 @@ import { HomeComponent } from './Home/home.component';
 import { NotificationComponent } from './notification/notification.component';
 import { SettingsComponent } from './settings/settings.component';
 import { BookComponent } from './Booking/book.component';
+import { HomeAdminComponent } from './HomeAdmin/homeadmin.component';
+import { NotificationAdminComponent } from './NotificationAdmin/notificationadmin.component';
+import { SettingsadminComponent } from './SettingsAdmin/settingsadmin.component';
+import { ListComponent } from './ListAdmin/list.component';
 
 export const routes: Routes = [
     {path: 'login', component:LoginComponent },
@@ -15,5 +19,9 @@ export const routes: Routes = [
     {path: 'notification', component: NotificationComponent },
     {path: 'settings', component: SettingsComponent},
     {path: 'book', component: BookComponent},
+    {path: 'adhome', component: HomeAdminComponent},
+    {path: 'adnot', component: NotificationAdminComponent},
+    {path: 'settingsadmin', component: SettingsadminComponent},
+    {path: 'list', component: ListComponent},
     {path: '', redirectTo: '/login', pathMatch: 'full'}
 ];
