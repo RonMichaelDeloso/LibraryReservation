@@ -1,196 +1,123 @@
-* {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
+
+.Header{
+  background-color:#c89a5b;
+  height: 60%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.title{
+  color: white;
+  font-size: 20px;
+  margin: 0;
+}
+
+.sidebar{
+  width: 260px;
+  height: 100%;
+  background-color: #ffffff;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.03);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container{
+  display:flex;
+  height:100vh;
+  background:#e5dcc9;
+}
+
+
+.sidebar{
+  width:220px;
+  background:#e8dfcf;
+  padding:20px;
+  border-right:1px solid #c7bca7;
+
+  .logo{
+    font-size:20px;
+    margin-bottom:25px;
+  }
+
+  .menu{
+    list-style:none;
+
+    li{
+      padding:10px;
+      margin-bottom:10px;
+      border-radius:8px;
+      cursor:pointer;
     }
 
-    body {
-      background: #f9f1de;
+    .active{
+      background:#d6c6a6;
+      font-weight:bold;
     }
 
-    /* Topbar */
-    .topbar {
-      height: 50px;
-      background: #cfa46b;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
-      color: white;
+    li:hover{
+      background:#d6c6a6;
     }
+  }
+}
 
-    .title {
-      font-size: 20px;
-      font-weight: bold;
-    }
+.main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
 
-    /* Layout */
-    .container {
-      display: flex;
-      height: calc(100vh - 50px);
-    }
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 20px;
+  background:#cfa46b;
 
-    /* Sidebar */
-    .sidebar {
-      width: 220px;
-      background: #e8dfcf;
-      padding: 20px;
-    }
+  .title{
+    font-size:18px;
+    font-weight:bold;
+  }
+}
 
-    .menu {
-      list-style: none;
-    }
+.content{
+  padding:30px;
+  position:relative;
 
-    .menu li {
-      padding: 10px 15px;
-      margin-bottom: 10px;
-      border-radius: 12px;
-      color: rgb(154, 106, 50);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+  h2{
+    margin-bottom:10px;
+  }
+}
 
-    .menu li:hover,
-    .menu .active {
-      background: #d6c6a6;
-      font-weight: bold;
-    }
+.profile{
+  position:absolute;
+  left:-35px;
+  top:-35px;
 
-    /* Content Area */
-    .content {
-      padding: 40px;
-      flex: 1;
-      background: #fcf8ef;
-      overflow-y: auto;
-    }
+  img{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    border:6px solid #1e88e5;
+  }
+}
+ input{
+    width:300px;
+    padding:6px 10px;
+    border-radius:10px;
+    border:1px solid #999;
+  }
 
-    .content h2 {
-      margin-bottom: 30px;
-      font-weight: normal;
-      color: #3e2e1f;
-    }
-
-    /* Cards */
-    .account-card,
-    .notification-card {
-      background: rgb(207, 164, 106);
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 30px;
-    }
-
-    .card-header {
-      background: #fff;
-      padding: 10px 15px;
-      border-radius: 20px;
-      width: fit-content;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-
-    /* --- double profile row (exactly like the image) --- */
-    .account-row {
-      display: flex;
-      gap: 30px;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    /* left side: first profile (user01) */
-    .profile-pair {
-      display: flex;
-      gap: 40px;
-      flex-wrap: wrap;
-    }
-
-    .profile-block {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .profile-block img {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      border: 4px solid #1e88e5; /* blue border as in reference */
-      object-fit: cover;
-      background: #f0f0f0;
-    }
-
-    .info p {
-      font-size: 13px;
-      color: #333;
-      line-height: 1.4;
-    }
-
-    .info h4 {
-      font-size: 16px;
-      font-weight: bold;
-      color: #1f2a36;
-    }
-
-    /* second profile specific (Ron) */
-    .profile-block.ron img {
-      border-color: #1e88e5; /* keep consistent, but you can change if needed */
-    }
-
-    /* Buttons group (vertical alignment if needed, but here it's beside the two profiles) */
-    .action-buttons {
-      display: flex;
-      gap: 12px;
-      margin-left: auto;
-    }
-
-    .password-btn {
-      background: #fff;
-      border: none;
-      padding: 8px 18px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: 500;
-      color: #2d2d2d;
-      border: 1px solid transparent;
-      transition: 0.2s;
-    }
-
-    .password-btn:hover {
-      background: #f2e6d8;
-    }
-
-    .save-btn {
-      background: rgb(140, 90, 30);
-      color: white;
-      border: none;
-      padding: 8px 18px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: 0.2s;
-    }
-
-    .save-btn:hover {
-      background: rgb(115, 72, 22);
-    }
-
-    /* notification card is kept simple */
-    .notification-card .card-header p {
-      margin: 0;
-    }
-
-    /* small extra for second email line */
-    .email-muted {
-      color: #2c3e4e;
-      font-size: 13px;
-    }
-
-    /* user icon in topbar */
-    .user {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+  .notification-card{
+    width: 500px;
+    height: 50px;
+    padding: 6px 10px;
+    background-color: rgb(238, 238, 238);
+  }
