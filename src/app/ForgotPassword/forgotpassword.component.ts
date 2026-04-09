@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../service/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Router } from 'express';
 
 @Component({
   selector: 'app-forgotpassword',
@@ -12,30 +13,19 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./forgotpassword.component.scss']
 })
 export class ForgotpasswordComponent {
+private fb = inject(FormBuilder);
+private authService = inject(AuthService);
+private router = inject(Router);
 
-  loginForm: FormGroup;
+  step: number = 1;
+  email: string = '';
   message: string = '';
+  messageType: 'success' | 'error' = 'success';
+  isLoading: boolean = false;
+  showPassword: boolean = false;
+  showConfirm: boolean = false;
+  resendTimer: number = 0;
 
-  constructor(
-    private fb: FormBuilder,
-    private auth: AuthService
-  ) {
-    this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
-    });
-  }
+  
 
-  onSubmit() {
-    if (this.loginForm.valid) {
-      this.auth.login(this.loginForm.value).subscribe({
-        next: (res) => {
-          this.message = res.message;
-        },
-        error: () => {
-          this.message = 'Server error';
-        }
-      });
-    }
   }
-}

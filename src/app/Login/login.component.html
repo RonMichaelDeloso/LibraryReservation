@@ -1,35 +1,50 @@
 <div class="login-container">
+
   <div class="card">
-    <h2>Sign In</h2>
+
+    <div class="header">
+      <h2>Sign In</h2>
+    </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      
+
       <div class="input-group">
+        <label>Email</label>
         <input
           type="text"
-          placeholder="Username"
-          formControlName="username"
+          formControlName="Email"
         />
       </div>
 
       <div class="input-group">
+        <label>Password</label>
         <input
-          type="password"
-          placeholder="Password"
-          formControlName="password"
+          [type]="showPassword ? 'text' : 'Password'"
+          formControlName="Password"
         />
+        <button type="button" class="password-toggle" (click)="showPassword = !showPassword">
+          {{ showPassword ? 'Hide' : 'Show' }}
+        </button>
       </div>
 
-      <div>
+      <div class="forgot-link">
         <a routerLink="/forgotpassword">Forgot Password</a>
       </div>
 
-      <button routerLink="/home">Login</button>
+      <button type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Logging in...' : 'Login' }}
+      </button>
 
-      <div>
+      <p class="signup-link">
         Don't have an account? <a routerLink="/signup">Create account</a>
-      </div>
+      </p>
+
+      <p *ngIf="message" [style.color]="messageType === 'error' ? 'red' : 'green'" class="message">
+        {{ message }}
+      </p>
 
     </form>
+
   </div>
+
 </div>

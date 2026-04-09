@@ -1,39 +1,80 @@
 <div class="signup-container">
+
   <div class="card">
-    <h2>Sign Up</h2>
+
+    <div class="header">
+      <h2>Sign Up</h2>
+    </div>
 
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
 
       <div class="input-group">
-        <label>Username</label>
-        <input type="text" formControlName="username">
+        <label>First Name</label>
+        <input
+          type="text"
+          formControlName="First_name"
+          placeholder="Enter your first name"
+        />
+      </div>
+
+      <div class="input-group">
+        <label>Last Name</label>
+        <input
+          type="text"
+          formControlName="Last_name"
+          placeholder="Enter your last name"
+        />
       </div>
 
       <div class="input-group">
         <label>Email</label>
-        <input type="email" formControlName="email">
-      </div>
-
-      <div class="input-group">
-        <label>Student ID</label>
-        <input type="text" formControlName="studentId">
+        <input
+          type="email"
+          formControlName="Email"
+          placeholder="Enter your email"
+        />
       </div>
 
       <div class="input-group">
         <label>Password</label>
-        <input type="password" formControlName="password">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="Password"
+          placeholder="Create a password"
+        />
+        <button type="button" class="password-toggle" (click)="showPassword = !showPassword">
+          {{ showPassword ? 'Hide' : 'Show' }}
+        </button>
       </div>
 
       <div class="input-group">
         <label>Confirm Password</label>
-        <input type="password" formControlName="confirmPassword">
+        <input
+          [type]="showConfirm ? 'text' : 'password'"
+          formControlName="confirmPassword"
+          placeholder="Confirm your password"
+        />
+        <button type="button" class="password-toggle" (click)="showConfirm = !showConfirm">
+          {{ showConfirm ? 'Hide' : 'Show' }}
+        </button>
       </div>
 
-      <button type="submit">Create my account</button>
+      <button type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Creating account...' : 'Sign Up' }}
+      </button>
+
+      <p class="login-link">
+        Already have an account? <a routerLink="/login">Sign In</a>
+      </p>
+
+      <p *ngIf="message" [style.color]="messageType === 'error' ? 'red' : 'green'" class="message">
+        {{ message }}
+      </p>
+
+      
 
     </form>
 
-    <a routerLink="/login">Have an account?</a>
-
   </div>
+
 </div>

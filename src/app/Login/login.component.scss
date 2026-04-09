@@ -1,56 +1,154 @@
 .login-container {
   height: 100vh;
+  width: 100%;
   background: #e6d8b9;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .card {
   background: #f5f2eb;
-  padding: 40px;
-  width: 350px;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  text-align: center;
-
-  h2 {
-    margin-bottom: 20px;
-  }
+  width: 500px;
+  min-height: 500px;
+  padding: 45px;
+  border-radius: 35px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+
+  h2 {
+    font-size: 40px;
+    font-weight: bold;
+    margin: 5;
+  }
+
+  label {
+    font-size: 40px;
+    font-weight: bold;
+    margin: 5;
+  }
+
+}
+
+
 .input-group {
-  margin-bottom: 15px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+
+  
+
+  label {
+    font-size: 17px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    text-align: left;
+  }
 
   input {
-    width: 100%;
     padding: 10px;
-    border-radius: 8px;
+    padding-right: 50px;  // Add space for the show button
+    border-radius: 15px;
     border: 1px solid #ccc;
     outline: none;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
 
     &:focus {
       border-color: #d49a32;
+    }
+  }
+
+  .password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 37px;  // Position it correctly (label height + input top)
+    background: none;
+    border: none;
+    color: #d49a32;
+    cursor: pointer;
+    font-size: 12px;
+    width: auto;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+    
+    &:hover {
+      color: #c18728;
+      text-decoration: underline;
+    }
+  }
+}
+
+.forgot-link {
+  text-align: right;
+  margin-bottom: 5px;
+
+  a {
+    color: #c18728;
+    text-decoration: none;
+    font-size: 13px;
+    
+    &:hover {
+      text-decoration: underline;
     }
   }
 }
 
 button {
   width: 100%;
-  padding: 10px;
+  padding: 14px;
   background: #d49a32;
   border: none;
-  border-radius: 20px;
+  border-radius: 15px;
   color: white;
   font-weight: bold;
+  margin-top: 20px;
   cursor: pointer;
+  font-size: 16px;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: #c18728;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 15px;
+
+  a {
+    color: #c18728;
+    text-decoration: none;
+    font-size: 14px;
+    
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
 .message {
+  text-align: center;
   margin-top: 15px;
-  color: red;
+  font-size: 14px;
 }
