@@ -68,12 +68,12 @@ export class BookComponent implements OnInit, OnDestroy {
   }
 
   async cancelReservation(id: number) {
-    if(confirm('Cancel this pending request?')) {
+    if (confirm('Cancel this pending request?')) {
       try {
         await this.reservationService.cancelReservation(id);
         alert('Request cancelled.');
         await this.loadReservations();
-      } catch(e: any) {
+      } catch (e: any) {
         alert(e.error?.message || 'Failed to cancel');
       }
     }
@@ -85,7 +85,7 @@ export class BookComponent implements OnInit, OnDestroy {
       alert("Please select at least one item from the cart.");
       return;
     }
-    
+
     try {
       const userId = this.authService.getUserId();
       const reserveDate = new Date().toISOString().split('T')[0];
@@ -102,17 +102,17 @@ export class BookComponent implements OnInit, OnDestroy {
         };
         await this.reservationService.createReservation(payload);
       }
-      
+
       alert(`Successfully requested ${selected.length} items! The admin handles approvals.`);
-      
+
       const remainingCart = this.reservations.filter(r => !r.selected);
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem('cart', JSON.stringify(remainingCart));
       }
       this.reservations = remainingCart;
       await this.loadReservations();
-      
-    } catch(e: any) {
+
+    } catch (e: any) {
       alert(e.error?.message || 'Failed to checkout some items.');
     }
   }
