@@ -67,6 +67,10 @@ export class BookComponent implements OnInit, OnDestroy {
     }
   }
 
+  get hasSelectedItems(): boolean {
+    return this.reservations.some(r => r.selected);
+  }
+
   async cancelReservation(id: number) {
     if (confirm('Cancel this pending request?')) {
       try {

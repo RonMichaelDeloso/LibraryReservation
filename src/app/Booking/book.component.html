@@ -69,7 +69,7 @@
         </div>
       </div>
       
-      <button class="items-float-btn" (click)="checkoutItems()">
+      <button class="items-float-btn" [disabled]="!hasSelectedItems" [class.disabled]="!hasSelectedItems" (click)="checkoutItems()">
         Items
       </button>
 
