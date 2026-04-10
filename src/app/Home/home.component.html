@@ -34,6 +34,21 @@
         <input type="text" placeholder="Search">
       </div>
 
+      <div class="books-list">
+        <div class="book-card" *ngFor="let book of filteredBooks">
+          <div class="book-info">
+            <h3>{{ book.title }}</h3>
+            <p class="edition">{{ book.edition }}</p>
+            <p class="author">By: {{ book.author }}</p>
+            <span class="status" [class.available]="book.status === 'Available'">
+              {{ book.status }}
+            </span>
+            <button class="borrow-btn" *ngIf="book.status === 'Available'" (click)="borrowBook(book)">
+              Borrow
+            </button>
+          </div>
+        </div>
+      </div>
     </section>
   </div>
 </div>

@@ -1,39 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
-</head>
-<body>
-  <div class="main">
+<div class="main">
+  <header class="topbar">
+    <div class="title">Library</div>
+    <div class="user">
+      {{ adminName }} 👤
+    </div>
+  </header>
 
-    <header class="topbar">
-      <div class="title">Library</div>
-
-      <div class="user">
-        USER1 👤
-      </div>
-    </header>
   <div class="container">
+    <aside class="sidebar">
+      <ul class="menu">
+        <li class="active">🏠 Home</li>
+        <li routerLink="/adnot">🔔 Notification</li>
+        <li routerLink="/list">📚 List</li>
+        <li routerLink="/settingsadmin">⚙️ Settings</li>
+      </ul>
+    </aside>
 
-  <aside class="sidebar">
-
-    <ul class="menu">
-      <li class="active">🏠 Home</li>
-      <li routerLink="/adnot">🔔 Notification</li>
-      <li routerLink="/list">📚 List</li>
-      <li routerLink="/settingsadmin">⚙️ Settings</li>
-    </ul>
-  </aside>
-  
-  <section class="content">
-
+    <section class="content">
       <h2>Library</h2>
+      
       <div class="search">
-        <input type="text" placeholder="Search">
+        <input type="text" placeholder="Search books..." [(ngModel)]="searchTerm">
       </div>
 
+      <div class="books-list">
+        <div class="book-card" *ngFor="let book of filteredBooks">
+          <!-- Title row with status and buttons -->
+          <div class="title-row">
+            <div class="title-section">
+              <h3>{{ book.title }}</h3>
+              <span class="status" [class.available]="book.status === 'Available'">
+                {{ book.status }}
+              </span>
+            </div>
+            <div class="admin-actions">
+              <button class="edit-btn" (click)="editBook(book)">✏️ Edit</button>
+              <button class="delete-btn" (click)="deleteBook(book.id)">🗑️ Delete</button>
+            </div>
+          </div>
+          
+          <!-- Book details -->
+          <div class="book-info">
+            <p class="edition">{{ book.edition }}</p>
+            <p class="author">By: {{ book.author }}</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="add-book-btn" (click)="openAddBookModal()">+ Add Books</button>
     </section>
   </div>
 </div>

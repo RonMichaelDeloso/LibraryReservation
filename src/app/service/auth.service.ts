@@ -29,17 +29,40 @@ export class AuthService {
     )
   }
 
+  // Forgot Password Methods
+  public async forgotPassword(email: string) {
+    return lastValueFrom(
+      this.http.post<any>(`${this.apiUrl}/forgot`, { Email: email })
+    );
+  }
+
+  public async resetPassword(email: string, otp: string, newPassword: string) {
+    return lastValueFrom(
+      this.http.post<any>(`${this.apiUrl}/reset`, { 
+        Email: email, 
+        OTP: otp, 
+        NewPassword: newPassword 
+      })
+    );
+  }
+
+  public async resendOTP(email: string) {
+    return lastValueFrom(
+      this.http.post<any>(`${this.apiUrl}/resend-otp`, { Email: email })
+    );
+  }
+
   public saveSession(response: any) {
     localStorage.setItem('token', response.token);
     localStorage.setItem('role', response.role);
-    localStorage.setItem('user', JSON.stringify(response.user)); // Changed 'User' to 'user' (lowercase)
-    localStorage.setItem('user_id', response.user.id.toString()); // Added for easy access
+    localStorage.setItem('user', JSON.stringify(response.user));
+    localStorage.setItem('user_id', response.user.id.toString());
     console.log('Session saved - Role:', response.role);
     console.log('Session saved - User:', response.user);
   }
 
   public getUser() {
-    return JSON.parse(localStorage.getItem('user') || '{}'); // Now matches 'user'
+    return JSON.parse(localStorage.getItem('user') || '{}');
   }
 
   public getUserId(): number {
