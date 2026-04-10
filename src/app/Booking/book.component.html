@@ -22,7 +22,9 @@
           
           <input type="checkbox" class="item-checkbox" [(ngModel)]="res.selected" />
 
-          <div class="book-placeholder"></div>
+          <!-- Book Image -->
+          <div class="book-placeholder" *ngIf="!res.Image_URL" style="width: 50px; height: 75px; background: #eee; border-radius: 4px;"></div>
+          <img *ngIf="res.Image_URL" [src]="'http://127.0.0.1:3000/' + res.Image_URL" style="width: 50px; height: 75px; object-fit: cover; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);" alt="Book Cover">
           
           <div class="book-info">
             <h3>{{ res.Title || 'Book title' }}</h3>
@@ -41,7 +43,9 @@
       <div class="cart-list">
         <div class="cart-item" *ngFor="let res of activeReservations">
           
-          <div class="book-placeholder"></div>
+          <!-- Book Image -->
+          <div class="book-placeholder" *ngIf="!res.Image_URL" style="width: 50px; height: 75px; background: #eee; border-radius: 4px;"></div>
+          <img *ngIf="res.Image_URL" [src]="'http://127.0.0.1:3000/' + res.Image_URL" style="width: 50px; height: 75px; object-fit: cover; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);" alt="Book Cover">
           
           <div class="book-info">
             <h3>{{ res.Title || 'Book title' }}</h3>

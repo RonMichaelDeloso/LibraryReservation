@@ -23,6 +23,7 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
   books: any[] = [];
   genres: any[] = [];
   private refreshInterval: any;
+  selectedFile: File | null = null;
 
   isAddModalOpen = false;
   isEditModalOpen = false;
@@ -101,16 +102,26 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
     this.isAddModalOpen = false;
   }
 
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
+
   async submitAddBook() {
     try {
-      const payload = {
-        User_id: this.authService.getUserId(),
-        isbn: this.newBook.isbn,
-        Title: this.newBook.Title,
-        Author: this.newBook.Author,
-        Genre_id: this.newBook.Genre_id
-      };
-      await this.bookService.addBook(payload);
+      const formData = new FormData();
+      formData.append('User_id', String(this.authService.getUserId()));
+      formData.append('isbn', this.newBook.isbn);
+      formData.append('Title', this.newBook.Title);
+      formData.append('Author', this.newBook.Author);
+      formData.append('Genre_id', JSON.stringify(this.newBook.Genre_id));
+      if (this.selectedFile) {
+        formData.append('image', this.selectedFile);
+      }
+      
+      await this.bookService.addBook(formData);
       alert('Book added successfully');
       this.closeAddModal();
       this.loadBooks();
@@ -136,21 +147,27 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
       Author: book.Author,
       Status: book.Status
     };
+    this.selectedFile = null;
     this.isEditModalOpen = true;
   }
 
   closeEditModal() {
     this.isEditModalOpen = false;
+    this.selectedFile = null;
   }
 
   async submitEditBook() {
     try {
-      await this.bookService.updateBook(this.editBookData.Book_id, {
-        isbn: this.editBookData.isbn,
-        Title: this.editBookData.Title,
-        Author: this.editBookData.Author,
-        Status: this.editBookData.Status
-      });
+      const formData = new FormData();
+      formData.append('isbn', this.editBookData.isbn);
+      formData.append('Title', this.editBookData.Title);
+      formData.append('Author', this.editBookData.Author);
+      formData.append('Status', this.editBookData.Status);
+      if (this.selectedFile) {
+        formData.append('image', this.selectedFile);
+      }
+      
+      await this.bookService.updateBook(this.editBookData.Book_id, formData);
       alert('Book updated successfully');
       this.closeEditModal();
       this.loadBooks();

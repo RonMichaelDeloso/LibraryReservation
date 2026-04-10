@@ -122,8 +122,8 @@ body {
 }
 
 .books-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 15px;
   margin-bottom: 30px;
 }
@@ -147,12 +147,16 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    min-width: 0;
 
     h3 {
       font-size: 18px;
       color: #000000;
       margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .status {
@@ -160,10 +164,19 @@ body {
       padding: 4px 16px;
       border-radius: 20px;
       font-size: 12px;
+      flex-shrink: 0;
 
       &.available {
         background: #e8f5e9;
         color: #4caf50;
+      }
+      &.loaned {
+        background: #e3f2fd;
+        color: #1e88e5;
+      }
+      &.reserved {
+        background: #fff3e0;
+        color: #ff9800;
       }
     }
   }

@@ -91,8 +91,8 @@ html, body { height: 100%; width: 100%; }
 }
 
 .books-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 15px;
   margin-bottom: 30px;
 }
@@ -110,30 +110,42 @@ html, body { height: 100%; width: 100%; }
     flex-direction: column;
     gap: 8px;
 
-    h3 {
-      font-size: 18px;
-      color: #000;
-      margin: 0;
+    .title-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: nowrap;
       padding-right: 120px;
-      font-weight: 500;
+      min-width: 0;
+
+      h3 {
+        font-size: 18px;
+        color: #000;
+        margin: 0;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .status {
+        display: inline-block;
+        padding: 4px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        flex-shrink: 0;
+        
+        &.available { background: #e8f5e9; color: #4caf50; }
+        &.loaned { background: #e3f2fd; color: #1e88e5; }
+        &.reserved { background: #fff3e0; color: #ff9800; }
+      }
     }
     
     .edition, .author {
       font-size: 14px;
       color: #666;
       margin: 0;
-    }
-    
-    .status {
-      display: inline-block;
-      align-self: flex-start;
-      margin-top: 5px;
-      padding: 4px 16px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-      
-      &.available { background: #e8f5e9; color: #4caf50; }
     }
 
     .borrow-btn {

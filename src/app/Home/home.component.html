@@ -45,16 +45,30 @@
 
       <div class="books-list">
         <div class="book-card" *ngFor="let book of filteredBooks">
-          <div class="book-info">
-            <h3>{{ book.Title }}</h3>
-            <p class="edition">ISBN: {{ book.isbn }}</p>
-            <p class="author">By: {{ book.Author }}</p>
-            <span class="status" [class.available]="book.Status === 'Available'">
-              {{ book.Status }}
-            </span>
-            <button class="borrow-btn" *ngIf="book.Status === 'Available'" (click)="addToCart(book)">
-              Add to Cart
-            </button>
+          <div style="display: flex; gap: 20px;">
+            <!-- Book Image -->
+            <div class="book-img" *ngIf="book.Image_URL" style="flex-shrink: 0;">
+              <img [src]="'http://127.0.0.1:3000/' + book.Image_URL" style="width: 80px; height: 120px; object-fit: cover; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);" alt="Book Cover">
+            </div>
+
+            <div class="book-info" style="flex: 1; min-width: 0;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 8px;">
+                <div class="title-section" style="padding-right: 0; flex: 1;">
+                  <h3 [title]="book.Title">{{ book.Title }}</h3>
+                  <span class="status" 
+                    [class.available]="book.Status === 'Available'"
+                    [class.loaned]="book.Status === 'Loaned'"
+                    [class.reserved]="book.Status === 'Reserved'">
+                    {{ book.Status }}
+                  </span>
+                </div>
+                <button class="borrow-btn" *ngIf="book.Status === 'Available'" (click)="addToCart(book)" style="position: static; margin: 0; white-space: nowrap;">
+                  Add to Cart
+                </button>
+              </div>
+              <p class="edition">ISBN: {{ book.isbn }}</p>
+              <p class="author">By: {{ book.Author }}</p>
+            </div>
           </div>
         </div>
       </div>

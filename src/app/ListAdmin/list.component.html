@@ -44,7 +44,10 @@
             <tr *ngFor="let res of filteredReservations; let i = index">
               <td>{{ i + 1 }}</td>
               <td>{{ res.First_name || 'Student' }} {{ res.Last_name || 'Name' }}</td>
-              <td>- {{ res.Title }}</td>
+              <td style="display: flex; align-items: center; gap: 10px; height: 100%;">
+                <img *ngIf="res.Image_URL" [src]="'http://127.0.0.1:3000/' + res.Image_URL" style="width: 30px; height: 45px; object-fit: cover; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);" alt="Book">
+                - {{ res.Title }}
+              </td>
               <td>{{ res.Due_date | date:'MM/dd/yyyy' }}</td>
               
               <td>
