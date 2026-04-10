@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
-</head>
-<body>
-  <div class="main">
+<div class="main">
 
     <header class="topbar">
       <div class="title">Library</div>
 
       <div class="user">
-        USER1 👤
+        {{ userName }} 👤
       </div>
     </header>
   <div class="container">
@@ -22,7 +14,7 @@
     <ul class="menu">
       <li class="active">🏠 Home</li>
       <li routerLink="/notification">🔔 Notification</li>
-      <li routerLink="/book">📚 Book</li>
+      <li routerLink="/book">📅 Cart</li>
       <li routerLink="/settings">⚙️ Settings</li>
     </ul>
   </aside>
@@ -30,21 +22,38 @@
   <section class="content">
 
       <h2>Library</h2>
-      <div class="search">
-        <input type="text" placeholder="Search">
+      <div class="search-container">
+        <div class="search" style="margin-bottom: 0;">
+          <input type="text" placeholder="Search by title or author" [(ngModel)]="searchTerm">
+        </div>
+        
+        <div class="filter-dropdown">
+          <button class="filter-btn" (click)="isFilterOpen = !isFilterOpen">
+            ⚲ Filter
+          </button>
+          
+          <div class="filter-menu" *ngIf="isFilterOpen">
+            <label *ngFor="let g of genres" class="filter-option">
+              <input type="checkbox" 
+                     [checked]="selectedGenres.includes(g.Genre)"
+                     (change)="toggleGenre(g.Genre)" />
+              {{ g.Genre }}
+            </label>
+          </div>
+        </div>
       </div>
 
       <div class="books-list">
         <div class="book-card" *ngFor="let book of filteredBooks">
           <div class="book-info">
-            <h3>{{ book.title }}</h3>
-            <p class="edition">{{ book.edition }}</p>
-            <p class="author">By: {{ book.author }}</p>
-            <span class="status" [class.available]="book.status === 'Available'">
-              {{ book.status }}
+            <h3>{{ book.Title }}</h3>
+            <p class="edition">ISBN: {{ book.isbn }}</p>
+            <p class="author">By: {{ book.Author }}</p>
+            <span class="status" [class.available]="book.Status === 'Available'">
+              {{ book.Status }}
             </span>
-            <button class="borrow-btn" *ngIf="book.status === 'Available'" (click)="borrowBook(book)">
-              Borrow
+            <button class="borrow-btn" *ngIf="book.Status === 'Available'" (click)="addToCart(book)">
+              Add to Cart
             </button>
           </div>
         </div>

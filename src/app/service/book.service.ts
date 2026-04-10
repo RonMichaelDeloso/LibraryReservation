@@ -8,7 +8,7 @@ import { lastValueFrom } from "rxjs"; // Removed 'last' since it wasn't used
 
 export class BookService {
     private http = inject(HttpClient);
-    private apiUrl = 'http://localhost:3000/api/books';
+    private apiUrl = 'http://127.0.0.1:3000/api/books';
 
     public async getAllBooks(){
         return lastValueFrom(

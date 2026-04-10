@@ -1,42 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Notification</title>
-</head>
-<body>
-  <div class="main">
+<div class="main">
+  <header class="topbar">
+    <div class="title">Library</div>
+    <div class="user">{{ userName }} 👤</div>
+  </header>
 
-    <header class="topbar">
-      <div class="title">Library</div>
+  <div class="container">
+    <aside class="sidebar">
+      <ul class="menu">
+        <li routerLink="/home">🏠 Home</li>
+        <li routerLink="/notification">🔔 Notification</li>
+        <li class="active">📅 Cart</li>
+        <li routerLink="/settings">⚙️ Settings</li>
+      </ul>
+    </aside>
 
-      <div class="user">
-        USER1 👤
+    <section class="content">
+      <h2>Book cart</h2>
+
+      <div class="cart-list">
+        <div class="cart-item" *ngFor="let res of reservations">
+          
+          <input type="checkbox" class="item-checkbox" [(ngModel)]="res.selected" />
+
+          <div class="book-placeholder"></div>
+          
+          <div class="book-info">
+            <h3>{{ res.Title || 'Book title' }}</h3>
+            <p class="author">{{ res.Author || 'Author' }}</p>
+          </div>
+          
+        </div>
+        
+        <div class="empty-cart" *ngIf="reservations.length === 0">
+          <p>Your cart is empty.</p>
+        </div>
       </div>
 
-    </header>
+      <h2 style="margin-top: 40px;">My Pending & Borrowed Books</h2>
 
-    <div class="container">
+      <div class="cart-list">
+        <div class="cart-item" *ngFor="let res of activeReservations">
+          
+          <div class="book-placeholder"></div>
+          
+          <div class="book-info">
+            <h3>{{ res.Title || 'Book title' }}</h3>
+            <p class="author">{{ res.Author || 'Author' }}</p>
+            <span class="status-badge" [ngClass]="{
+              'pending': res.Status === 'Pending',
+              'completed': res.Status === 'Completed',
+              'loaned': res.Status === 'Loaned',
+              'cancelled': res.Status === 'Cancelled'
+            }">{{ res.Status }}</span>
+          </div>
 
-  <aside class="sidebar">
-
-    <ul class="menu">
-      <li routerLink="/home">🏠 Home</li>
-      <li routerLink="/notification">🔔 Notification</li>
-      <li class="active">📚 Book</li>
-      <li routerLink="/settings">⚙️ Settings</li>
-    </ul>
-  </aside>
-
-   <section class="content">
-
-      <h2>Booking</h2>
+          <button class="cancel-btn" *ngIf="res.Status === 'Pending'" (click)="cancelReservation(res.Reserve_id)">
+            Cancel Request
+          </button>
+          
+        </div>
+        
+        <div class="empty-cart" *ngIf="activeReservations.length === 0">
+          <p>You haven't requested any books yet.</p>
+        </div>
+      </div>
+      
+      <button class="items-float-btn" (click)="checkoutItems()">
+        Items
+      </button>
 
     </section>
-  
   </div>
-    </div>
-
-</body>
-</html>
+</div>

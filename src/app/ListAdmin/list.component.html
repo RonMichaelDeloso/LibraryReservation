@@ -1,42 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>List</title>
-</head>
-<body>
-  <div class="main">
+<div class="main">
+  <header class="topbar">
+    <div class="title">Library</div>
+    <div class="user">{{ adminName }} 👤</div>
+  </header>
 
-    <header class="topbar">
-      <div class="title">Library</div>
+  <div class="container">
+    <aside class="sidebar">
+      <ul class="menu">
+        <li routerLink="/adhome">🏠 Home</li>
+        <li routerLink="/adnot">🔔 Notification</li>
+        <li class="active">📚 List</li>
+        <li routerLink="/settingsadmin">⚙️ Settings</li>
+      </ul>
+    </aside>
 
-      <div class="user">
-        USER1 👤
-      </div>
-
-    </header>
-
-    <div class="container">
-
-  <aside class="sidebar">
-
-    <ul class="menu">
-      <li routerLink="/adhome">🏠 Home</li>
-      <li routerLink="/adnot">🔔 Notification</li>
-      <li class="active">📚 List</li>
-      <li routerLink="/settingsadmin">⚙️ Settings</li>
-    </ul>
-  </aside>
-
-   <section class="content">
-
+    <section class="content">
       <h2>List</h2>
 
-    </section>
-  
-  </div>
-    </div>
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Search name or book" />
+      </div>
 
-</body>
-</html>
+      <div class="tabs">
+        <button [class.active]="currentTab === 'All'" (click)="currentTab = 'All'">All</button>
+        <button [class.active]="currentTab === 'Reserved'" (click)="currentTab = 'Reserved'">Reserved</button>
+        <button [class.active]="currentTab === 'Borrowed'" (click)="currentTab = 'Borrowed'">Borrowed</button>
+      </div>
+
+      <div class="table-container">
+        <table class="list-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Book</th>
+              <th>Return Date</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let res of filteredReservations; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ res.First_name || 'Student' }} {{ res.Last_name || 'Name' }}</td>
+              <td>- {{ res.Title }}</td>
+              <td>{{ res.Due_date | date:'MM/dd/yyyy' }}</td>
+              
+              <td>
+                <span class="status-pill" [ngClass]="{
+                  'checkout': res.Status === 'Completed' || res.Status === 'Loaned',
+                  'pending': res.Status === 'Pending',
+                  'cancelled': res.Status === 'Cancelled'
+                }">
+                  {{ res.Status === 'Loaned' || res.Status === 'Completed' ? 'Check Out' : res.Status }}
+                </span>
+              </td>
+              
+              <td class="action-cell">
+                <ng-container *ngIf="res.Status === 'Pending'">
+                  <button class="action-btn btn-green" (click)="approveReservation(res.Reserve_id)">Book Ready</button>
+                  <button class="action-btn btn-brown" (click)="cancelReservation(res.Reserve_id, 'Cancelled')">Cancelled</button>
+                </ng-container>
+                
+                <ng-container *ngIf="res.Status === 'Loaned' || res.Status === 'Completed'">
+                  <button class="action-btn btn-green-wide" (click)="cancelReservation(res.Reserve_id, 'Returned')">Returned</button>
+                </ng-container>
+              </td>
+            </tr>
+            
+            <tr *ngIf="filteredReservations.length === 0">
+              <td colspan="6" style="text-align: center; padding: 20px;">No records found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>

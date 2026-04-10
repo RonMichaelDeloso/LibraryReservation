@@ -8,7 +8,7 @@ import { last, lastValueFrom } from "rxjs";
 
 export class ReservationService {
     private http = inject(HttpClient);
-    private apiUrl = 'http://localhost:3000/api/reservations';
+    private apiUrl = 'http://127.0.0.1:3000/api/reservations';
 
     public async getAllReservation() {
         return lastValueFrom(
@@ -16,16 +16,16 @@ export class ReservationService {
         );
     }
 
-    public async getReservationsByStudent(id: number) {
+    public async getReservationsByUser(id: number) {
         return lastValueFrom(
-            this.http.get<any[]>(`${this.apiUrl}/student/${id}`)
+            this.http.get<any[]>(`${this.apiUrl}/user/${id}`)
         );
     }
 
     public async createReservation(data: {
-        Student_id: number;
+        User_id: number;
         Book_id: number;
-        Reserve_date: string
+        Reserve_date: string;
         Due_date: string;
     }) {
         return lastValueFrom(
@@ -34,6 +34,12 @@ export class ReservationService {
     }
 
     public async approveReservation(id: number) {
+        return lastValueFrom(
+            this.http.put<any>(`${this.apiUrl}/approve/${id}`, {})
+        );
+    }
+
+    public async cancelReservation(id: number) {
         return lastValueFrom(
             this.http.put<any>(`${this.apiUrl}/cancel/${id}`, {})
         );

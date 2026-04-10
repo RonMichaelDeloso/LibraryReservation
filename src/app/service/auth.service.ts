@@ -7,7 +7,7 @@ import { lastValueFrom} from 'rxjs';
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/api/auth'; 
+  private apiUrl = 'http://127.0.0.1:3000/api/auth'; 
 
   public async register(data: {
     First_name: string;
@@ -53,24 +53,35 @@ export class AuthService {
   }
 
   public saveSession(response: any) {
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('role', response.role);
-    localStorage.setItem('user', JSON.stringify(response.user));
-    localStorage.setItem('user_id', response.user.id.toString());
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('role', response.role);
+      localStorage.setItem('user', JSON.stringify(response.user));
+      localStorage.setItem('user_id', response.user.id.toString());
+    }
     console.log('Session saved - Role:', response.role);
     console.log('Session saved - User:', response.user);
   }
 
   public getUser() {
-    return JSON.parse(localStorage.getItem('user') || '{}');
+    if (typeof localStorage !== 'undefined') {
+      return JSON.parse(localStorage.getItem('user') || '{}');
+    }
+    return {};
   }
 
   public getUserId(): number {
-    return parseInt(localStorage.getItem('user_id') || '0');
+    if (typeof localStorage !== 'undefined') {
+      return parseInt(localStorage.getItem('user_id') || '0');
+    }
+    return 0;
   }
 
   public getRole(): string | null {
-    return localStorage.getItem('role');
+    if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem('role');
+    }
+    return null;
   }
 
   public isAdmin(): boolean {
@@ -78,10 +89,15 @@ export class AuthService {
   }
 
   public isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    if (typeof localStorage !== 'undefined') {
+      return !!localStorage.getItem('token');
+    }
+    return false;
   }
 
   public logout() {
-    localStorage.clear();
+    if (typeof localStorage !== 'undefined') {
+      localStorage.clear();
+    }
   }
 }

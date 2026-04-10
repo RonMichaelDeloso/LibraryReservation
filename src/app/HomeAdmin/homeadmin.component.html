@@ -28,26 +28,90 @@
           <!-- Title row with status and buttons -->
           <div class="title-row">
             <div class="title-section">
-              <h3>{{ book.title }}</h3>
-              <span class="status" [class.available]="book.status === 'Available'">
-                {{ book.status }}
+              <h3>{{ book.Title }}</h3>
+              <span class="status" [class.available]="book.Status === 'Available'">
+                {{ book.Status }}
               </span>
             </div>
             <div class="admin-actions">
               <button class="edit-btn" (click)="editBook(book)">✏️ Edit</button>
-              <button class="delete-btn" (click)="deleteBook(book.id)">🗑️ Delete</button>
+              <button class="delete-btn" (click)="deleteBook(book.Book_id)">🗑️ Delete</button>
             </div>
           </div>
           
           <!-- Book details -->
           <div class="book-info">
-            <p class="edition">{{ book.edition }}</p>
-            <p class="author">By: {{ book.author }}</p>
+            <p class="edition">ISBN: {{ book.isbn }}</p>
+            <p class="author">By: {{ book.Author }}</p>
           </div>
         </div>
       </div>
 
       <button class="add-book-btn" (click)="openAddBookModal()">+ Add Books</button>
     </section>
+  </div>
+
+  <!-- Add Book Modal -->
+  <div class="modal-backdrop" *ngIf="isAddModalOpen">
+    <div class="modal-content">
+      <h3>Add New Book</h3>
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" [(ngModel)]="newBook.Title">
+      </div>
+      <div class="form-group">
+        <label>Author</label>
+        <input type="text" [(ngModel)]="newBook.Author">
+      </div>
+      <div class="form-group">
+        <label>ISBN</label>
+        <input type="text" [(ngModel)]="newBook.isbn">
+      </div>
+      <div class="form-group genre-list">
+        <label>Genres (Optional)</label>
+        <div class="genre-checkboxes">
+          <label *ngFor="let g of genres">
+            <input type="checkbox" 
+                   [checked]="newBook.Genre_id.includes(g.Genre_id)"
+                   (change)="toggleGenreSelection(g.Genre_id)"> {{g.Genre}}
+          </label>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="closeAddModal()">Cancel</button>
+        <button class="btn-submit" (click)="submitAddBook()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Book Modal -->
+  <div class="modal-backdrop" *ngIf="isEditModalOpen">
+    <div class="modal-content">
+      <h3>Edit Book</h3>
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" [(ngModel)]="editBookData.Title">
+      </div>
+      <div class="form-group">
+        <label>Author</label>
+        <input type="text" [(ngModel)]="editBookData.Author">
+      </div>
+      <div class="form-group">
+        <label>ISBN</label>
+        <input type="text" [(ngModel)]="editBookData.isbn">
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select [(ngModel)]="editBookData.Status">
+          <option value="Available">Available</option>
+          <option value="Borrowed">Borrowed</option>
+          <option value="Reserved">Reserved</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="closeEditModal()">Cancel</button>
+        <button class="btn-submit" (click)="submitEditBook()">Update</button>
+      </div>
+    </div>
   </div>
 </div>
