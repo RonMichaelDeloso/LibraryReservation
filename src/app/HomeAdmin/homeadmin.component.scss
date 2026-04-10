@@ -2,10 +2,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
 }
@@ -15,7 +16,6 @@ html, body {
   flex-direction: column;
   height: 100vh;
   width: 100%;
-  background: #705824;
 }
 
 .topbar {
@@ -23,50 +23,71 @@ html, body {
   justify-content: space-between;
   align-items: center;
   padding: 12px 20px;
-  background: #cfa46b;
-  
+  background: #dead7f;
+
   .title {
     font-size: 18px;
     font-weight: bold;
     color: white;
   }
-  
+
   .user {
-    color: white;
+    color: #333;
     font-size: 14px;
+    font-weight: bold;
   }
 }
 
 .container {
   display: flex;
   flex: 1;
-  background: #e5dcc9;
+  background: #fdfaf0;
   overflow: hidden;
 }
 
 .sidebar {
   width: 220px;
-  background: #e8dfcf;
+  background: #fdfaf0;
   padding: 20px;
-  border-right: 1px solid #c7bca7;
+  border-right: 1px solid #eee;
   height: 100%;
-  
+
   .menu {
     list-style: none;
-    
+
     li {
-      padding: 10px;
-      margin-bottom: 10px;
+      padding: 10px 12px;
+      margin-bottom: 5px;
       border-radius: 8px;
       cursor: pointer;
-      
+      color: #7f5539;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
       &.active {
-        background: #d6c6a6;
-        font-weight: bold;
+        background: #dfa97b;
+        color: white;
+        border-radius: 12px;
       }
-      
-      &:hover {
-        background: #d6c6a6;
+
+      &:hover:not(.active) {
+        background: #f1ebd8;
+      }
+
+      .badge {
+        background: #e05c5c;
+        color: white;
+        font-size: 11px;
+        font-weight: 700;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
       }
     }
   }
@@ -76,8 +97,8 @@ html, body {
   flex: 1;
   padding: 30px;
   overflow-y: auto;
-  background: #e5dcc9;
-  
+  background: #fdfaf0;
+
   h2 {
     margin-bottom: 20px;
     color: #000000;
@@ -86,14 +107,14 @@ html, body {
 
 .search {
   margin-bottom: 25px;
-  
+
   input {
     width: 300px;
     padding: 8px 15px;
     border-radius: 20px;
     border: 1px solid #a43838;
     outline: none;
-    
+
     &:focus {
       border-color: #cfa46b;
     }
@@ -101,19 +122,18 @@ html, body {
 }
 
 .books-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 15px;
   margin-bottom: 30px;
 }
 
 .book-card {
-  background: #caab86;
-  
-  border-radius: 12px;
-  padding: 20px;
-  border: 1px solid #513a10;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: white;
+  border-radius: 20px;
+  padding: 20px 25px;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
 }
 
 /* Title row - title and status on left, buttons on right */
@@ -122,56 +142,56 @@ html, body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
-  
+
   .title-section {
     display: flex;
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
-    
+
     h3 {
       font-size: 18px;
       color: #000000;
       margin: 0;
     }
-    
+
     .status {
       display: inline-block;
       padding: 4px 16px;
       border-radius: 20px;
       font-size: 12px;
-      
+
       &.available {
         background: #e8f5e9;
         color: #4caf50;
       }
     }
   }
-  
+
   .admin-actions {
     display: flex;
     gap: 8px;
-    
+
     button {
       padding: 5px 12px;
       border-radius: 6px;
       cursor: pointer;
       font-size: 12px;
       border: none;
-      
+
       &.edit-btn {
         background: #2196f3;
         color: white;
-        
+
         &:hover {
           background: #1976d2;
         }
       }
-      
+
       &.delete-btn {
         background: #f44336;
         color: white;
-        
+
         &:hover {
           background: #d32f2f;
         }
@@ -186,7 +206,7 @@ html, body {
     color: #000000;
     margin: 0 0 5px 0;
   }
-  
+
   .author {
     font-size: 14px;
     color: #000000;
@@ -202,7 +222,7 @@ html, body {
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  
+
   &:hover {
     background: #b8894a;
   }
@@ -210,8 +230,11 @@ html, body {
 
 .modal-backdrop {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -224,18 +247,29 @@ html, body {
   border-radius: 8px;
   width: 400px;
   max-width: 90%;
-  
-  h3 { margin-bottom: 20px; }
-  
+
+  h3 {
+    margin-bottom: 20px;
+  }
+
   .form-group {
     margin-bottom: 15px;
     display: flex;
     flex-direction: column;
-    
-    label { margin-bottom: 5px; font-weight: bold; }
-    input, select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+
+    label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input,
+    select {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
   }
-  
+
   .genre-list {
     .genre-checkboxes {
       max-height: 100px;
@@ -243,8 +277,12 @@ html, body {
       border: 1px solid #ccc;
       padding: 10px;
       border-radius: 4px;
-      
-      label { display: block; margin-bottom: 5px; font-weight: normal; }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: normal;
+      }
     }
   }
 
@@ -253,11 +291,21 @@ html, body {
     justify-content: flex-end;
     gap: 10px;
     margin-top: 20px;
-    
+
     button {
-      padding: 8px 16px; border-radius: 4px; border: none; cursor: pointer;
-      &.btn-cancel { background: #ccc; }
-      &.btn-submit { background: #4caf50; color: white; }
+      padding: 8px 16px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+
+      &.btn-cancel {
+        background: #ccc;
+      }
+
+      &.btn-submit {
+        background: #4caf50;
+        color: white;
+      }
     }
   }
 }

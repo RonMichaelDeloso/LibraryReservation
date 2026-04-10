@@ -1,31 +1,74 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
 html, body { height: 100%; width: 100%; }
-.main { display: flex; flex-direction: column; height: 100vh; width: 100%; background: transparent; }
 
-.topbar { 
-  display: flex; justify-content: space-between; align-items: center; 
-  padding: 12px 20px; background: #dead7f; 
-  .title { font-size: 18px; font-weight: bold; color: white; } 
-  .user { color: white; font-size: 14px; font-weight: bold; } 
+.main { display: flex; flex-direction: column; height: 100vh; width: 100%; }
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: #dead7f;
+
+  .title { font-size: 18px; font-weight: bold; color: white; }
+  .user { color: #333; font-size: 14px; font-weight: bold; }
 }
 
 .container { display: flex; flex: 1; background: #fdfaf0; overflow: hidden; }
 
-.sidebar { 
-  width: 220px; background: #fdfaf0; padding: 20px; border-right: 1px solid #ebe4d3; height: 100%; 
-  .menu { 
-    list-style: none; 
-    li { 
-      padding: 10px; margin-bottom: 5px; border-radius: 8px; cursor: pointer; color: #7f5539; font-weight: bold; 
-      &.active { background: #dfa97b; color: white; border-radius: 12px; } 
-      &:hover:not(.active) { background: #f1ebd8; } 
-    } 
-  } 
+.sidebar {
+  width: 220px;
+  background: #fdfaf0;
+  padding: 20px;
+  border-right: 1px solid #eee;
+  height: 100%;
+
+  .menu {
+    list-style: none;
+
+    li {
+      padding: 10px 12px;
+      margin-bottom: 5px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #7f5539;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      &.active {
+        background: #dfa97b;
+        color: white;
+        border-radius: 12px;
+      }
+
+      &:hover:not(.active) { background: #f1ebd8; }
+
+      .badge {
+        background: #e05c5c;
+        color: white;
+        font-size: 11px;
+        font-weight: 700;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+      }
+    }
+  }
 }
 
-.content { 
-  flex: 1; padding: 30px; overflow-y: auto; background: #fdfaf0; 
-  h2 { margin-bottom: 15px; color: #000; font-size: 22px; font-weight: normal; } 
+.content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  background: #fdfaf0;
+
+  h2 { margin-bottom: 15px; color: #000; font-size: 22px; font-weight: normal; }
 }
 
 .search-bar {
