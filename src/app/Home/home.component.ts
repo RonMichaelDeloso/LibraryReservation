@@ -109,9 +109,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (!exists) {
         cart.push(book);
         localStorage.setItem('cart', JSON.stringify(cart));
-        alert(`"${book.Title}" added to your cart!`);
+        console.log(`"${book.Title}" added to your cart!`);
       } else {
-        alert(`"${book.Title}" is already in your cart.`);
+        console.warn(`"${book.Title}" is already in your cart.`);
       }
     }
   }

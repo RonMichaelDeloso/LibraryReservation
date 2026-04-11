@@ -122,11 +122,11 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
       }
       
       await this.bookService.addBook(formData);
-      alert('Book added successfully');
+      console.log('Book added successfully');
       this.closeAddModal();
       this.loadBooks();
     } catch(e: any) {
-      alert(e.error?.message || 'Failed to add book');
+      console.error(e.error?.message || 'Failed to add book');
     }
   }
 
@@ -168,11 +168,11 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
       }
       
       await this.bookService.updateBook(this.editBookData.Book_id, formData);
-      alert('Book updated successfully');
+      console.log('Book updated successfully');
       this.closeEditModal();
       this.loadBooks();
     } catch(e: any) {
-      alert(e.error?.message || 'Failed to update book');
+      console.error(e.error?.message || 'Failed to update book');
     }
   }
 
@@ -180,10 +180,10 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
     if (confirm('Are you sure you want to delete this book?')) {
       try {
         await this.bookService.deleteBook(id);
-        alert('Book deleted successfully');
+        console.log('Book deleted successfully');
         this.loadBooks();
       } catch (e: any) {
-        alert(e.error?.message || 'Failed to delete book');
+        console.error(e.error?.message || 'Failed to delete book');
       }
     }
   }
