@@ -1,49 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Notification</title>
-</head>
-<body>
-  <div class="main">
+<div class="main">
+  <header class="topbar">
+    <div class="title">Library</div>
+    <div class="user">{{ userName }} 👤</div>
+  </header>
 
-    <header class="topbar">
-      <div class="title">Library</div>
+  <div class="container">
+    <aside class="sidebar">
+            <ul class="menu">
+        <li routerLink="/adhome"><img src="/icons/home.png" alt=""> Home</li>
+        <li class="active" routerLink="/adnot"><img src="/icons/Notification.png" alt=""> Notification</li>
+        <li routerLink="/list"><img src="/icons/cart.png" alt=""> List</li>
+        <li routerLink="/settingsadmin"><img src="/icons/settings.png" alt=""> Settings</li>
+      </ul>
+    </aside>
 
-      <div class="user">
-        USER1 👤
+    <section class="content">
+      <div class="notif-header">
+        <h2>Notifications</h2>
+        <button class="mark-all-btn" *ngIf="notifications.length > 0" (click)="clearAll()">
+          Clear all
+        </button>
       </div>
 
-    </header>
-
-    <div class="container">
-
-  <aside class="sidebar">
-
-    <ul class="menu">
-      <li routerLink="/adhome">🏠 Home</li>
-      <li class="active">🔔 Notification</li>
-      <li routerLink="/list">📚 List</li>
-      <li routerLink="/settingsadmin">⚙️ Settings</li>
-    </ul>
-  </aside>
-  
-  <section class="content">
-
-      <h2>Notification</h2>
-
-      <div class="notification-card">
-        <div class="bell"></div>
-        <p class="text">
-          Your book is ready to pick up go to the Main campus library
-        </p>
-        <button class="close">×</button>
+      <!-- Empty state -->
+      <div class="empty-state" *ngIf="notifications.length === 0">
+        <div class="empty-icon">🔔</div>
+        <p>No notifications yet.</p>
+        <span>You're all caught up!</span>
       </div>
 
+      <!-- Notification list -->
+      <div class="notif-list" *ngIf="notifications.length > 0">
+        <div
+          class="notification-card"
+          *ngFor="let notif of notifications"
+          [class.unread]="!notif.is_read">
+
+          <div class="notif-left">
+            <div class="bell-icon">{{ notif.is_read ? '🔕' : '🔔' }}</div>
+            <div class="notif-body">
+              <p class="notif-text">{{ notif.Message }}</p>
+              <span class="notif-time">{{ notif.created_at | date:'MMM d, y • h:mm a' }}</span>
+            </div>
+          </div>
+
+          <button class="close-btn" (click)="dismiss(notif)" title="Delete notification">
+            ×
+          </button>
+        </div>
+      </div>
     </section>
   </div>
-    </div>
-
-</body>
-</html>
+</div>

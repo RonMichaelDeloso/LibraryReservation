@@ -15,11 +15,11 @@ export class SettingsadminComponent {
   userEmail: string = 'Ron.MichaelDeloso@gmail.com';
 
   changePassword() {
-    alert('Change password feature coming soon.');
+    console.log('Change password feature coming soon.');
   }
 
   saveChanges() {
-    alert('Your changes have been saved.');
+    console.log('Your changes have been saved.');
   }
 
 }

@@ -15,12 +15,12 @@
 
     <div class="container">
       <aside class="sidebar">
-        <ul class="menu">
-          <li routerLink="/adhome">🏠 Home</li>
-          <li routerLink="/adnot">🔔 Notification</li>
-          <li routerLink="/list">📚 List</li>
-          <li class="active">⚙️ Settings</li>
-        </ul>
+              <ul class="menu">
+        <li routerLink="/adhome"><img src="/icons/home.png" alt=""> Home</li>
+        <li routerLink="/adnot"><img src="/icons/Notification.png" alt=""> Notification</li>
+        <li routerLink="/list"><img src="/icons/cart.png" alt=""> List</li>
+        <li class="active" routerLink="/settingsadmin"><img src="/icons/settings.png" alt=""> Settings</li>
+      </ul>
       </aside>
 
       <section class="content">
@@ -49,8 +49,8 @@
             </div>
 
             <div class="action-buttons">
-              <button class="password-btn" onclick="alert('Change password flow')">Change Password</button>
-              <button class="save-btn" onclick="alert('Changes saved (demo)')">Save Change</button>
+              <button class="password-btn" onclick="console.log('Change password flow')">Change Password</button>
+              <button class="save-btn" onclick="console.log('Changes saved (demo)')">Save Change</button>
             </div>
           </div>
         </div>

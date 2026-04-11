@@ -6,11 +6,11 @@
 
   <div class="container">
     <aside class="sidebar">
-      <ul class="menu">
-        <li routerLink="/adhome">🏠 Home</li>
-        <li routerLink="/adnot">🔔 Notification</li>
-        <li class="active">📚 List</li>
-        <li routerLink="/settingsadmin">⚙️ Settings</li>
+            <ul class="menu">
+        <li routerLink="/adhome"><img src="/icons/home.png" alt=""> Home</li>
+        <li routerLink="/adnot"><img src="/icons/Notification.png" alt=""> Notification</li>
+        <li class="active" routerLink="/list"><img src="/icons/cart.png" alt=""> List</li>
+        <li routerLink="/settingsadmin"><img src="/icons/settings.png" alt=""> Settings</li>
       </ul>
     </aside>
 
@@ -44,7 +44,10 @@
             <tr *ngFor="let res of filteredReservations; let i = index">
               <td>{{ i + 1 }}</td>
               <td>{{ res.First_name || 'Student' }} {{ res.Last_name || 'Name' }}</td>
-              <td>- {{ res.Title }}</td>
+              <td style="display: flex; align-items: center; gap: 10px; height: 100%;">
+                <img *ngIf="res.Image_URL" [src]="'http://127.0.0.1:3000/' + res.Image_URL" style="width: 30px; height: 45px; object-fit: cover; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);" alt="Book">
+                - {{ res.Title }}
+              </td>
               <td>{{ res.Due_date | date:'MM/dd/yyyy' }}</td>
               
               <td>

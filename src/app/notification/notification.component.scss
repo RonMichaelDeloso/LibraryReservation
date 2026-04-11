@@ -1,104 +1,186 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
 html, body { height: 100%; width: 100%; }
-.main { display: flex; flex-direction: column; height: 100vh; width: 100%; background: transparent; }
-.topbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #dead7f; .title { font-size: 18px; font-weight: bold; color: white; } .user { color: #333; font-size: 14px; font-weight: bold; } }
-.container { display: flex; flex: 1; background: #fdfaf0; overflow: hidden; }
-.sidebar { width: 220px; background: #fdfaf0; padding: 20px; border-right: 1px solid #eee; height: 100%; .menu { list-style: none; li { padding: 10px; margin-bottom: 5px; border-radius: 8px; cursor: pointer; color: #7f5539; font-weight: bold; &.active { background: #dfa97b; color: white; border-radius: 12px; } &:hover:not(.active) { background: #f1ebd8; } } } }
 
-.content { 
-  flex: 1; 
-  padding: 30px; 
-  overflow-y: auto; 
-  background: #fdfaf0; 
-  position: relative;
-  
-  h2 { 
-    margin-bottom: 20px; 
-    color: #333; 
-    font-size: 20px;
-    font-weight: normal;
-  } 
+.main { display: flex; flex-direction: column; height: 100vh; width: 100%; }
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: #dead7f;
+
+  .title { font-size: 18px; font-weight: bold; color: white; }
+  .user { color: #333; font-size: 14px; font-weight: bold; }
 }
 
-.search {
-  margin-bottom: 25px;
-  
-  input {
-    width: 300px;
-    padding: 8px 15px;
-    border-radius: 20px;
-    border: 1px solid #ddd;
-    background: #fff;
-    outline: none;
-    
-    &:focus { border-color: #dfa97b; }
+.container { display: flex; flex: 1; background: #fdfaf0; overflow: hidden; }
+
+.sidebar {
+  width: 220px;
+  background: #fdfaf0;
+  padding: 20px;
+  border-right: 1px solid #eee;
+  height: 100%;
+
+  .menu {
+    list-style: none;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      margin-bottom: 5px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #7f5539;
+      font-weight: bold;
+
+      img {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+      }
+
+      &.active {
+        background: #dfa97b;
+        color: rgb(254, 254, 254);
+        border-radius: 12px;
+      }
+
+      &:hover:not(.active) {
+        background: rgb(241, 235, 216);
+      }
+
+      .badge {
+        background: #e05c5c;
+        color: white;
+        font-size: 11px;
+        font-weight: 700;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+      }
+    }
   }
 }
 
-.books-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 30px;
+.content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  background: #fdfaf0;
 }
 
-.book-card {
+// ── Header row ────────────────────────────────────────────
+.notif-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .mark-all-btn {
+    background: none;
+    border: 1.5px solid #d49a32;
+    color: #d49a32;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: #d49a32;
+      color: #fff;
+    }
+  }
+}
+
+// ── Empty State ───────────────────────────────────────────
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #aaa;
+
+  .empty-icon { font-size: 48px; margin-bottom: 12px; }
+  p { font-size: 16px; font-weight: 600; color: #777; margin-bottom: 6px; }
+  span { font-size: 13px; }
+}
+
+// ── Notification Cards ────────────────────────────────────
+.notif-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notification-card {
   background: white;
-  border-radius: 20px;
-  padding: 20px 25px;
-  border: 1px solid #eee;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+  border-radius: 16px;
+  padding: 16px 20px;
+  border: 1.5px solid #eee;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  transition: box-shadow 0.2s;
 
-  .book-info {
-    position: relative;
+  &.unread {
+    border-left: 4px solid #d49a32;
+    background: #fffdf5;
+  }
+
+  .notif-left {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    align-items: flex-start;
+    gap: 14px;
+    flex: 1;
 
-    h3 {
-      font-size: 18px;
-      color: #000;
-      margin: 0;
-      padding-right: 120px;
-      font-weight: 500;
-    }
-    
-    .edition, .author {
-      font-size: 14px;
-      color: #666;
-      margin: 0;
-    }
-    
-    .status {
-      display: inline-block;
-      align-self: flex-start;
-      margin-top: 5px;
-      padding: 4px 16px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-      
-      &.available { background: #e8f5e9; color: #4caf50; }
+    .bell-icon {
+      font-size: 22px;
+      margin-top: 2px;
     }
 
-    .borrow-btn {
-      position: absolute;
-      top: 0;
-      right: 0;
-      background: #3eb56b;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
-      border: none;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      
-      &:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    .notif-body {
+      .notif-text {
+        font-size: 14px;
+        color: #2c2c2c;
+        font-weight: 500;
+        line-height: 1.5;
+        margin-bottom: 4px;
+      }
+
+      .notif-time {
+        font-size: 12px;
+        color: #aaa;
       }
     }
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #bbb;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+    flex-shrink: 0;
+    margin-top: -2px;
+
+    &:hover { color: #e05c5c; }
   }
 }

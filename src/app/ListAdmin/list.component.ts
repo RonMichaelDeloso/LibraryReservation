@@ -81,10 +81,10 @@ export class ListComponent implements OnInit, OnDestroy {
     if(confirm('Approve this reservation and set as Loaned?')) {
       try {
         await this.reservationService.approveReservation(id);
-        alert('Reservation approved successfully.');
+        console.log('Reservation approved successfully.');
         await this.loadAllReservations();
       } catch (e: any) {
-        alert(e.error?.message || 'Failed to approve');
+        console.error(e.error?.message || 'Failed to approve');
       }
     }
   }
@@ -93,10 +93,10 @@ export class ListComponent implements OnInit, OnDestroy {
     if(confirm(`Are you sure you want to ${type} this book?`)) {
       try {
         await this.reservationService.cancelReservation(id);
-        alert(`Successfully marked as ${type}.`);
+        console.log(`Successfully marked as ${type}.`);
         await this.loadAllReservations();
       } catch (e: any) {
-        alert(e.error?.message || 'Failed to process request');
+        console.error(e.error?.message || 'Failed to process request');
       }
     }
   }

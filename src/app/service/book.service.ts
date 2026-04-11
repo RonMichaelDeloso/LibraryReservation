@@ -22,24 +22,13 @@ export class BookService {
         );
     }
 
-    public async addBook(data: {
-        User_id: number;  // Changed from Admin_id to User_id
-        isbn: string;     // Changed String to string
-        Title: string;
-        Author: string;   // Changed String to string
-        Genre_id: number[];
-    }) {
+    public async addBook(data: FormData) {
         return lastValueFrom(
             this.http.post<any>(this.apiUrl, data)
         );
     }
 
-    public async updateBook(id: number, data: {
-        isbn: string;
-        Title: string;
-        Author: string;
-        Status: string;
-    }) {
+    public async updateBook(id: number, data: FormData) {
         return lastValueFrom(
             this.http.put<any>(`${this.apiUrl}/${id}`, data)
         );

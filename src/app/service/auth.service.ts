@@ -29,26 +29,20 @@ export class AuthService {
     )
   }
 
-  // Forgot Password Methods
-  public async forgotPassword(email: string) {
+  // Forgot Password - Step 1: Verify email exists
+  public async verifyEmail(email: string) {
     return lastValueFrom(
-      this.http.post<any>(`${this.apiUrl}/forgot`, { Email: email })
+      this.http.post<any>(`${this.apiUrl}/verify-email`, { Email: email })
     );
   }
 
-  public async resetPassword(email: string, otp: string, newPassword: string) {
+  // Forgot Password - Step 2: Reset password directly (no OTP)
+  public async resetPasswordDirect(email: string, newPassword: string) {
     return lastValueFrom(
-      this.http.post<any>(`${this.apiUrl}/reset`, { 
-        Email: email, 
-        OTP: otp, 
-        NewPassword: newPassword 
+      this.http.post<any>(`${this.apiUrl}/reset-direct`, {
+        Email: email,
+        NewPassword: newPassword
       })
-    );
-  }
-
-  public async resendOTP(email: string) {
-    return lastValueFrom(
-      this.http.post<any>(`${this.apiUrl}/resend-otp`, { Email: email })
     );
   }
 

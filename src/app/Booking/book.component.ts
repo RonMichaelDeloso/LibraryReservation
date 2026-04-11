@@ -67,14 +67,18 @@ export class BookComponent implements OnInit, OnDestroy {
     }
   }
 
+  get hasSelectedItems(): boolean {
+    return this.reservations.some(r => r.selected);
+  }
+
   async cancelReservation(id: number) {
     if (confirm('Cancel this pending request?')) {
       try {
         await this.reservationService.cancelReservation(id);
-        alert('Request cancelled.');
+        console.log('Request cancelled.');
         await this.loadReservations();
       } catch (e: any) {
-        alert(e.error?.message || 'Failed to cancel');
+        console.error(e.error?.message || 'Failed to cancel');
       }
     }
   }
@@ -82,7 +86,7 @@ export class BookComponent implements OnInit, OnDestroy {
   async checkoutItems() {
     const selected = this.reservations.filter(r => r.selected);
     if (selected.length === 0) {
-      alert("Please select at least one item from the cart.");
+      console.warn("Please select at least one item from the cart.");
       return;
     }
 
@@ -103,7 +107,7 @@ export class BookComponent implements OnInit, OnDestroy {
         await this.reservationService.createReservation(payload);
       }
 
-      alert(`Successfully requested ${selected.length} items! The admin handles approvals.`);
+      console.log(`Successfully requested ${selected.length} items! The admin handles approvals.`);
 
       const remainingCart = this.reservations.filter(r => !r.selected);
       if (typeof localStorage !== 'undefined') {
@@ -113,7 +117,7 @@ export class BookComponent implements OnInit, OnDestroy {
       await this.loadReservations();
 
     } catch (e: any) {
-      alert(e.error?.message || 'Failed to checkout some items.');
+      console.error(e.error?.message || 'Failed to checkout some items.');
     }
   }
 }

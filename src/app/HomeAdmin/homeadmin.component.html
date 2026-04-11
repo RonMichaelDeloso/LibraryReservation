@@ -8,11 +8,11 @@
 
   <div class="container">
     <aside class="sidebar">
-      <ul class="menu">
-        <li class="active">🏠 Home</li>
-        <li routerLink="/adnot">🔔 Notification</li>
-        <li routerLink="/list">📚 List</li>
-        <li routerLink="/settingsadmin">⚙️ Settings</li>
+            <ul class="menu">
+        <li class="active" routerLink="/adhome"><img src="/icons/home.png" alt=""> Home</li>
+        <li routerLink="/adnot"><img src="/icons/Notification.png" alt=""> Notification</li>
+        <li routerLink="/list"><img src="/icons/cart.png" alt=""> List</li>
+        <li routerLink="/settingsadmin"><img src="/icons/settings.png" alt=""> Settings</li>
       </ul>
     </aside>
 
@@ -25,24 +25,36 @@
 
       <div class="books-list">
         <div class="book-card" *ngFor="let book of filteredBooks">
-          <!-- Title row with status and buttons -->
-          <div class="title-row">
-            <div class="title-section">
-              <h3>{{ book.Title }}</h3>
-              <span class="status" [class.available]="book.Status === 'Available'">
-                {{ book.Status }}
-              </span>
+          <div style="display: flex; gap: 20px;">
+            <!-- Book Image -->
+            <div class="book-img" *ngIf="book.Image_URL" style="flex-shrink: 0;">
+              <img [src]="'http://127.0.0.1:3000/' + book.Image_URL" style="width: 80px; height: 120px; object-fit: cover; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);" alt="Book Cover">
             </div>
-            <div class="admin-actions">
-              <button class="edit-btn" (click)="editBook(book)">✏️ Edit</button>
-              <button class="delete-btn" (click)="deleteBook(book.Book_id)">🗑️ Delete</button>
+
+            <div style="flex: 1; min-width: 0;">
+              <!-- Title row with status and buttons -->
+              <div class="title-row" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: flex-start;">
+                <div class="title-section" style="flex: 1;">
+                  <h3 [title]="book.Title">{{ book.Title }}</h3>
+                  <span class="status" 
+                    [class.available]="book.Status === 'Available'"
+                    [class.loaned]="book.Status === 'Loaned'"
+                    [class.reserved]="book.Status === 'Reserved'">
+                    {{ book.Status }}
+                  </span>
+                </div>
+                <div class="admin-actions" style="display: flex; gap: 6px; white-space: nowrap;">
+                  <button class="edit-btn" (click)="editBook(book)">✏️ Edit</button>
+                  <button class="delete-btn" (click)="deleteBook(book.Book_id)">🗑️ Delete</button>
+                </div>
+              </div>
+              
+              <!-- Book details -->
+              <div class="book-info">
+                <p class="edition">ISBN: {{ book.isbn }}</p>
+                <p class="author">By: {{ book.Author }}</p>
+              </div>
             </div>
-          </div>
-          
-          <!-- Book details -->
-          <div class="book-info">
-            <p class="edition">ISBN: {{ book.isbn }}</p>
-            <p class="author">By: {{ book.Author }}</p>
           </div>
         </div>
       </div>
@@ -66,6 +78,10 @@
       <div class="form-group">
         <label>ISBN</label>
         <input type="text" [(ngModel)]="newBook.isbn">
+      </div>
+      <div class="form-group">
+        <label>Book Cover Image</label>
+        <input type="file" (change)="onFileSelected($event)" accept="image/*">
       </div>
       <div class="form-group genre-list">
         <label>Genres (Optional)</label>
@@ -99,6 +115,10 @@
       <div class="form-group">
         <label>ISBN</label>
         <input type="text" [(ngModel)]="editBookData.isbn">
+      </div>
+      <div class="form-group">
+        <label>Book Cover Image (Leave blank to keep current)</label>
+        <input type="file" (change)="onFileSelected($event)" accept="image/*">
       </div>
       <div class="form-group">
         <label>Status</label>
