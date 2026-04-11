@@ -10,7 +10,6 @@ import { HomeAdminComponent } from './HomeAdmin/homeadmin.component';
 import { NotificationAdminComponent } from './NotificationAdmin/notificationadmin.component';
 import { SettingsadminComponent } from './SettingsAdmin/settingsadmin.component';
 import { ListComponent } from './ListAdmin/list.component';
-
 export const routes: Routes = [
     {path: 'login', component:LoginComponent },
     {path: 'signup', component:SignupComponent},
