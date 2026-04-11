@@ -24,7 +24,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 12px 20px;
-  background: #DCA46A;
+  background: #dead7f;
 
   .title {
     font-size: 18px;
@@ -43,7 +43,6 @@ body {
       display: flex;
       align-items: center;
       gap: 5px;
-      padding: 5px 10px;
       border-radius: 8px;
       transition: background 0.3s;
 
@@ -86,13 +85,13 @@ body {
 .container {
   display: flex;
   flex: 1;
-  background: #FAF1E4;
+  background: #fdfaf0;
   overflow: hidden;
 }
 
 .sidebar {
   width: 220px;
-  background: #FAF1E4;
+  background: #fdfaf0;
   padding: 20px;
   border-right: 1px solid #eee;
   height: 100%;
@@ -118,7 +117,7 @@ body {
       }
 
       &.active {
-        background: #DCA46A;
+        background: #dfa97b;
         color: white;
         border-radius: 12px;
       }
@@ -134,7 +133,7 @@ body {
   flex: 1;
   padding: 30px;
   overflow-y: auto;
-  background: #FAF1E4;
+  background: #fdfaf0;
   position: relative;
 
   h2 {
@@ -160,7 +159,7 @@ body {
   border: 1px solid #333;
   margin-bottom: 30px;
   box-shadow: none;
-  max-width: 600px;
+  width: 100%;
   min-height: 200px;
 }
 
