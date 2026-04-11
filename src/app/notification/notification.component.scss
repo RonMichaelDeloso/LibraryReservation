@@ -27,23 +27,31 @@ html, body { height: 100%; width: 100%; }
     list-style: none;
 
     li {
-      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
       margin-bottom: 5px;
       border-radius: 8px;
       cursor: pointer;
       color: #7f5539;
       font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+
+      img {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+      }
 
       &.active {
         background: #dfa97b;
-        color: white;
+        color: rgb(254, 254, 254);
         border-radius: 12px;
       }
 
-      &:hover:not(.active) { background: #f1ebd8; }
+      &:hover:not(.active) {
+        background: rgb(241, 235, 216);
+      }
 
       .badge {
         background: #e05c5c;

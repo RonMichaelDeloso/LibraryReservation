@@ -6,13 +6,11 @@
 
   <div class="container">
     <aside class="sidebar">
-      <ul class="menu">
-        <li routerLink="/home">🏠 Home</li>
-        <li class="active">🔔 Notification
-          <span class="badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
-        </li>
-        <li routerLink="/book">🛒 Book Cart</li>
-        <li routerLink="/settings">⚙️ Settings</li>
+            <ul class="menu">
+        <li routerLink="/home"><img src="/icons/home.png" alt=""> Home</li>
+        <li class="active" routerLink="/notification"><img src="/icons/Notification.png" alt=""> Notification</li>
+        <li routerLink="/book"><img src="/icons/cart.png" alt=""> Book Cart</li>
+        <li routerLink="/settings"><img src="/icons/settings.png" alt=""> Settings</li>
       </ul>
     </aside>
 
