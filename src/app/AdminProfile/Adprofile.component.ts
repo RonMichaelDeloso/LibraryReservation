@@ -35,6 +35,16 @@ export class AdprofileComponent implements OnInit, OnDestroy {
   editEmail: string = '';
   editPassword: string = '';
 
+  // Password Modal State
+  isPasswordModalOpen: boolean = false;
+  newPassword: string = '';
+  confirmPassword: string = '';
+
+  // Admin Invite State
+  inviteEmail: string = '';
+  inviteSuccess: boolean = false;
+  inviteError: string = '';
+
   ngOnInit() {
     const user = this.authService.getUser();
     if (user && user.First_name) {
@@ -47,7 +57,7 @@ export class AdprofileComponent implements OnInit, OnDestroy {
       this.userEmail = user.Email;
       this.editEmail = user.Email;
     }
-    
+
     this.userRole = this.authService.getRole() || 'Admin';
 
     this.loadUnreadCount();
@@ -101,23 +111,16 @@ export class AdprofileComponent implements OnInit, OnDestroy {
         Last_name: this.editLastName,
         Email: this.editEmail
       });
-      
+
       this.userName = this.editLastName ? `${this.editFirstName} ${this.editLastName}` : this.editFirstName;
       this.topbarName = this.editFirstName;
       this.userEmail = this.editEmail;
-      
+
       this.closeEditModal();
-      alert('Profile updated successfully!');
     } catch (err) {
-      alert('Failed to update profile!');
-      console.error(err);
+      console.error('Failed to update profile:', err);
     }
   }
-
-  // Password Modal Logic
-  isPasswordModalOpen: boolean = false;
-  newPassword: string = '';
-  confirmPassword: string = '';
 
   openPasswordModal() {
     this.isPasswordModalOpen = true;
@@ -130,26 +133,35 @@ export class AdprofileComponent implements OnInit, OnDestroy {
   }
 
   async submitPasswordChange() {
-    if (!this.newPassword) {
-      alert("Please enter a new password.");
-      return;
-    }
-    if (this.newPassword !== this.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-    if (this.newPassword.length < 6) {
-      alert("Password must be at least 6 characters.");
-      return;
-    }
-    
+    if (!this.newPassword) return;
+    if (this.newPassword !== this.confirmPassword) return;
+    if (this.newPassword.length < 6) return;
+
     try {
       await this.authService.resetPasswordDirect(this.userEmail, this.newPassword);
-      alert("Password logically updated successfully!");
       this.closePasswordModal();
     } catch (error) {
-      alert("Failed to update password across the server.");
+      console.error('Failed to update password:', error);
     }
   }
 
+  async sendAdminInvite() {
+    this.inviteSuccess = false;
+    this.inviteError = '';
+
+    if (!this.inviteEmail) {
+      this.inviteError = 'Please enter an email address.';
+      return;
+    }
+
+    try {
+      await this.authService.sendAdminInvite(this.inviteEmail);
+      this.inviteSuccess = true;
+      this.inviteEmail = '';
+      setTimeout(() => { this.inviteSuccess = false; }, 4000);
+    } catch (err: any) {
+      this.inviteError = err?.error?.message || 'Failed to send invite.';
+      setTimeout(() => { this.inviteError = ''; }, 4000);
+    }
+  }
 }

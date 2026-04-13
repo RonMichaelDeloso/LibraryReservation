@@ -23,6 +23,11 @@ export class NotificationComponent implements OnInit, OnDestroy {
 
   showDropdown: boolean = false;
 
+  // Invite confirmation modal state
+  pendingInviteNotif: any = null;
+  inviteAccepting: boolean = false;
+  inviteAccepted: boolean = false;
+
   toggleDropdown() {
     this.showDropdown = !this.showDropdown;
   }
@@ -39,7 +44,6 @@ export class NotificationComponent implements OnInit, OnDestroy {
     this.userName = user?.Last_name ? `${user.First_name} ${user.Last_name}` : (user?.First_name || 'USER');
     await this.loadNotifications();
 
-    // Poll every 5 seconds for new notifications
     if (typeof window !== 'undefined') {
       this.refreshInterval = setInterval(() => {
         this.loadNotifications();
@@ -65,7 +69,6 @@ export class NotificationComponent implements OnInit, OnDestroy {
     return this.notifications.filter(n => !n.is_read).length;
   }
 
-  // × button — permanently delete from DB and remove from view
   async dismiss(notif: any) {
     try {
       await this.notificationService.deleteNotification(notif.Notification_id);
@@ -78,25 +81,37 @@ export class NotificationComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Show confirmation modal before accepting
+  openInviteConfirm(notif: any) {
+    this.pendingInviteNotif = notif;
+    this.inviteAccepted = false;
+  }
+
+  closeInviteConfirm() {
+    this.pendingInviteNotif = null;
+    this.inviteAccepting = false;
+  }
+
   // 👑 Accept Admin Invite
-  async acceptInvite(notif: any) {
-    if (!confirm('Are you sure you want to join as Admin? You will be logged out and need to re-login.')) return;
+  async confirmAcceptInvite() {
+    if (!this.pendingInviteNotif) return;
+    this.inviteAccepting = true;
     try {
       const userId = this.authService.getUserId();
-      await this.authService.acceptAdminInvite(notif.Notification_id, userId);
-      // Update local session role to Admin
-      const user = this.authService.getUser();
-      user.Role_id = 2;
-      localStorage.setItem('user', JSON.stringify(user));
-      alert('Congratulations! You are now an Admin. Please log in again.');
-      this.authService.logout();
-      this.router.navigate(['/login']);
+      await this.authService.acceptAdminInvite(this.pendingInviteNotif.Notification_id, userId);
+      this.inviteAccepted = true;
+      this.inviteAccepting = false;
+      // After 2.5s, log out and redirect to login
+      setTimeout(() => {
+        this.authService.logout();
+        this.router.navigate(['/login']);
+      }, 2500);
     } catch (e: any) {
-      alert(e?.error?.message || 'Failed to accept invite.');
+      this.inviteAccepting = false;
+      console.error('Failed to accept invite:', e);
     }
   }
 
-  // Clear all — permanently delete all for this user
   async clearAll() {
     try {
       const userId = this.authService.getUserId();

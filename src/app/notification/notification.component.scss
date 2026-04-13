@@ -239,3 +239,141 @@ html, body { height: 100%; width: 100%; }
     background: #b07840;
   }
 }
+
+// ── Admin Invite Confirmation Modal ────────────────────────
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.invite-modal {
+  background: white;
+  border-radius: 24px;
+  padding: 40px 36px;
+  width: 420px;
+  max-width: 90vw;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.invite-confirm {
+  .crown-icon {
+    font-size: 52px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 8px;
+
+    strong { color: #a46d3e; }
+  }
+
+  .invite-note {
+    font-size: 12px;
+    color: #999;
+    font-style: italic;
+    margin-bottom: 28px;
+  }
+}
+
+.invite-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+
+  button {
+    padding: 11px 28px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+
+    &:disabled { opacity: 0.6; cursor: not-allowed; }
+  }
+
+  .cancel-invite-btn {
+    background: #f0f0f0;
+    color: #555;
+    &:hover:not(:disabled) { background: #ddd; }
+  }
+
+  .accept-invite-btn {
+    background: #dead7f;
+    color: white;
+    &:hover:not(:disabled) { background: #b8894a; }
+  }
+}
+
+.invite-success {
+  .success-icon {
+    font-size: 60px;
+    margin-bottom: 16px;
+    display: block;
+    animation: pop 0.4s ease;
+  }
+
+  h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #3eb56b;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+}
+
+@keyframes pop {
+  0%   { transform: scale(0.5); opacity: 0; }
+  80%  { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.redirect-bar {
+  width: 100%;
+  height: 6px;
+  background: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+
+  .redirect-fill {
+    height: 100%;
+    width: 0%;
+    background: #3eb56b;
+    border-radius: 4px;
+    animation: fillBar 2.5s linear forwards;
+  }
+}
+
+@keyframes fillBar {
+  from { width: 0%; }
+  to   { width: 100%; }
+}

@@ -21,7 +21,6 @@
         <li routerLink="/home"><img src="/icons/home.png" alt=""> Home</li>
         <li class="active" routerLink="/notification"><img src="/icons/notification.png" alt=""> Notification</li>
         <li routerLink="/book"><img src="/icons/cart.png" alt=""> Book Cart</li>
-        <li routerLink="/settings"><img src="/icons/settings.png" alt=""> Settings</li>
       </ul>
     </aside>
 
@@ -42,17 +41,19 @@
 
       <!-- Notification list -->
       <div class="notif-list" *ngIf="notifications.length > 0">
-        <div class="notification-card" *ngFor="let notif of notifications" [class.unread]="!notif.is_read" [class.invite-card]="notif.type === 'admin_invite'">
+        <div class="notification-card" *ngFor="let notif of notifications"
+             [class.unread]="!notif.is_read"
+             [class.invite-card]="notif.Message.includes('invited to become an Admin')">
 
           <div class="notif-left">
-            <div class="bell-icon">{{ notif.type === 'admin_invite' ? '👑' : (notif.is_read ? '🔕' : '🔔') }}</div>
+            <div class="bell-icon">{{ notif.Message.includes('invited to become an Admin') ? '👑' : (notif.is_read ? '🔕' : '🔔') }}</div>
             <div class="notif-body">
               <p class="notif-text">{{ notif.Message }}</p>
               <span class="notif-time">{{ notif.created_at | date:'MMM d, y • h:mm a' }}</span>
               <button
-                *ngIf="notif.type === 'admin_invite'"
+                *ngIf="notif.Message.includes('invited to become an Admin')"
                 class="join-admin-btn"
-                (click)="acceptInvite(notif)">
+                (click)="openInviteConfirm(notif)">
                 👑 Join as Admin
               </button>
             </div>
@@ -65,4 +66,37 @@
       </div>
     </section>
   </div>
+
+  <!-- Admin Invite Confirmation Modal -->
+  <div class="modal-overlay" *ngIf="pendingInviteNotif">
+    <div class="invite-modal">
+
+      <!-- Success state -->
+      <div class="invite-success" *ngIf="inviteAccepted">
+        <div class="success-icon">🎉</div>
+        <h3>Welcome, Admin!</h3>
+        <p>You have successfully joined as an Admin. Redirecting you to login...</p>
+        <div class="redirect-bar"><div class="redirect-fill"></div></div>
+      </div>
+
+      <!-- Confirmation state -->
+      <div class="invite-confirm" *ngIf="!inviteAccepted">
+        <div class="crown-icon">👑</div>
+        <h3>Join as Admin?</h3>
+        <p>You've been invited to become an <strong>Admin</strong> of the Library System.</p>
+        <p class="invite-note">You will be logged out and must sign in again after accepting.</p>
+        <div class="invite-modal-actions">
+          <button class="cancel-invite-btn" (click)="closeInviteConfirm()" [disabled]="inviteAccepting">
+            Cancel
+          </button>
+          <button class="accept-invite-btn" (click)="confirmAcceptInvite()" [disabled]="inviteAccepting">
+            <span *ngIf="!inviteAccepting">✔ Accept Invite</span>
+            <span *ngIf="inviteAccepting">Accepting...</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </div>

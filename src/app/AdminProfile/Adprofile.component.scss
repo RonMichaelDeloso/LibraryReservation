@@ -321,7 +321,7 @@ body {
         font-size: 14px;
         outline: none;
         box-sizing: border-box;
-        
+
         &:focus {
           border-color: #dead7f;
         }
@@ -359,4 +359,93 @@ body {
     }
   }
 }
+
 .user-icon { width: 20px; height: 20px; object-fit: contain; }
+
+// ── Admin Invite Card ─────────────────────────────────────
+.invite-card {
+  background: #dead7f;
+  border-radius: 20px;
+  box-shadow: 0 0 0 1px #000000;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding-bottom: 10px;
+
+  .invite-header {
+    width: 100%;
+    background: white;
+    border-bottom: 1px solid #000000;
+    border-radius: 0 0 20px 20px;
+    padding: 12px 20px 12px 15px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+
+    p {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin: 0;
+      color: #a46d3e;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+      vertical-align: middle;
+    }
+  }
+
+  .invite-body {
+    padding: 10px 40px 20px 40px;
+
+    .invite-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+
+      .invite-input {
+        flex: 1;
+        padding: 10px 14px;
+        border: 1px solid #000;
+        border-radius: 20px;
+        font-size: 14px;
+        outline: none;
+        background: white;
+
+        &:focus {
+          border-color: #a46d3e;
+        }
+      }
+
+      .invite-btn {
+        padding: 10px 24px;
+        background: #FFF;
+        color: #a46d3e;
+        border: 1px solid #000;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 13px;
+        cursor: pointer;
+        transition: background 0.3s;
+        white-space: nowrap;
+
+        &:hover {
+          background: #f1ebd8;
+        }
+      }
+    }
+
+    .invite-msg {
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 600;
+
+      &.success { color: #fff; }
+      &.error   { color: #fff; }
+    }
+  }
+}
