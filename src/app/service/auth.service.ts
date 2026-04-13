@@ -46,6 +46,37 @@ export class AuthService {
     );
   }
 
+  // Update User Profile
+  public async updateProfile(userId: number, data: { First_name: string; Last_name: string; Email: string }) {
+    const payload = { User_id: userId, ...data };
+    const res = await lastValueFrom(
+      this.http.put<any>(`${this.apiUrl}/update-profile`, payload)
+    );
+    
+    if (typeof localStorage !== 'undefined') {
+      const currentUser = this.getUser();
+      currentUser.First_name = data.First_name;
+      currentUser.Last_name = data.Last_name;
+      currentUser.Email = data.Email;
+      localStorage.setItem('user', JSON.stringify(currentUser));
+    }
+    return res;
+  }
+
+  // Send Admin Invite (sends notification to student)
+  public async sendAdminInvite(email: string) {
+    return lastValueFrom(
+      this.http.post<any>(`${this.apiUrl}/invite-admin`, { Email: email })
+    );
+  }
+
+  // Accept Admin Invite (upgrades student to Admin)
+  public async acceptAdminInvite(notificationId: number, userId: number) {
+    return lastValueFrom(
+      this.http.post<any>(`${this.apiUrl}/accept-invite`, { Notification_id: notificationId, User_id: userId })
+    );
+  }
+
   public saveSession(response: any) {
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem('token', response.token);

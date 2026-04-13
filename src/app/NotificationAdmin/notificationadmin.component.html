@@ -1,15 +1,29 @@
 <div class="main">
   <header class="topbar">
     <div class="title">Library</div>
-    <div class="user">{{ userName }} 👤</div>
+    <div class="user-container">
+      <div class="user" (click)="toggleDropdown()">{{ userName }} <img src="/icons/user.png" class="user-icon" alt="">
+      </div>
+      <div class="dropdown" *ngIf="showDropdown">
+        <div class="dropdown-item" routerLink="/adprofile">
+          <img src="/icons/user.png" alt=""> Profile
+        </div>
+        <div class="dropdown-item" routerLink="/dashboard">
+          <img src="/icons/home.png" alt=""> Dashboard
+        </div>
+        <div class="dropdown-item" (click)="logout()">
+          <img src="/icons/logout.png" alt=""> Logout
+        </div>
+      </div>
+    </div>
   </header>
 
   <div class="container">
     <aside class="sidebar">
-            <ul class="menu">
+      <ul class="menu">
         <li routerLink="/adhome"><img src="/icons/home.png" alt=""> Home</li>
-        <li class="active" routerLink="/adnot"><img src="/icons/Notification.png" alt=""> Notification</li>
-        <li routerLink="/list"><img src="/icons/cart.png" alt=""> List</li>
+        <li class="active" routerLink="/adnot"><img src="/icons/notification.png" alt=""> Notification</li>
+        <li routerLink="/list"><img src="/icons/list.png" alt=""> List</li>
         <li routerLink="/settingsadmin"><img src="/icons/settings.png" alt=""> Settings</li>
       </ul>
     </aside>
@@ -24,17 +38,14 @@
 
       <!-- Empty state -->
       <div class="empty-state" *ngIf="notifications.length === 0">
-        <div class="empty-icon">🔔</div>
+        <div class="empty-icon"> <img src="/icons/notification.png" alt=""></div>
         <p>No notifications yet.</p>
         <span>You're all caught up!</span>
       </div>
 
       <!-- Notification list -->
       <div class="notif-list" *ngIf="notifications.length > 0">
-        <div
-          class="notification-card"
-          *ngFor="let notif of notifications"
-          [class.unread]="!notif.is_read">
+        <div class="notification-card" *ngFor="let notif of notifications" [class.unread]="!notif.is_read">
 
           <div class="notif-left">
             <div class="bell-icon">{{ notif.is_read ? '🔕' : '🔔' }}</div>

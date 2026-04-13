@@ -11,7 +11,21 @@ html, body { height: 100%; width: 100%; }
   background: #dead7f;
 
   .title { font-size: 18px; font-weight: bold; color: white; }
-  .user { color: #333; font-size: 14px; font-weight: bold; }
+  .user-container {
+    position: relative;
+    .user {
+      color: #333; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; border-radius: 8px; transition: background 0.3s;
+      &:hover { background: rgba(255, 255, 255, 0.2); }
+    }
+    .dropdown {
+      position: absolute; top: 100%; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); margin-top: 8px; padding: 8px 0; min-width: 150px; z-index: 10;
+      .dropdown-item {
+        padding: 10px 16px; cursor: pointer; color: #99692D; font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: background 0.3s;
+        &:hover { background: #DBAC72; }
+        img { width: 16px; height: 16px; object-fit: contain; }
+      }
+    }
+  }
 }
 
 .container { display: flex; flex: 1; background: #fdfaf0; overflow: hidden; }
@@ -36,6 +50,12 @@ html, body { height: 100%; width: 100%; }
       display: flex;
       align-items: center;
       gap: 6px;
+
+      img {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+      }
 
       &.active {
         background: #dfa97b;
@@ -148,4 +168,30 @@ html, body { height: 100%; width: 100%; }
   &.btn-brown { background: #b87333; }
   
   &:hover { filter: brightness(0.9); }
+}
+
+.book-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+
+  .book-thumb {
+    width: 30px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+}
+
+.no-records {
+  text-align: center;
+  padding: 20px;
+}
+
+.user-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }

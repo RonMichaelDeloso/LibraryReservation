@@ -1,75 +1,104 @@
 <div class="main">
   <header class="topbar">
     <div class="title">Library</div>
-    <div class="user">{{ userName }} 👤</div>
+    <div class="user-container">
+      <div class="user" (click)="toggleDropdown()">{{ userName }} <img src="/icons/user.png" class="user-icon" alt="">
+      </div>
+      <div class="dropdown" *ngIf="showDropdown">
+        <div class="dropdown-item" routerLink="/profile">
+          <img src="/icons/user.png" alt=""> Profile
+        </div>
+        <div class="dropdown-item" (click)="logout()">
+          <img src="/icons/logout.png" alt=""> Logout
+        </div>
+      </div>
+    </div>
   </header>
 
   <div class="container">
     <aside class="sidebar">
-            <ul class="menu">
+      <ul class="menu">
         <li routerLink="/home"><img src="/icons/home.png" alt=""> Home</li>
-        <li routerLink="/notification"><img src="/icons/Notification.png" alt=""> Notification</li>
+        <li routerLink="/notification">
+          <img src="/icons/notification.png" alt=""> Notification
+          <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
+        </li>
         <li class="active" routerLink="/book"><img src="/icons/cart.png" alt=""> Book Cart</li>
         <li routerLink="/settings"><img src="/icons/settings.png" alt=""> Settings</li>
       </ul>
     </aside>
 
     <section class="content">
-      <h2>Book cart</h2>
-
-      <div class="cart-list">
-        <div class="cart-item" *ngFor="let res of reservations">
-          
-          <input type="checkbox" class="item-checkbox" [(ngModel)]="res.selected" />
-
-          <!-- Book Image -->
-          <div class="book-placeholder" *ngIf="!res.Image_URL" style="width: 50px; height: 75px; background: #eee; border-radius: 4px;"></div>
-          <img *ngIf="res.Image_URL" [src]="'http://127.0.0.1:3000/' + res.Image_URL" style="width: 50px; height: 75px; object-fit: cover; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);" alt="Book Cover">
-          
-          <div class="book-info">
-            <h3>{{ res.Title || 'Book title' }}</h3>
-            <p class="author">{{ res.Author || 'Author' }}</p>
-          </div>
-          
-        </div>
-        
-        <div class="empty-cart" *ngIf="reservations.length === 0">
-          <p>Your cart is empty.</p>
-        </div>
+      <div class="header-row">
+        <h2>Book cart</h2>
+        <label class="select-all" *ngIf="reservations.length > 0">
+          <input type="checkbox" class="item-checkbox" [checked]="allSelected" (change)="toggleAll($event)" />
+          Select All
+        </label>
       </div>
 
-      <h2 style="margin-top: 40px;">My Pending & Borrowed Books</h2>
+      <div class="scroll-area">
+        <div class="cart-list">
+          <div class="cart-item" *ngFor="let res of reservations">
 
-      <div class="cart-list">
-        <div class="cart-item" *ngFor="let res of activeReservations">
-          
-          <!-- Book Image -->
-          <div class="book-placeholder" *ngIf="!res.Image_URL" style="width: 50px; height: 75px; background: #eee; border-radius: 4px;"></div>
-          <img *ngIf="res.Image_URL" [src]="'http://127.0.0.1:3000/' + res.Image_URL" style="width: 50px; height: 75px; object-fit: cover; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);" alt="Book Cover">
-          
-          <div class="book-info">
-            <h3>{{ res.Title || 'Book title' }}</h3>
-            <p class="author">{{ res.Author || 'Author' }}</p>
-            <span class="status-badge" [ngClass]="{
-              'pending': res.Status === 'Pending',
-              'completed': res.Status === 'Completed',
-              'loaned': res.Status === 'Loaned',
-              'cancelled': res.Status === 'Cancelled'
-            }">{{ res.Status }}</span>
+            <input type="checkbox" class="item-checkbox" [(ngModel)]="res.selected" />
+
+            <div class="book-placeholder" *ngIf="!res.Image_URL"></div>
+            <img *ngIf="res.Image_URL" [src]="'http://127.0.0.1:3000/' + res.Image_URL" class="book-thumb"
+              alt="Book Cover">
+
+            <div class="book-info">
+              <h3>{{ res.Title || 'Book title' }}</h3>
+              <p class="author">{{ res.Author || 'Author' }}</p>
+            </div>
+
+            <button class="remove-btn" (click)="removeFromCart(res)" title="Remove from cart">×</button>
+
           </div>
 
-          <button class="cancel-btn" *ngIf="res.Status === 'Pending'" (click)="cancelReservation(res.Reserve_id)">
-            Cancel Request
-          </button>
-          
+          <div class="empty-cart" *ngIf="reservations.length === 0">
+            <p>Your cart is empty.</p>
+          </div>
         </div>
-        
-        <div class="empty-cart" *ngIf="activeReservations.length === 0">
-          <p>You haven't requested any books yet.</p>
+
+        <h2 class="pending-heading">My Pending & Borrowed Books</h2>
+
+        <div class="cart-list">
+          <div class="cart-item" *ngFor="let res of activeReservations">
+
+            <div class="book-placeholder" *ngIf="!res.Image_URL"></div>
+            <img *ngIf="res.Image_URL" [src]="'http://127.0.0.1:3000/' + res.Image_URL" class="book-thumb"
+              alt="Book Cover">
+
+            <div class="book-info book-info--full">
+              <div class="title-status-row">
+                <h3>{{ res.Title || 'Book title' }}</h3>
+                <span class="status-badge" [ngClass]="{
+                  'pending': res.Status === 'Pending',
+                  'completed': res.Status === 'Completed',
+                  'loaned': res.Status === 'Loaned',
+                  'cancelled': res.Status === 'Cancelled'
+                }">{{ res.Status === 'Loaned' ? 'Unavailable' : res.Status }}</span>
+              </div>
+              <p class="author">{{ res.Author || 'Author' }}</p>
+            </div>
+
+            <button class="cancel-btn" *ngIf="res.Status === 'Pending'" (click)="cancelReservation(res.Reserve_id)">
+              Cancel Request
+            </button>
+
+          </div>
+
+          <div class="empty-cart" *ngIf="activeReservations.length === 0">
+            <p>You haven't requested any books yet.</p>
+          </div>
         </div>
+
+        <div class="scroll-spacer"></div>
       </div>
-      
-      <button class="items-float-btn" [disabled]="!hasSelectedItems" [class.disabled]="!hasSelectedItems" (click)="checkoutItems()">
+
+      <button class="items-float-btn" [disabled]="!hasSelectedItems" [class.disabled]="!hasSelectedItems"
+        (click)="checkoutItems()">
         Items
       </button>
 

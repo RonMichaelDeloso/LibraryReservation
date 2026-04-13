@@ -11,7 +11,21 @@ html, body { height: 100%; width: 100%; }
   background: #dead7f;
 
   .title { font-size: 18px; font-weight: bold; color: white; }
-  .user { color: #333; font-size: 14px; font-weight: bold; }
+  .user-container {
+    position: relative;
+    .user {
+      color: #333; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; border-radius: 8px; transition: background 0.3s;
+      &:hover { background: rgba(255, 255, 255, 0.2); }
+    }
+    .dropdown {
+      position: absolute; top: 100%; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); margin-top: 8px; padding: 8px 0; min-width: 150px; z-index: 10;
+      .dropdown-item {
+        padding: 10px 16px; cursor: pointer; color: #99692D; font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: background 0.3s;
+        &:hover { background: #DBAC72; }
+        img { width: 16px; height: 16px; object-fit: contain; }
+      }
+    }
+  }
 }
 
 .container { display: flex; flex: 1; background: #fdfaf0; overflow: hidden; }
@@ -36,6 +50,12 @@ html, body { height: 100%; width: 100%; }
       display: flex;
       align-items: center;
       gap: 6px;
+
+      img {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+      }
 
       &.active {
         background: #dfa97b;
@@ -106,7 +126,19 @@ html, body { height: 100%; width: 100%; }
   padding: 60px 20px;
   color: #aaa;
 
-  .empty-icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px; 
+    color: #e0e0e0;
+    img {
+      width: 120px;
+      height: 120px;
+      opacity: 0.5; 
+    }
+    margin-bottom: 12px;
+  }
   p { font-size: 16px; font-weight: 600; color: #777; margin-bottom: 6px; }
   span { font-size: 13px; }
 }
@@ -143,7 +175,13 @@ html, body { height: 100%; width: 100%; }
 
     .bell-icon {
       font-size: 22px;
-      margin-top: 2px;
+      margin-top: 10px;
+    }
+
+    .user-icon {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
     }
 
     .notif-body {
@@ -176,3 +214,5 @@ html, body { height: 100%; width: 100%; }
     &:hover { color: #e05c5c; }
   }
 }
+
+.user-icon { width: 20px; height: 20px; object-fit: contain; }

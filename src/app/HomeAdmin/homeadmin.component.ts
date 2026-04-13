@@ -1,9 +1,10 @@
 import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../service/auth.service';
 import { BookService } from '../service/book.service';
+import { NotificationService } from '../service/notification.service';
 
 @Component({
   selector: 'app-homeadmin',
@@ -15,13 +16,29 @@ import { BookService } from '../service/book.service';
 export class HomeAdminComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private bookService = inject(BookService);
+  private notificationService = inject(NotificationService);
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
   
   searchTerm: string = '';
   adminName: string = 'ADMIN';
 
+  showDropdown: boolean = false;
+
+  toggleDropdown() {
+    this.showDropdown = !this.showDropdown;
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
+    });
+  }
+
   books: any[] = [];
   genres: any[] = [];
+  unreadCount: number = 0;
   private refreshInterval: any;
   selectedFile: File | null = null;
 
@@ -45,14 +62,16 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const user = this.authService.getUser();
-    this.adminName = user?.First_name || 'ADMIN';
+    this.adminName = user?.Last_name ? `${user.First_name} ${user.Last_name}` : (user?.First_name || 'ADMIN');
     await this.loadBooks();
     await this.loadGenres();
+    await this.loadUnreadCount();
     this.cdr.detectChanges();
 
     if (typeof window !== 'undefined') {
       this.refreshInterval = setInterval(() => {
         this.loadBooks();
+        this.loadUnreadCount();
       }, 3000);
     }
   }
@@ -186,5 +205,15 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
         console.error(e.error?.message || 'Failed to delete book');
       }
     }
+  }
+
+  async loadUnreadCount() {
+    try {
+      const userId = this.authService.getUserId();
+      if (!userId) return;
+      const notifications = await this.notificationService.getByUser(userId);
+      this.unreadCount = notifications.filter((n: any) => !n.is_read).length;
+      this.cdr.detectChanges();
+    } catch (e) {}
   }
 }

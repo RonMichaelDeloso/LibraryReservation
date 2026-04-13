@@ -7,44 +7,37 @@ import { NotificationService } from '../service/notification.service';
 import { ChangeDetectorRef, OnDestroy } from '@angular/core';
 
 @Component({
-  selector: 'app-settingsadmin',
+  selector: 'app-profile',
   standalone: true,
-  templateUrl: './settingsadmin.component.html',
-  styleUrls: ['./settingsadmin.component.scss'],
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss'],
   imports: [RouterLink, CommonModule, FormsModule]
 })
 
-export class SettingsadminComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private notificationService = inject(NotificationService);
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
 
-  userName: string = 'Admin';
-  userEmail: string = 'admin@gmail.com';
+  topbarName: string = 'User1';
+  userName: string = 'Ron Michael Deloso';
+  userEmail: string = 'Ron.MichelDeloso@gmail.com';
+  userRole: string = '';
   showDropdown: boolean = false;
   unreadCount: number = 0;
   private refreshInterval: any;
 
-  // Edit Modal State
   isEditModalOpen: boolean = false;
   editFirstName: string = '';
   editLastName: string = '';
   editEmail: string = '';
-
-  // Password Modal State
-  isPasswordModalOpen: boolean = false;
-  newPassword: string = '';
-  confirmPassword: string = '';
-
-  // Admin Invite State
-  inviteEmail: string = '';
-  inviteSuccess: boolean = false;
-  inviteError: string = '';
+  editPassword: string = '';
 
   ngOnInit() {
     const user = this.authService.getUser();
     if (user && user.First_name) {
+      this.topbarName = user.First_name;
       this.userName = user.Last_name ? `${user.First_name} ${user.Last_name}` : user.First_name;
       this.editFirstName = user.First_name;
       this.editLastName = user.Last_name || '';
@@ -53,6 +46,8 @@ export class SettingsadminComponent implements OnInit, OnDestroy {
       this.userEmail = user.Email;
       this.editEmail = user.Email;
     }
+
+    this.userRole = this.authService.getRole() || 'Student';
 
     this.loadUnreadCount();
     if (typeof window !== 'undefined') {
@@ -107,6 +102,7 @@ export class SettingsadminComponent implements OnInit, OnDestroy {
       });
       
       this.userName = this.editLastName ? `${this.editFirstName} ${this.editLastName}` : this.editFirstName;
+      this.topbarName = this.editFirstName;
       this.userEmail = this.editEmail;
       
       this.closeEditModal();
@@ -116,6 +112,11 @@ export class SettingsadminComponent implements OnInit, OnDestroy {
       console.error(err);
     }
   }
+
+  // Password Modal Logic
+  isPasswordModalOpen: boolean = false;
+  newPassword: string = '';
+  confirmPassword: string = '';
 
   openPasswordModal() {
     this.isPasswordModalOpen = true;
@@ -129,43 +130,25 @@ export class SettingsadminComponent implements OnInit, OnDestroy {
 
   async submitPasswordChange() {
     if (!this.newPassword) {
-      alert('Please enter a new password.');
+      alert("Please enter a new password.");
       return;
     }
     if (this.newPassword !== this.confirmPassword) {
-      alert('Passwords do not match!');
+      alert("Passwords do not match!");
       return;
     }
     if (this.newPassword.length < 6) {
-      alert('Password must be at least 6 characters.');
+      alert("Password must be at least 6 characters.");
       return;
     }
+    
     try {
       await this.authService.resetPasswordDirect(this.userEmail, this.newPassword);
-      alert('Password updated successfully!');
+      alert("Password logically updated successfully!");
       this.closePasswordModal();
     } catch (error) {
-      alert('Failed to update password.');
+      alert("Failed to update password across the server.");
     }
   }
 
-  async sendAdminInvite() {
-    this.inviteSuccess = false;
-    this.inviteError = '';
-
-    if (!this.inviteEmail) {
-      this.inviteError = 'Please enter an email address.';
-      return;
-    }
-
-    try {
-      await this.authService.sendAdminInvite(this.inviteEmail);
-      this.inviteSuccess = true;
-      this.inviteEmail = '';
-      setTimeout(() => { this.inviteSuccess = false; }, 4000);
-    } catch (err: any) {
-      this.inviteError = err?.error?.message || 'Failed to send invite.';
-      setTimeout(() => { this.inviteError = ''; }, 4000);
-    }
-  }
 }

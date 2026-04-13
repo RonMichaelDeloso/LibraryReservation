@@ -1,9 +1,10 @@
 import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { RouterLink, Router } from "@angular/router";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ReservationService } from '../service/reservation.service';
 import { AuthService } from '../service/auth.service';
+import { NotificationService } from '../service/notification.service';
+import { ReservationService } from '../service/reservation.service';
 
 @Component({
   selector: 'app-book',
@@ -15,23 +16,40 @@ import { AuthService } from '../service/auth.service';
 export class BookComponent implements OnInit, OnDestroy {
   private reservationService = inject(ReservationService);
   private authService = inject(AuthService);
+  private notificationService = inject(NotificationService);
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
 
   reservations: any[] = [];
   activeReservations: any[] = [];
   userName: string = 'USER';
+  unreadCount: number = 0;
   private refreshInterval: any;
+
+  showDropdown: boolean = false;
+
+  toggleDropdown() {
+    this.showDropdown = !this.showDropdown;
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
+    });
+  }
 
   async ngOnInit() {
     const user = this.authService.getUser();
-    this.userName = user?.First_name || 'USER';
+    this.userName = user?.Last_name ? `${user.First_name} ${user.Last_name}` : (user?.First_name || 'USER');
     await this.loadReservations();
+    await this.loadUnreadCount();
     this.cdr.detectChanges();
 
     if (typeof window !== 'undefined') {
       this.refreshInterval = setInterval(() => {
-        // Only refresh the active server reservations, not local cart
         this.loadActiveReservations();
+        this.loadUnreadCount();
       }, 3000);
     }
   }
@@ -67,8 +85,27 @@ export class BookComponent implements OnInit, OnDestroy {
     }
   }
 
+  async loadUnreadCount() {
+    try {
+      const userId = this.authService.getUserId();
+      if (!userId) return;
+      const notifications = await this.notificationService.getByUser(userId);
+      this.unreadCount = notifications.filter((n: any) => !n.is_read).length;
+      this.cdr.detectChanges();
+    } catch (e) {}
+  }
+
   get hasSelectedItems(): boolean {
     return this.reservations.some(r => r.selected);
+  }
+
+  get allSelected(): boolean {
+    return this.reservations.length > 0 && this.reservations.every(r => r.selected);
+  }
+
+  toggleAll(event: any) {
+    const checked = event.target.checked;
+    this.reservations.forEach(r => r.selected = checked);
   }
 
   async cancelReservation(id: number) {
@@ -83,10 +120,24 @@ export class BookComponent implements OnInit, OnDestroy {
     }
   }
 
+  removeFromCart(book: any) {
+    this.reservations = this.reservations.filter(r => r.Book_id !== book.Book_id);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('cart', JSON.stringify(this.reservations));
+    }
+    this.cdr.detectChanges();
+  }
+
   async checkoutItems() {
     const selected = this.reservations.filter(r => r.selected);
     if (selected.length === 0) {
       console.warn("Please select at least one item from the cart.");
+      return;
+    }
+
+    const activeCount = this.activeReservations.filter(r => r.Status === 'Pending' || r.Status === 'Loaned').length;
+    if (activeCount + selected.length > 5) {
+      alert(`You can only borrow up to 5 books maximum!\n\nYou currently have ${activeCount} active/pending requests. You can only checkout ${5 - activeCount} more items.`);
       return;
     }
 

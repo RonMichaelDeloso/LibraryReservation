@@ -3,8 +3,18 @@
   <header class="topbar">
     <div class="title">Library</div>
 
-    <div class="user">
-      {{ userName }} 👤
+    <div class="user-container">
+      <div class="user" (click)="toggleDropdown()">
+        {{ userName }} <img src="/icons/user.png" class="user-icon" alt="">
+      </div>
+      <div class="dropdown" *ngIf="showDropdown">
+        <div class="dropdown-item" routerLink="/profile">
+          <img src="/icons/user.png" alt=""> Profile
+        </div>
+        <div class="dropdown-item" (click)="logout()">
+          <img src="/icons/logout.png" alt=""> Logout
+        </div>
+      </div>
     </div>
   </header>
   <div class="container">
@@ -16,7 +26,8 @@
           <img src="/icons/home.png" alt="">Home
         </li>
         <li routerLink="/notification">
-          <img src="/icons/Notification.png" alt=""> Notification
+          <img src="/icons/notification.png" alt=""> Notification
+          <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
         </li>
         <li routerLink="/book">
           <img src="/icons/cart.png" alt=""> Book Cart
@@ -31,13 +42,13 @@
 
       <h2>Library</h2>
       <div class="search-container">
-        <div class="search" style="margin-bottom: 0;">
+        <div class="search">
           <input type="text" placeholder="Search by title or author" [(ngModel)]="searchTerm">
         </div>
 
         <div class="filter-dropdown">
-          <button class="filter-btn" (click)="isFilterOpen = !isFilterOpen">
-            ⚲ Filter
+          <button class="filter-btn" [class.active]="isFilterOpen" (click)="isFilterOpen = !isFilterOpen">
+            <img src="/icons/filter.png" alt="">
           </button>
 
           <div class="filter-menu" *ngIf="isFilterOpen">
@@ -51,28 +62,24 @@
 
       <div class="books-list">
         <div class="book-card" *ngFor="let book of filteredBooks">
-          <div style="display: flex; gap: 20px;">
-            <div class="book-img" *ngIf="book.Image_URL" style="flex-shrink: 0;">
-              <img [src]="'http://127.0.0.1:3000/' + book.Image_URL"
-                style="width: 80px; height: 120px; object-fit: cover; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"
-                alt="Book Cover">
+          <div class="book-card-inner">
+            <div class="book-img" *ngIf="book.Image_URL">
+              <img [src]="'http://127.0.0.1:3000/' + book.Image_URL" class="book-cover-img" alt="Book Cover">
             </div>
 
-            <div class="book-info" style="flex: 1; min-width: 0;">
-              <div
-                style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 8px;">
-                <div class="title-section" style="padding-right: 0; flex: 1;">
-                  <h3 [title]="book.Title">{{ book.Title }}</h3>
-                  <span class="status" [class.available]="book.Status === 'Available'"
-                    [class.loaned]="book.Status === 'Loaned'" [class.reserved]="book.Status === 'Reserved'">
-                    {{ book.Status }}
-                  </span>
-                </div>
-                <button class="borrow-btn" *ngIf="book.Status === 'Available'" (click)="addToCart(book)"
-                  style="position: static; margin: 0; white-space: nowrap;">
-                  Add to Cart
-                </button>
+            <div class="book-info">
+              <div class="title-section">
+                <h3 [title]="book.Title">{{ book.Title }}</h3>
+                <span class="status" [class.available]="book.Status === 'Available'"
+                  [class.loaned]="book.Status === 'Loaned'" [class.reserved]="book.Status === 'Reserved'">
+                  {{ book.Status === 'Loaned' ? 'Unavailable' : book.Status }}
+                </span>
               </div>
+              <button class="borrow-btn" *ngIf="book.Status === 'Available'" (click)="addToCart(book)"
+                [disabled]="cartItemIds.has(book.Book_id)"
+                [ngStyle]="cartItemIds.has(book.Book_id) ? {'background': 'gray', 'cursor': 'not-allowed'} : {}">
+                {{ cartItemIds.has(book.Book_id) ? 'Added to Cart' : 'Add to Cart' }}
+              </button>
               <p class="edition">ISBN: {{ book.isbn }}</p>
               <p class="author">By: {{ book.Author }}</p>
             </div>

@@ -13,15 +13,10 @@
     <header class="topbar">
       <div class="title">Library</div>
       <div class="user-container">
-        <div class="user" (click)="toggleDropdown()">
-          {{ userName }} <img src="/icons/user.png" class="user-icon" alt="">
-        </div>
+        <div class="user" (click)="toggleDropdown()">{{ userName }} <img src="/icons/user.png" class="user-icon" alt=""></div>
         <div class="dropdown" *ngIf="showDropdown">
-          <div class="dropdown-item" routerLink="/adprofile">
+          <div class="dropdown-item" routerLink="/profile">
             <img src="/icons/user.png" alt=""> Profile
-          </div>
-          <div class="dropdown-item" routerLink="/dashboard">
-            <img src="/icons/home.png" alt=""> Dashboard
           </div>
           <div class="dropdown-item" (click)="logout()">
             <img src="/icons/logout.png" alt=""> Logout
@@ -33,28 +28,29 @@
     <div class="container">
       <aside class="sidebar">
         <ul class="menu">
-          <li routerLink="/adhome"><img src="/icons/home.png" alt=""> Home</li>
-          <li routerLink="/adnot">
-            <img src="/icons/notification.png" alt=""> Notification
-            <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
-          </li>
-          <li routerLink="/list"><img src="/icons/list.png" alt=""> List</li>
-          <li class="active" routerLink="/settingsadmin"><img src="/icons/settings.png" alt=""> Settings</li>
+          <li routerLink="/home"><img src="/icons/home.png" alt=""> Home</li>
+          <li routerLink="/notification">
+          <img src="/icons/notification.png" alt=""> Notification
+          <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
+        </li>
+          <li routerLink="/book"><img src="/icons/cart.png" alt=""> Book Cart</li>
+          <li routerLink="/settings"><img src="/icons/settings.png" alt=""> Settings</li>
         </ul>
       </aside>
 
       <section class="content">
         <div class="account-card">
           <div class="card-header active-header">
-            <p><img src="/icons/settings.png" class="icon"> Account Settings</p>
+            <p><img src="/icons/user.png" class="icon"> My Profile</p>
           </div>
 
           <div class="account-row">
             <div class="profile-pair">
               <div class="profile-block">
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="avatar" />
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="user avatar" />
                 <div class="info">
                   <h4>{{ userName }}</h4>
+                  <p style="color: #000000; margin-bottom: 5px;">{{ userRole }}</p>
                   <p>{{ userEmail }}</p>
                 </div>
               </div>
@@ -64,26 +60,6 @@
               <button class="edit-profile-btn" (click)="openEditModal()">Edit Profile</button>
               <button class="password-btn" (click)="openPasswordModal()">Change Password</button>
             </div>
-          </div>
-        </div>
-
-        <!-- Admin Invite Card -->
-        <div class="invite-card">
-          <div class="card-header invite-header">
-            <p><img src="/icons/notification.png" class="icon"> Admin Invite</p>
-          </div>
-          <div class="invite-body">
-            <div class="invite-row">
-              <input
-                type="email"
-                class="invite-input"
-                [(ngModel)]="inviteEmail"
-                placeholder="Enter email to invite as Admin"
-              >
-              <button class="invite-btn" (click)="sendAdminInvite()">Send Invite</button>
-            </div>
-            <p class="invite-msg success" *ngIf="inviteSuccess">✔ Invite sent successfully!</p>
-            <p class="invite-msg error" *ngIf="inviteError">✘ {{ inviteError }}</p>
           </div>
         </div>
       </section>

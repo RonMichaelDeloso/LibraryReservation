@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Library Settings</title>
+</head>
+
+<body>
+  <div class="main">
+
+    <header class="topbar">
+      <div class="title">Library</div>
+      <div class="user-container">
+        <div class="user" (click)="toggleDropdown()">{{ userName }} <img src="/icons/user.png" class="user-icon" alt=""></div>
+        <div class="dropdown" *ngIf="showDropdown">
+          <div class="dropdown-item" routerLink="/adprofile">
+            <img src="/icons/user.png" alt=""> Profile
+          </div>
+          <div class="dropdown-item" routerLink="/dashboard">
+            <img src="/icons/home.png" alt=""> Dashboard
+          </div>
+          <div class="dropdown-item" (click)="logout()">
+            <img src="/icons/logout.png" alt=""> Logout
+          </div>
+        </div>
+      </div>
+    </header>
+
+
+    <div class="container">
+      <aside class="sidebar">
+        <ul class="menu">
+          <li  routerLink="/adhome"><img src="/icons/home.png" alt=""> Home</li>
+          <li routerLink="/adnot">
+            <img src="/icons/notification.png" alt=""> Notification
+            <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
+          </li>
+          <li routerLink="/list"><img src="/icons/list.png" alt=""> List</li>
+          <li routerLink="/settingsadmin "><img src="/icons/settings.png" alt=""> Settings</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { RouterLink, Router } from "@angular/router";
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../service/notification.service';
 import { AuthService } from '../service/auth.service';
@@ -15,14 +15,28 @@ export class NotificationComponent implements OnInit, OnDestroy {
   private notificationService = inject(NotificationService);
   private authService = inject(AuthService);
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
 
   notifications: any[] = [];
   userName: string = 'USER';
   private refreshInterval: any;
 
+  showDropdown: boolean = false;
+
+  toggleDropdown() {
+    this.showDropdown = !this.showDropdown;
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
+    });
+  }
+
   async ngOnInit() {
     const user = this.authService.getUser();
-    this.userName = user?.First_name || 'USER';
+    this.userName = user?.Last_name ? `${user.First_name} ${user.Last_name}` : (user?.First_name || 'USER');
     await this.loadNotifications();
 
     // Poll every 5 seconds for new notifications
@@ -61,6 +75,24 @@ export class NotificationComponent implements OnInit, OnDestroy {
       this.cdr.detectChanges();
     } catch (e) {
       console.error('Failed to delete notification:', e);
+    }
+  }
+
+  // 👑 Accept Admin Invite
+  async acceptInvite(notif: any) {
+    if (!confirm('Are you sure you want to join as Admin? You will be logged out and need to re-login.')) return;
+    try {
+      const userId = this.authService.getUserId();
+      await this.authService.acceptAdminInvite(notif.Notification_id, userId);
+      // Update local session role to Admin
+      const user = this.authService.getUser();
+      user.Role_id = 2;
+      localStorage.setItem('user', JSON.stringify(user));
+      alert('Congratulations! You are now an Admin. Please log in again.');
+      this.authService.logout();
+      this.router.navigate(['/login']);
+    } catch (e: any) {
+      alert(e?.error?.message || 'Failed to accept invite.');
     }
   }
 

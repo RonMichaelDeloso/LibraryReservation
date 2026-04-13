@@ -1,9 +1,10 @@
 import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { RouterLink, Router } from "@angular/router";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ReservationService } from '../service/reservation.service';
 import { AuthService } from '../service/auth.service';
+import { NotificationService } from '../service/notification.service';
+import { ReservationService } from '../service/reservation.service';
 
 @Component({
   selector: 'app-list',
@@ -15,25 +16,43 @@ import { AuthService } from '../service/auth.service';
 export class ListComponent implements OnInit, OnDestroy {
   private reservationService = inject(ReservationService);
   private authService = inject(AuthService);
+  private notificationService = inject(NotificationService);
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
 
   reservations: any[] = [];
   adminName: string = 'ADMIN';
 
+  showDropdown: boolean = false;
+
+  toggleDropdown() {
+    this.showDropdown = !this.showDropdown;
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
+    });
+  }
+
   searchTerm: string = '';
-  currentTab: string = 'All'; // 'All', 'Reserved', 'Borrowed'
+  currentTab: string = 'All'; 
+  unreadCount: number = 0;
   private refreshInterval: any;
 
   async ngOnInit() {
     const user = this.authService.getUser();
-    this.adminName = user?.First_name || 'ADMIN';
+    this.adminName = user?.Last_name ? `${user.First_name} ${user.Last_name}` : (user?.First_name || 'ADMIN');
     await this.loadAllReservations();
+    await this.loadUnreadCount();
     this.cdr.detectChanges();
     
     // Auto refresh every 5 seconds to show changes instantly across devices
     if (typeof window !== 'undefined') {
       this.refreshInterval = setInterval(() => {
         this.loadAllReservations();
+        this.loadUnreadCount();
       }, 3000);
     }
   }
@@ -78,26 +97,32 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   async approveReservation(id: number) {
-    if(confirm('Approve this reservation and set as Loaned?')) {
-      try {
-        await this.reservationService.approveReservation(id);
-        console.log('Reservation approved successfully.');
-        await this.loadAllReservations();
-      } catch (e: any) {
-        console.error(e.error?.message || 'Failed to approve');
-      }
+    try {
+      await this.reservationService.approveReservation(id);
+      console.log('Reservation approved successfully.');
+      await this.loadAllReservations();
+    } catch (e: any) {
+      console.error(e.error?.message || 'Failed to approve');
     }
   }
 
   async cancelReservation(id: number, type: string) {
-    if(confirm(`Are you sure you want to ${type} this book?`)) {
-      try {
-        await this.reservationService.cancelReservation(id);
-        console.log(`Successfully marked as ${type}.`);
-        await this.loadAllReservations();
-      } catch (e: any) {
-        console.error(e.error?.message || 'Failed to process request');
-      }
+    try {
+      await this.reservationService.cancelReservation(id);
+      console.log(`Successfully marked as ${type}.`);
+      await this.loadAllReservations();
+    } catch (e: any) {
+      console.error(e.error?.message || 'Failed to process request');
     }
+  }
+
+  async loadUnreadCount() {
+    try {
+      const userId = this.authService.getUserId();
+      if (!userId) return;
+      const notifications = await this.notificationService.getByUser(userId);
+      this.unreadCount = notifications.filter((n: any) => !n.is_read).length;
+      this.cdr.detectChanges();
+    } catch (e) {}
   }
 }

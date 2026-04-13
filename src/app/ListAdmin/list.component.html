@@ -1,15 +1,32 @@
 <div class="main">
   <header class="topbar">
     <div class="title">Library</div>
-    <div class="user">{{ adminName }} 👤</div>
+    <div class="user-container">
+      <div class="user" (click)="toggleDropdown()">{{ adminName }} <img src="/icons/user.png" class="user-icon" alt="">
+      </div>
+      <div class="dropdown" *ngIf="showDropdown">
+        <div class="dropdown-item" routerLink="/adprofile">
+          <img src="/icons/user.png" alt=""> Profile
+        </div>
+        <div class="dropdown-item" routerLink="/dashboard">
+          <img src="/icons/home.png" alt=""> Dashboard
+        </div>
+        <div class="dropdown-item" (click)="logout()">
+          <img src="/icons/logout.png" alt=""> Logout
+        </div>
+      </div>
+    </div>
   </header>
 
   <div class="container">
     <aside class="sidebar">
-            <ul class="menu">
+      <ul class="menu">
         <li routerLink="/adhome"><img src="/icons/home.png" alt=""> Home</li>
-        <li routerLink="/adnot"><img src="/icons/Notification.png" alt=""> Notification</li>
-        <li class="active" routerLink="/list"><img src="/icons/cart.png" alt=""> List</li>
+        <li routerLink="/adnot">
+          <img src="/icons/notification.png" alt=""> Notification
+          <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
+        </li>
+        <li class="active" routerLink="/list"><img src="/icons/list.png" alt=""> List</li>
         <li routerLink="/settingsadmin"><img src="/icons/settings.png" alt=""> Settings</li>
       </ul>
     </aside>
@@ -44,12 +61,13 @@
             <tr *ngFor="let res of filteredReservations; let i = index">
               <td>{{ i + 1 }}</td>
               <td>{{ res.First_name || 'Student' }} {{ res.Last_name || 'Name' }}</td>
-              <td style="display: flex; align-items: center; gap: 10px; height: 100%;">
-                <img *ngIf="res.Image_URL" [src]="'http://127.0.0.1:3000/' + res.Image_URL" style="width: 30px; height: 45px; object-fit: cover; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);" alt="Book">
+              <td class="book-cell">
+                <img *ngIf="res.Image_URL" [src]="'http://127.0.0.1:3000/' + res.Image_URL" class="book-thumb"
+                  alt="Book">
                 - {{ res.Title }}
               </td>
               <td>{{ res.Due_date | date:'MM/dd/yyyy' }}</td>
-              
+
               <td>
                 <span class="status-pill" [ngClass]="{
                   'checkout': res.Status === 'Completed' || res.Status === 'Loaned',
@@ -59,21 +77,23 @@
                   {{ res.Status === 'Loaned' || res.Status === 'Completed' ? 'Check Out' : res.Status }}
                 </span>
               </td>
-              
+
               <td class="action-cell">
                 <ng-container *ngIf="res.Status === 'Pending'">
                   <button class="action-btn btn-green" (click)="approveReservation(res.Reserve_id)">Book Ready</button>
-                  <button class="action-btn btn-brown" (click)="cancelReservation(res.Reserve_id, 'Cancelled')">Cancelled</button>
+                  <button class="action-btn btn-brown"
+                    (click)="cancelReservation(res.Reserve_id, 'Cancelled')">Cancelled</button>
                 </ng-container>
-                
+
                 <ng-container *ngIf="res.Status === 'Loaned' || res.Status === 'Completed'">
-                  <button class="action-btn btn-green-wide" (click)="cancelReservation(res.Reserve_id, 'Returned')">Returned</button>
+                  <button class="action-btn btn-green-wide"
+                    (click)="cancelReservation(res.Reserve_id, 'Returned')">Returned</button>
                 </ng-container>
               </td>
             </tr>
-            
+
             <tr *ngIf="filteredReservations.length === 0">
-              <td colspan="6" style="text-align: center; padding: 20px;">No records found.</td>
+              <td colspan="6" class="no-records">No records found.</td>
             </tr>
           </tbody>
         </table>
