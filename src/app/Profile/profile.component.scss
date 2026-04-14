@@ -170,23 +170,30 @@ body {
   padding-bottom: 10px;
 }
 
-.active-header {
+%base-header {
   width: 100%;
   background: white;
   border-bottom: 1px solid #000000;
   border-radius: 0 0 20px 20px;
-  padding: 12px 20px 12px 15px;
   box-sizing: border-box;
   margin-bottom: 15px;
+
+  p {
+    margin: 0;
+    color: #a46d3e;
+    font-weight: bold;
+    font-size: 16px;
+  }
+}
+
+.active-header {
+  @extend %base-header;
+  padding: 12px 20px 12px 15px;
 
   p {
     display: flex;
     align-items: center;
     gap: 4px;
-    margin: 0;
-    color: #a46d3e;
-    font-weight: bold;
-    font-size: 16px;
   }
 
   .icon {
@@ -198,20 +205,8 @@ body {
 }
 
 .inactive-header {
-  width: 100%;
-  background: white;
-  border-bottom: 1px solid #000000;
-  border-radius: 0 0 20px 20px;
+  @extend %base-header;
   padding: 12px 20px;
-  box-sizing: border-box;
-  margin-bottom: 15px;
-
-  p {
-    color: #a46d3e;
-    font-weight: bold;
-    font-size: 16px;
-    margin: 0;
-  }
 }
 
 .account-row {

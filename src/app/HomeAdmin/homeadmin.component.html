@@ -55,12 +55,12 @@
                   </span>
                 </div>
                 <div class="admin-actions">
-                  <button class="edit-btn" (click)="editBook(book)">✏️ Edit</button>
-                  <button class="delete-btn" (click)="deleteBook(book.Book_id)">🗑️ Delete</button>
+                  <button class="edit-btn" (click)="editBook(book)"><img src="/icons/edit.png" alt=""></button>
+                  <button class="delete-btn" (click)="deleteBook(book.Book_id)"><img src="/icons/delete.png" alt=""></button>
                 </div>
               </div>
 
-              <!-- Book details -->
+
               <div class="book-info">
                 <p class="edition">ISBN: {{ book.isbn }}</p>
                 <p class="author">By: {{ book.Author }}</p>
@@ -74,7 +74,6 @@
     </section>
   </div>
 
-  <!-- Add Book Modal -->
   <div class="modal-backdrop" *ngIf="isAddModalOpen">
     <div class="modal-content">
       <h3>Add New Book</h3>
@@ -110,7 +109,6 @@
     </div>
   </div>
 
-  <!-- Edit Book Modal -->
   <div class="modal-backdrop" *ngIf="isEditModalOpen">
     <div class="modal-content">
       <h3>Edit Book</h3>

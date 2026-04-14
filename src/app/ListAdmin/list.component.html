@@ -79,16 +79,18 @@
               </td>
 
               <td class="action-cell">
-                <ng-container *ngIf="res.Status === 'Pending'">
-                  <button class="action-btn btn-green" (click)="approveReservation(res.Reserve_id)">Book Ready</button>
-                  <button class="action-btn btn-brown"
-                    (click)="cancelReservation(res.Reserve_id, 'Cancelled')">Cancelled</button>
-                </ng-container>
+                <div class="action-wrapper">
+                  <ng-container *ngIf="res.Status === 'Pending'">
+                    <button class="action-btn btn-green" (click)="approveReservation(res.Reserve_id)">Book Ready</button>
+                    <button class="action-btn btn-brown"
+                      (click)="cancelReservation(res.Reserve_id, 'Cancelled')">Cancelled</button>
+                  </ng-container>
 
-                <ng-container *ngIf="res.Status === 'Loaned' || res.Status === 'Completed'">
-                  <button class="action-btn btn-green-wide"
-                    (click)="cancelReservation(res.Reserve_id, 'Returned')">Returned</button>
-                </ng-container>
+                  <ng-container *ngIf="res.Status === 'Loaned' || res.Status === 'Completed'">
+                    <button class="action-btn btn-green-wide"
+                      (click)="cancelReservation(res.Reserve_id, 'Returned')">Returned</button>
+                  </ng-container>
+                </div>
               </td>
             </tr>
 

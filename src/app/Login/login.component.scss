@@ -7,6 +7,7 @@
   align-items: center;
   margin: 0;
   padding: 0;
+  font-family: 'Inter', sans-serif;
 }
 
 .card {
@@ -29,8 +30,9 @@
   margin-bottom: 30px;
 
   h2 {
-    font-size: 40px;
-    font-weight: bold;
+    font-size: 30px;
+    font-weight: 800;
+    color: #1a1a1a;
     margin: 5;
   }
 
@@ -53,10 +55,11 @@
   
 
   label {
-    font-size: 17px;
-    margin-bottom: 5px;
+    font-size: 14px;
+    margin-bottom: 6px;
     font-weight: 500;
     text-align: left;
+    color: #1a1a1a;
   }
 
   input {
@@ -115,9 +118,10 @@ button {
   padding: 14px;
   background: #d49a32;
   border: none;
-  border-radius: 15px;
+  border-radius: 30px;
   color: white;
-  font-weight: bold;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
   margin-top: 20px;
   cursor: pointer;
   font-size: 16px;
