@@ -146,16 +146,254 @@ body {
 
 .content {
   flex: 1;
-  padding: 30px;
+  padding: 40px;
   overflow-y: auto;
   background: #fdfaf0;
   position: relative;
 
-  h2 {
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 20px;
-    font-weight: normal;
+  .dashboard-header {
+    margin-bottom: 40px;
+    animation: fadeInDown 0.6s ease-out;
+
+    h2 {
+      margin-bottom: 8px;
+      color: #7f5539;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      color: #a46d3e;
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+  }
+
+  .stat-card {
+    position: relative;
+    border-radius: 24px;
+    padding: 34px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    animation: fadeInUp 0.7s ease-out forwards;
+    opacity: 0;
+
+    &:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+      .stat-icon {
+        transform: scale(1.1) rotate(5deg);
+      }
+    }
+
+    &.card-books,
+    &.card-borrowed,
+    &.card-reservations,
+    &.card-overdue,
+    &.card-active-users,
+    &.card-total-users {
+      background: #dead7f;
+    }
+
+    .stat-icon {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      width: 76px;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.4s ease;
+      z-index: 2;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+      svg {
+        width: 34px;
+        height: 34px;
+        color: white;
+      }
+    }
+
+    .stat-info {
+      z-index: 2;
+      flex: 1;
+
+      h3 {
+        font-size: 17px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        opacity: 0.95;
+        margin-top: 0;
+      }
+
+      .stat-value {
+        font-size: 42px;
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin-bottom: 12px;
+        line-height: 1;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-trend {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 5px 12px;
+        border-radius: 20px;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+        &.positive {
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .recent-reservations-section {
+    margin-top: 50px;
+    background: white;
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+
+      h3 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #7f5539;
+        margin: 0;
+      }
+
+      .btn-primary {
+        background: #dead7f;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s;
+
+        &:hover {
+          background: #dfa97b;
+        }
+      }
+    }
+
+    .table-container {
+      overflow-x: auto;
+
+      .library-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+
+        th {
+          padding: 15px;
+          background: #fdfaf0;
+          color: #a46d3e;
+          font-weight: bold;
+          font-size: 14px;
+          border-bottom: 2px solid #f1ebd8;
+        }
+
+        td {
+          padding: 15px;
+          color: #5e3b22;
+          font-size: 15px;
+          border-bottom: 1px solid #f1ebd8;
+          font-weight: 500;
+        }
+
+        tbody tr {
+          transition: background 0.2s;
+
+          &:hover {
+            background: #fdfaf0;
+          }
+        }
+
+        .status {
+          padding: 6px 12px;
+          border-radius: 20px;
+          font-size: 12px;
+          font-weight: bold;
+          display: inline-block;
+
+          &.badge-active {
+            background: #e6f4ea;
+            color: #1e8e3e;
+          }
+
+          &.badge-overdue {
+            background: #fce8e6;
+            color: #d93025;
+          }
+
+          &.badge-returned {
+            background: #e8f0fe;
+            color: #1a73e8;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -281,7 +519,10 @@ body {
 /* Modal Styling */
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -293,7 +534,7 @@ body {
     padding: 30px;
     border-radius: 20px;
     width: 400px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 
     h3 {
       margin-top: 0;
@@ -321,7 +562,7 @@ body {
         font-size: 14px;
         outline: none;
         box-sizing: border-box;
-        
+
         &:focus {
           border-color: #dead7f;
         }
@@ -347,16 +588,25 @@ body {
         background: #eee;
         color: #333;
 
-        &:hover { background: #ddd; }
+        &:hover {
+          background: #ddd;
+        }
       }
 
       .save-modal-btn {
         background: #3eb56b;
         color: white;
 
-        &:hover { background: #35a05e; }
+        &:hover {
+          background: #35a05e;
+        }
       }
     }
   }
 }
-.user-icon { width: 20px; height: 20px; object-fit: contain; }
+
+.user-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
