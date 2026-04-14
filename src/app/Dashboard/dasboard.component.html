@@ -62,15 +62,7 @@
             </div>
             <div class="stat-info">
               <h3>Total Borrow Books</h3>
-              <div class="stat-value">35</div>
-              <div class="stat-trend positive">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                  <polyline points="17 6 23 6 23 12"></polyline>
-                </svg>
-                <span>+15 new arrivals</span>
-              </div>
+              <div class="stat-value">{{ totalBorrowBooks }}</div>
             </div>
           </div>
 
@@ -86,15 +78,7 @@
             </div>
             <div class="stat-info">
               <h3>Currently Borrowed</h3>
-              <div class="stat-value">26</div>
-              <div class="stat-trend positive">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                  <polyline points="17 6 23 6 23 12"></polyline>
-                </svg>
-                <span>+5% from last week</span>
-              </div>
+              <div class="stat-value">{{ currentlyBorrowed }}</div>
             </div>
           </div>
 
@@ -112,16 +96,7 @@
             </div>
             <div class="stat-info">
               <h3>Active Reservation</h3>
-              <div class="stat-value">20</div>
-              <div class="stat-trend neutral">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <line x1="12" y1="5" x2="19" y2="12"></line>
-                  <line x1="12" y1="19" x2="19" y2="12"></line>
-                </svg>
-                <span>Steady demand</span>
-              </div>
+              <div class="stat-value">{{ activeReservations }}</div>
             </div>
           </div>
 
@@ -138,15 +113,7 @@
             </div>
             <div class="stat-info">
               <h3>Overdue Returns</h3>
-              <div class="stat-value">28</div>
-              <div class="stat-trend negative">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline>
-                  <polyline points="17 18 23 18 23 12"></polyline>
-                </svg>
-                <span>-3 needing follow-up</span>
-              </div>
+              <div class="stat-value">{{ overdueReturns }}</div>
             </div>
           </div>
 
@@ -154,7 +121,8 @@
           <div class="stat-card card-active-users">
             <div class="stat-icon">
               <!-- Active User Icon -->
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
                 <circle cx="18" cy="19" r="3" fill="#3eb56b" stroke="white" stroke-width="1"></circle>
@@ -162,15 +130,7 @@
             </div>
             <div class="stat-info">
               <h3>Active Users</h3>
-              <div class="stat-value">5</div>
-              <div class="stat-trend positive">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
-                </svg>
-                <span>Currently online</span>
-              </div>
+              <div class="stat-value">{{ activeUsers }}</div>
             </div>
           </div>
 
@@ -178,7 +138,8 @@
           <div class="stat-card card-total-users">
             <div class="stat-icon">
               <!-- Users Icon -->
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                 <circle cx="9" cy="7" r="4"></circle>
                 <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -187,14 +148,7 @@
             </div>
             <div class="stat-info">
               <h3>Total Users</h3>
-              <div class="stat-value">4</div>
-              <div class="stat-trend neutral">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                </svg>
-                <span>Registered members</span>
-              </div>
+              <div class="stat-value">{{ totalUsers }}</div>
             </div>
           </div>
         </div>
@@ -217,45 +171,20 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>#B-8201</td>
-                  <td>The Great Gatsby</td>
-                  <td>Anna Smith</td>
-                  <td>Oct 10, 2023</td>
-                  <td>Oct 24, 2023</td>
-                  <td><span class="status badge-active">Active</span></td>
+                <tr *ngFor="let activity of recentActivity">
+                  <td>#B-{{ activity.bookId }}</td>
+                  <td>{{ activity.bookTitle }}</td>
+                  <td>{{ activity.borrower }}</td>
+                  <td>{{ activity.dateBorrowed | date:'MMM dd, yyyy' }}</td>
+                  <td>{{ activity.dueDate | date:'MMM dd, yyyy' }}</td>
+                  <td>
+                    <span class="status badge-active" *ngIf="activity.status === 'Active'">Active</span>
+                    <span class="status badge-returned" *ngIf="activity.status === 'Returned'">Returned</span>
+                    <span class="status badge-overdue" *ngIf="activity.status === 'Overdue'">Overdue</span>
+                  </td>
                 </tr>
-                <tr>
-                  <td>#B-3490</td>
-                  <td>Clean Code</td>
-                  <td>John Matthews</td>
-                  <td>Oct 08, 2023</td>
-                  <td>Oct 22, 2023</td>
-                  <td><span class="status badge-active">Active</span></td>
-                </tr>
-                <tr>
-                  <td>#B-1120</td>
-                  <td>Dune</td>
-                  <td>Emma Watson</td>
-                  <td>Sep 25, 2023</td>
-                  <td>Oct 09, 2023</td>
-                  <td><span class="status badge-overdue">Overdue</span></td>
-                </tr>
-                <tr>
-                  <td>#B-5021</td>
-                  <td>Atomic Habits</td>
-                  <td>Chris Evans</td>
-                  <td>Oct 01, 2023</td>
-                  <td>Oct 15, 2023</td>
-                  <td><span class="status badge-returned">Returned</span></td>
-                </tr>
-                <tr>
-                  <td>#B-9022</td>
-                  <td>1984 by George Orwell</td>
-                  <td>David Lee</td>
-                  <td>Oct 12, 2023</td>
-                  <td>Oct 26, 2023</td>
-                  <td><span class="status badge-active">Active</span></td>
+                <tr *ngIf="recentActivity.length === 0">
+                  <td colspan="6" style="text-align: center; padding: 20px;">No recent activity</td>
                 </tr>
               </tbody>
             </table>
