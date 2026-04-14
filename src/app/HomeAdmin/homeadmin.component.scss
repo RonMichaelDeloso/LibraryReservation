@@ -163,7 +163,6 @@ body {
   }
 }
 
-/* Title row - title and status on left, buttons on right */
 .title-row {
   display: flex;
   justify-content: space-between;
@@ -211,29 +210,35 @@ body {
   .admin-actions {
     display: flex;
     gap: 8px;
+    
+    img{
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
 
     button {
-      padding: 5px 12px;
+      padding: 4px 4px;
       border-radius: 6px;
       cursor: pointer;
       font-size: 12px;
       border: none;
 
       &.edit-btn {
-        background: #2196f3;
-        color: white;
+        background: #ffffff;
+        color: rgb(255, 255, 255);
 
         &:hover {
-          background: #1976d2;
+          background: #b8b8b834;
         }
       }
 
       &.delete-btn {
-        background: #f44336;
-        color: white;
+        background: #ffffff;
+        color: rgb(255, 255, 255);
 
         &:hover {
-          background: #d32f2f;
+          background: #b8b8b834;
         }
       }
     }
