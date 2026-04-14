@@ -136,7 +136,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       let activeCount = 0;
       try {
         const rawRes = await this.reservationService.getReservationsByUser(userId);
-        const activeRes = rawRes.filter((res: any) => res.Status === 'Pending' || res.Status === 'Loaned');
+        const activeRes = rawRes.filter((res: any) => res.Status === 'Pending' || res.Status === 'Completed');
         activeCount = activeRes.length;
       } catch (e) {
         console.error('Failed to get user active reservations:', e);

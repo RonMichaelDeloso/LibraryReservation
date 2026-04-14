@@ -58,43 +58,43 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let res of filteredReservations; let i = index">
+            <tr *ngFor="let record of filteredRecords; let i = index">
               <td>{{ i + 1 }}</td>
-              <td>{{ res.First_name || 'Student' }} {{ res.Last_name || 'Name' }}</td>
+              <td>{{ record.First_name || 'Student' }} {{ record.Last_name || 'Name' }}</td>
               <td class="book-cell">
-                <img *ngIf="res.Image_URL" [src]="'http://127.0.0.1:3000/' + res.Image_URL" class="book-thumb"
+                <img *ngIf="record.Image_URL" [src]="'http://127.0.0.1:3000/' + record.Image_URL" class="book-thumb"
                   alt="Book">
-                - {{ res.Title }}
+                - {{ record.Title }}
               </td>
-              <td>{{ res.Due_date | date:'MM/dd/yyyy' }}</td>
+              <td>{{ record.Due_date | date:'MM/dd/yyyy' }}</td>
 
               <td>
                 <span class="status-pill" [ngClass]="{
-                  'checkout': res.Status === 'Completed' || res.Status === 'Loaned',
-                  'pending': res.Status === 'Pending',
-                  'cancelled': res.Status === 'Cancelled'
+                  'checkout': record.Status === 'Completed',
+                  'pending': record.Status === 'Pending',
+                  'cancelled': record.Status === 'Cancelled'
                 }">
-                  {{ res.Status === 'Loaned' || res.Status === 'Completed' ? 'Check Out' : res.Status }}
+                  {{ record.Status === 'Completed' ? 'Checked Out' : record.Status }}
                 </span>
               </td>
 
               <td class="action-cell">
                 <div class="action-wrapper">
-                  <ng-container *ngIf="res.Status === 'Pending'">
-                    <button class="action-btn btn-green" (click)="approveReservation(res.Reserve_id)">Book Ready</button>
+                  <ng-container *ngIf="record.recordType === 'reservation' && record.Status === 'Pending'">
+                    <button class="action-btn btn-green" (click)="approveReservation(record.actionId)">Book Ready</button>
                     <button class="action-btn btn-brown"
-                      (click)="cancelReservation(res.Reserve_id, 'Cancelled')">Cancelled</button>
+                      (click)="cancelReservation(record.actionId, 'Cancelled')">Cancelled</button>
                   </ng-container>
 
-                  <ng-container *ngIf="res.Status === 'Loaned' || res.Status === 'Completed'">
-                    <button class="action-btn btn-green-wide"
-                      (click)="cancelReservation(res.Reserve_id, 'Returned')">Returned</button>
+                  <ng-container *ngIf="record.recordType === 'loan' && record.Status === 'Completed'">
+                    <button class="action-btn btn-green"
+                      (click)="returnBook(record.actionId)">Returned</button>
                   </ng-container>
                 </div>
               </td>
             </tr>
 
-            <tr *ngIf="filteredReservations.length === 0">
+            <tr *ngIf="filteredRecords.length === 0">
               <td colspan="6" class="no-records">No records found.</td>
             </tr>
           </tbody>

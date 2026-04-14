@@ -1,8 +1,12 @@
 <div class="main">
+
+  <!-- ── Top Bar ─────────────────────────────────────────────────────────── -->
   <header class="topbar">
     <div class="title">Library</div>
     <div class="user-container">
-      <div class="user" (click)="toggleDropdown()">{{ userName }} <img src="/icons/user.png" class="user-icon" alt="">
+      <div class="user" (click)="toggleDropdown()">
+        {{ userName }}
+        <img src="/icons/user.png" class="user-icon" alt="User">
       </div>
       <div class="dropdown" *ngIf="showDropdown">
         <div class="dropdown-item" routerLink="/profile">
@@ -16,43 +20,62 @@
   </header>
 
   <div class="container">
+
+    <!-- ── Sidebar ──────────────────────────────────────────────────────── -->
     <aside class="sidebar">
       <ul class="menu">
-        <li routerLink="/home"><img src="/icons/home.png" alt=""> Home</li>
+        <li routerLink="/home">
+          <img src="/icons/home.png" alt=""> Home
+        </li>
         <li routerLink="/notification">
           <img src="/icons/notification.png" alt=""> Notification
           <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
         </li>
-        <li class="active" routerLink="/book"><img src="/icons/cart.png" alt=""> Book Cart</li>
-
+        <li class="active" routerLink="/book">
+          <img src="/icons/cart.png" alt=""> Book Cart
+        </li>
       </ul>
     </aside>
 
+    <!-- ── Main Content ──────────────────────────────────────────────────── -->
     <section class="content">
+
+      <!-- Header row -->
       <div class="header-row">
-        <h2>Book cart</h2>
+        <h2>Book Cart</h2>
         <label class="select-all" *ngIf="reservations.length > 0">
-          <input type="checkbox" class="item-checkbox" [checked]="allSelected" (change)="toggleAll($event)" />
+          <input
+            type="checkbox"
+            class="item-checkbox"
+            [checked]="allSelected"
+            (change)="toggleAll($event)"
+          />
           Select All
         </label>
       </div>
 
       <div class="scroll-area">
+
+        <!-- ── Cart Items ──────────────────────────────────────────────── -->
         <div class="cart-list">
-          <div class="cart-item" *ngFor="let res of reservations">
+          <div class="cart-item" *ngFor="let res of reservations; let i = index">
 
             <input type="checkbox" class="item-checkbox" [(ngModel)]="res.selected" />
 
             <div class="book-placeholder" *ngIf="!res.Image_URL"></div>
-            <img *ngIf="res.Image_URL" [src]="'http://127.0.0.1:3000/' + res.Image_URL" class="book-thumb"
-              alt="Book Cover">
+            <img
+              *ngIf="res.Image_URL"
+              [src]="'http://127.0.0.1:3000/' + res.Image_URL"
+              class="book-thumb"
+              alt="Book Cover"
+            >
 
             <div class="book-info">
               <h3>{{ res.Title || 'Book title' }}</h3>
               <p class="author">{{ res.Author || 'Author' }}</p>
             </div>
 
-            <button class="remove-btn" (click)="removeFromCart(res)" title="Remove from cart">×</button>
+            <button class="remove-btn" (click)="removeFromCart(res.Book_id)" title="Remove from cart">×</button>
 
           </div>
 
@@ -61,29 +84,49 @@
           </div>
         </div>
 
-        <h2 class="pending-heading">My Pending & Borrowed Books</h2>
+        <h2 class="pending-heading">My Pending &amp; Borrowed Books</h2>
 
         <div class="cart-list">
           <div class="cart-item" *ngFor="let res of activeReservations">
 
             <div class="book-placeholder" *ngIf="!res.Image_URL"></div>
-            <img *ngIf="res.Image_URL" [src]="'http://127.0.0.1:3000/' + res.Image_URL" class="book-thumb"
-              alt="Book Cover">
+            <img
+              *ngIf="res.Image_URL"
+              [src]="'http://127.0.0.1:3000/' + res.Image_URL"
+              class="book-thumb"
+              alt="Book Cover"
+            >
 
             <div class="book-info book-info--full">
               <div class="title-status-row">
                 <h3>{{ res.Title || 'Book title' }}</h3>
-                <span class="status-badge" [ngClass]="{
-                  'pending': res.Status === 'Pending',
-                  'completed': res.Status === 'Completed',
-                  'loaned': res.Status === 'Loaned',
-                  'cancelled': res.Status === 'Cancelled'
-                }">{{ res.Status === 'Loaned' ? 'Unavailable' : res.Status }}</span>
+                <span
+                  class="status-badge"
+                  [ngClass]="{
+                    'pending':   res.Status === 'Pending',
+                    'loaned':    res.Status === 'Completed',
+                    'cancelled': res.Status === 'Cancelled'
+                  }"
+                >
+                  {{
+                    res.Status === 'Completed' ? 'Checked Out' : res.Status
+                  }}
+                </span>
               </div>
               <p class="author">{{ res.Author || 'Author' }}</p>
+              <p
+                class="return-date"
+                *ngIf="res.Status === 'Completed'"
+              >
+                Return by: {{ res.Due_date | date:'mediumDate' }}
+              </p>
             </div>
 
-            <button class="cancel-btn" *ngIf="res.Status === 'Pending'" (click)="cancelReservation(res.Reserve_id)">
+            <button
+              class="cancel-btn"
+              *ngIf="res.Status === 'Pending'"
+              (click)="cancelReservation(res.Reserve_id)"
+            >
               Cancel Request
             </button>
 
@@ -97,11 +140,20 @@
         <div class="scroll-spacer"></div>
       </div>
 
-      <button class="items-float-btn" [disabled]="!hasSelectedItems" [class.disabled]="!hasSelectedItems"
-        (click)="checkoutItems()">
+      <button
+        class="items-float-btn"
+        [disabled]="!hasSelectedItems"
+        [class.disabled]="!hasSelectedItems"
+        (click)="checkoutItems()"
+      >
         Items
       </button>
 
     </section>
   </div>
+
+  <div class="toast-notification" *ngIf="toastVisible" [class.toast-error]="toastType === 'error'">
+    {{ toastMessage }}
+  </div>
+
 </div>

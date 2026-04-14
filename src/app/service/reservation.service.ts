@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { last, lastValueFrom } from "rxjs";
+import { lastValueFrom } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -42,6 +42,12 @@ export class ReservationService {
     public async cancelReservation(id: number) {
         return lastValueFrom(
             this.http.put<any>(`${this.apiUrl}/cancel/${id}`, {})
+        );
+    }
+
+    public async returnReservation(id: number) {
+        return lastValueFrom(
+            this.http.put<any>(`${this.apiUrl}/return/${id}`, {})
         );
     }
 }

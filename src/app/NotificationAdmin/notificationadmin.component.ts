@@ -56,6 +56,13 @@ export class NotificationAdminComponent implements OnInit, OnDestroy {
       if (!userId) return;
       this.notifications = await this.notificationService.getByUser(userId);
       this.cdr.detectChanges();
+      // Auto-mark all as read so the sidebar badge clears
+      const unread = this.notifications.filter((n: any) => !n.is_read);
+      if (unread.length > 0) {
+        await this.notificationService.markAllAsRead(userId);
+        this.notifications = this.notifications.map((n: any) => ({ ...n, is_read: 1 }));
+        this.cdr.detectChanges();
+      }
     } catch (e) {
       console.error('Failed to load notifications:', e);
     }

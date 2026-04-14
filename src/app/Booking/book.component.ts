@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { RouterLink, Router } from "@angular/router";
+import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../service/auth.service';
@@ -11,7 +11,7 @@ import { ReservationService } from '../service/reservation.service';
   standalone: true,
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.scss'],
-  imports: [RouterLink, CommonModule, FormsModule]
+  imports: [RouterLink, CommonModule, FormsModule],
 })
 export class BookComponent implements OnInit, OnDestroy {
   private reservationService = inject(ReservationService);
@@ -22,26 +22,23 @@ export class BookComponent implements OnInit, OnDestroy {
 
   reservations: any[] = [];
   activeReservations: any[] = [];
-  userName: string = 'USER';
-  unreadCount: number = 0;
+  userName = 'USER';
+  unreadCount = 0;
+  showDropdown = false;
+  toastMessage = '';
+  toastType: 'success' | 'error' = 'success';
+  toastVisible = false;
+
   private refreshInterval: any;
+  private toastTimer: any;
 
-  showDropdown: boolean = false;
-
-  toggleDropdown() {
-    this.showDropdown = !this.showDropdown;
-  }
-
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']).then(() => {
-      window.location.reload();
-    });
-  }
 
   async ngOnInit() {
     const user = this.authService.getUser();
-    this.userName = user?.Last_name ? `${user.First_name} ${user.Last_name}` : (user?.First_name || 'USER');
+    this.userName = user?.Last_name
+      ? `${user.First_name} ${user.Last_name}`
+      : user?.First_name || 'USER';
+
     await this.loadReservations();
     await this.loadUnreadCount();
     this.cdr.detectChanges();
@@ -55,10 +52,11 @@ export class BookComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.refreshInterval) {
-      clearInterval(this.refreshInterval);
-    }
+    clearInterval(this.refreshInterval);
+    clearTimeout(this.toastTimer);
   }
+
+
 
   async loadReservations() {
     if (typeof localStorage !== 'undefined') {
@@ -70,15 +68,19 @@ export class BookComponent implements OnInit, OnDestroy {
         console.error('Failed to load cart:', e);
       }
     }
-
     await this.loadActiveReservations();
   }
 
   async loadActiveReservations() {
     try {
       const userId = this.authService.getUserId();
+
       const rawReservations = await this.reservationService.getReservationsByUser(userId);
-      this.activeReservations = rawReservations.filter((res: any) => res.Status !== 'Cancelled');
+      // Show Pending and Ongoing — hide only Cancelled
+      this.activeReservations = rawReservations
+        .filter((r: any) => r.Status !== 'Cancelled')
+        .map((r: any) => ({ ...r, uniqueId: `res_${r.Reserve_id}` }));
+
       this.cdr.detectChanges();
     } catch (e) {
       console.error('Failed to load active reservations:', e);
@@ -92,8 +94,12 @@ export class BookComponent implements OnInit, OnDestroy {
       const notifications = await this.notificationService.getByUser(userId);
       this.unreadCount = notifications.filter((n: any) => !n.is_read).length;
       this.cdr.detectChanges();
-    } catch (e) {}
+    } catch (e) {
+      console.error('Failed to load unread count:', e);
+    }
   }
+
+  // ─── Computed Properties ──────────────────────────────────────────────────
 
   get hasSelectedItems(): boolean {
     return this.reservations.some(r => r.selected);
@@ -103,72 +109,114 @@ export class BookComponent implements OnInit, OnDestroy {
     return this.reservations.length > 0 && this.reservations.every(r => r.selected);
   }
 
-  toggleAll(event: any) {
-    const checked = event.target.checked;
-    this.reservations.forEach(r => r.selected = checked);
+  // ─── UI Actions ───────────────────────────────────────────────────────────
+
+  toggleDropdown() {
+    this.showDropdown = !this.showDropdown;
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']).then(() => window.location.reload());
+  }
+
+  toggleAll(event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+    this.reservations.forEach(r => (r.selected = checked));
+  }
+
+  // ─── Cart Actions ─────────────────────────────────────────────────────────
+
+  // FIX: Remove by Book_id instead of array index so the correct book is
+  // always deleted regardless of checkbox state or change-detection timing.
+  removeFromCart(bookId: string | number) {
+    const updated = this.reservations.filter(r => String(r.Book_id) !== String(bookId));
+    this.saveCart(updated);
+    window.location.reload();
   }
 
   async cancelReservation(id: number) {
-    if (confirm('Cancel this pending request?')) {
-      try {
-        await this.reservationService.cancelReservation(id);
-        console.log('Request cancelled.');
-        await this.loadReservations();
-      } catch (e: any) {
-        console.error(e.error?.message || 'Failed to cancel');
-      }
+    if (!confirm('Cancel this pending request?')) return;
+    try {
+      await this.reservationService.cancelReservation(id);
+      window.location.reload();
+    } catch (e: any) {
+      const msg = e?.error?.message || e?.message || 'Failed to cancel. Please try again.';
+      this.showToast(msg, 'error');
+      console.error('Cancel error:', e);
     }
-  }
-
-  removeFromCart(book: any) {
-    this.reservations = this.reservations.filter(r => r.Book_id !== book.Book_id);
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('cart', JSON.stringify(this.reservations));
-    }
-    this.cdr.detectChanges();
   }
 
   async checkoutItems() {
     const selected = this.reservations.filter(r => r.selected);
-    if (selected.length === 0) {
-      console.warn("Please select at least one item from the cart.");
-      return;
-    }
+    if (selected.length === 0) return;
 
-    const activeCount = this.activeReservations.filter(r => r.Status === 'Pending' || r.Status === 'Loaned').length;
+    const activeCount = this.activeReservations.filter(
+      r => r.Status === 'Pending' || r.Status === 'Completed'
+    ).length;
+
     if (activeCount + selected.length > 5) {
-      alert(`You can only borrow up to 5 books maximum!\n\nYou currently have ${activeCount} active/pending requests. You can only checkout ${5 - activeCount} more items.`);
+      this.showToast(
+        `You can only borrow up to 5 books! You have ${activeCount} active request(s). You can add ${5 - activeCount} more.`,
+        'error'
+      );
       return;
     }
 
-    try {
-      const userId = this.authService.getUserId();
-      const reserveDate = new Date().toISOString().split('T')[0];
-      const due = new Date();
-      due.setDate(due.getDate() + 7);
-      const dueDate = due.toISOString().split('T')[0];
+    const userId = this.authService.getUserId();
+    const reserveDate = new Date().toISOString().split('T')[0];
+    const due = new Date();
+    due.setDate(due.getDate() + 7);
+    const dueDate = due.toISOString().split('T')[0];
 
-      for (const book of selected) {
-        const payload = {
+    let successCount = 0;
+    const successfulBookIds = new Set<string>();
+
+    for (const book of selected) {
+      try {
+        await this.reservationService.createReservation({
           User_id: userId,
           Book_id: book.Book_id,
           Reserve_date: reserveDate,
-          Due_date: dueDate
-        };
-        await this.reservationService.createReservation(payload);
+          Due_date: dueDate,
+        });
+        successCount++;
+        successfulBookIds.add(String(book.Book_id));
+      } catch (e: any) {
+        console.error(`Failed to checkout "${book.Title}":`, e.error?.message || e);
       }
-
-      console.log(`Successfully requested ${selected.length} items! The admin handles approvals.`);
-
-      const remainingCart = this.reservations.filter(r => !r.selected);
-      if (typeof localStorage !== 'undefined') {
-        localStorage.setItem('cart', JSON.stringify(remainingCart));
-      }
-      this.reservations = remainingCart;
-      await this.loadReservations();
-
-    } catch (e: any) {
-      console.error(e.error?.message || 'Failed to checkout some items.');
     }
+
+    if (successCount > 0) {
+      // Remove successfully checked-out books from localStorage cart
+      const remaining = this.reservations.filter(
+        r => !successfulBookIds.has(String(r.Book_id))
+      );
+      this.saveCart(remaining);
+      // Reload page so Angular reads fresh localStorage → cart is empty, pending shows new items
+      window.location.reload();
+    } else {
+      this.showToast('Could not check out. Books may already be reserved or unavailable.', 'error');
+    }
+  }
+
+  // ─── Helpers ──────────────────────────────────────────────────────────────
+
+  private saveCart(items: any[]) {
+    if (typeof localStorage === 'undefined') return;
+    const toSave = items.map(({ selected: _s, ...rest }: any) => rest);
+    localStorage.setItem('cart', JSON.stringify(toSave));
+  }
+
+  showToast(message: string, type: 'success' | 'error' = 'success') {
+    if (this.toastTimer) clearTimeout(this.toastTimer);
+    this.toastMessage = message;
+    this.toastType = type;
+    this.toastVisible = true;
+    this.cdr.detectChanges();
+    this.toastTimer = setTimeout(() => {
+      this.toastVisible = false;
+      this.cdr.detectChanges();
+    }, 3500);
   }
 }
