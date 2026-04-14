@@ -1,10 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { RouterLink, Router } from "@angular/router";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../service/auth.service';
 import { NotificationService } from '../service/notification.service';
-import { ChangeDetectorRef, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -68,7 +67,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const notifications = await this.notificationService.getByUser(userId);
       this.unreadCount = notifications.filter((n: any) => !n.is_read).length;
       this.cdr.detectChanges();
-    } catch (e) {}
+    } catch (e) {
+      console.error('Failed to load notifications', e);
+    }
   }
 
   toggleDropdown() {
@@ -98,11 +99,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         Last_name: this.editLastName,
         Email: this.editEmail
       });
-      
+
       this.userName = this.editLastName ? `${this.editFirstName} ${this.editLastName}` : this.editFirstName;
       this.topbarName = this.editFirstName;
       this.userEmail = this.editEmail;
-      
+
       this.closeEditModal();
       alert('Profile updated successfully!');
     } catch (err) {
@@ -139,7 +140,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       alert("Password must be at least 6 characters.");
       return;
     }
-    
+
     try {
       await this.authService.resetPasswordDirect(this.userEmail, this.newPassword);
       alert("Password logically updated successfully!");
