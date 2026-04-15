@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../service/auth.service';
 import { NotificationService } from '../service/notification.service';
 import { BookService } from '../service/book.service';
-import { LoanService } from '../service/loan.services';
 import { ReservationService } from '../service/reservation.service';
 import { apiService } from '../service/api.service';
 
@@ -49,7 +48,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   recentActivity: any[] = [];
 
   private bookService = inject(BookService);
-  private loanService = inject(LoanService);
   private reservationService = inject(ReservationService);
   private backendApiService = inject(apiService);
 
@@ -98,51 +96,65 @@ export class DashboardComponent implements OnInit, OnDestroy {
   async loadDashboardData() {
     try {
       // Fetch data in parallel
-      const [loans, reservations, users] = await Promise.all([
-        this.loanService.getAllLoans().catch(() => []),
+      const [reservations, users, books] = await Promise.all([
         this.reservationService.getAllReservation().catch(() => []),
-        this.backendApiService.getAllUsers().catch(() => [])
+        this.backendApiService.getAllUsers().catch(() => []),
+        this.bookService.getAllBooks().catch(() => [])
       ]);
 
-      this.totalBorrowBooks = loans.length;
-      
       const now = new Date();
 
-      this.currentlyBorrowed = loans.filter((loan: any) => !loan.Return_date).length;
-      this.overdueReturns = loans.filter((loan: any) => {
-        if (loan.Return_date) return false;
-        const dueDate = new Date(loan.Due_date);
+      // Total Books in the catalog
+      this.totalBorrowBooks = books.length;
+      
+      this.currentlyBorrowed = reservations.filter((r: any) => r.Status === 'Completed').length;
+      
+      // Unique students with Overdue books
+      const overdueReservations = reservations.filter((r: any) => {
+        if (r.Status !== 'Completed') return false;
+        const dueDate = new Date(r.Due_date);
         return dueDate < now;
-      }).length;
+      });
+      this.overdueReturns = new Set(overdueReservations.map((r: any) => r.User_id)).size;
 
-      this.activeReservations = reservations.filter((res: any) => res.Status === 'Pending' || res.Status === 'Approved').length;
+      // Unique students with Active Reservations
+      const pendingReservations = reservations.filter((r: any) => r.Status === 'Pending');
+      this.activeReservations = new Set(pendingReservations.map((r: any) => r.User_id)).size;
 
       this.totalUsers = users.length;
-      this.activeUsers = Math.max(1, Math.floor(users.length * 0.8)); // Mock active users based on total if not available, ensuring at least current user is active
+      
+      // Number of unique users actively interacting with the library (have records)
+      this.activeUsers = new Set(reservations.map((r: any) => r.User_id)).size;
 
-      // Prepare recent activity table (combining loans)
-      const mappedLoans = loans.map((loan: any) => {
-        let status = 'Active';
-        if (loan.Return_date) {
-            status = 'Returned';
-        } else {
-            const dueDate = new Date(loan.Due_date);
-            if (dueDate < now) status = 'Overdue';
+      // Prepare recent activity table
+      const mappedActivity = reservations.map((r: any) => {
+        let displayStatus = 'Active';
+        if (r.Status === 'Returned') {
+            displayStatus = 'Returned';
+        } else if (r.Status === 'Cancelled') {
+            displayStatus = 'Cancelled';
+        } else if (r.Status === 'Pending') {
+            displayStatus = 'Pending';
+        } else if (r.Status === 'Completed') {
+            const dueDate = new Date(r.Due_date);
+            displayStatus = dueDate < now ? 'Overdue' : 'Active';
         }
         
         return {
-            id: loan.Loan_id || loan.id,
-            bookId: loan.Book_id,
-            bookTitle: loan.Book?.Title || 'Unknown Book',
-            borrower: loan.User?.First_name ? `${loan.User.First_name} ${loan.User.Last_name || ''}` : 'Unknown User',
-            dateBorrowed: loan.Borrow_date,
-            dueDate: loan.Due_date,
-            status: status
+            id: r.Reserve_id,
+            bookId: r.Book_id,
+            bookTitle: r.Title || 'Unknown Book',
+            borrower: r.First_name ? `${r.First_name} ${r.Last_name || ''}` : 'Unknown User',
+            dateBorrowed: r.Reserve_date, // Reserve date acts as the initiation date
+            dueDate: r.Due_date,
+            status: displayStatus
         };
       });
 
-      // Sort by latest borrow date
-      this.recentActivity = mappedLoans.sort((a: any, b: any) => new Date(b.dateBorrowed).getTime() - new Date(a.dateBorrowed).getTime()).slice(0, 5);
+      // Sort by latest reserve date and grab top 5
+      this.recentActivity = mappedActivity
+        .sort((a: any, b: any) => new Date(b.dateBorrowed).getTime() - new Date(a.dateBorrowed).getTime())
+        .slice(0, 5);
 
       this.cdr.detectChanges();
     } catch (e) {

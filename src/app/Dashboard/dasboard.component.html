@@ -61,7 +61,7 @@
               </svg>
             </div>
             <div class="stat-info">
-              <h3>Total Borrow Books</h3>
+              <h3>Total Books</h3>
               <div class="stat-value">{{ totalBorrowBooks }}</div>
             </div>
           </div>
@@ -95,7 +95,7 @@
               </svg>
             </div>
             <div class="stat-info">
-              <h3>Active Reservation</h3>
+              <h3>Students Reserving</h3>
               <div class="stat-value">{{ activeReservations }}</div>
             </div>
           </div>
@@ -112,7 +112,7 @@
               </svg>
             </div>
             <div class="stat-info">
-              <h3>Overdue Returns</h3>
+              <h3>Students with Overdue</h3>
               <div class="stat-value">{{ overdueReturns }}</div>
             </div>
           </div>
@@ -129,7 +129,7 @@
               </svg>
             </div>
             <div class="stat-info">
-              <h3>Active Users</h3>
+              <h3>Active Students</h3>
               <div class="stat-value">{{ activeUsers }}</div>
             </div>
           </div>
@@ -181,6 +181,8 @@
                     <span class="status badge-active" *ngIf="activity.status === 'Active'">Active</span>
                     <span class="status badge-returned" *ngIf="activity.status === 'Returned'">Returned</span>
                     <span class="status badge-overdue" *ngIf="activity.status === 'Overdue'">Overdue</span>
+                    <span class="status badge-pending" *ngIf="activity.status === 'Pending'" style="background: var(--warning-color, #f39c12); color: white;">Pending</span>
+                    <span class="status badge-cancelled" *ngIf="activity.status === 'Cancelled'" style="background: var(--danger-color, #e74c3c); color: white;">Cancelled</span>
                   </td>
                 </tr>
                 <tr *ngIf="recentActivity.length === 0">
