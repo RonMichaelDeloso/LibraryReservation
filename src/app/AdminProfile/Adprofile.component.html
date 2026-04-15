@@ -13,7 +13,8 @@
     <header class="topbar">
       <div class="title">Library</div>
       <div class="user-container">
-        <div class="user" (click)="toggleDropdown()">{{ userName }} <img src="/icons/user.png" class="user-icon" alt=""></div>
+        <div class="user" (click)="toggleDropdown()">{{ userName }} <img src="/icons/user.png" class="user-icon" alt="">
+        </div>
         <div class="dropdown" *ngIf="showDropdown">
           <div class="dropdown-item" routerLink="/adprofile">
             <img src="/icons/user.png" alt=""> Profile
@@ -73,12 +74,8 @@
           </div>
           <div class="invite-body">
             <div class="invite-row">
-              <input
-                type="email"
-                class="invite-input"
-                [(ngModel)]="inviteEmail"
-                placeholder="Enter email to invite as Admin"
-              >
+              <input type="email" class="invite-input" [(ngModel)]="inviteEmail"
+                placeholder="Enter email to invite as Admin">
               <button class="invite-btn" (click)="sendAdminInvite()">Send Invite</button>
             </div>
             <p class="invite-msg success" *ngIf="inviteSuccess">&#10004; Invite sent successfully!</p>

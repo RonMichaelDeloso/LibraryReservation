@@ -23,8 +23,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private router = inject(Router);
 
   topbarName: string = 'User1';
-  userName: string = 'Ron Michael Deloso';
-  userEmail: string = 'Ron.MichelDeloso@gmail.com';
+  userName: string = 'User1';
+  userEmail: string = 'User1@gmail.com';
   showDropdown: boolean = false;
   unreadCount: number = 0;
   private refreshInterval: any;
@@ -65,6 +65,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     this.loadUnreadCount();
+    this.getTotalUsers();
     this.loadDashboardData();
 
     if (typeof window !== 'undefined') {
@@ -106,9 +107,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       // Total Books in the catalog
       this.totalBorrowBooks = books.length;
-      
+
       this.currentlyBorrowed = reservations.filter((r: any) => r.Status === 'Completed').length;
-      
+
       // Unique students with Overdue books
       const overdueReservations = reservations.filter((r: any) => {
         if (r.Status !== 'Completed') return false;
@@ -121,33 +122,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const pendingReservations = reservations.filter((r: any) => r.Status === 'Pending');
       this.activeReservations = new Set(pendingReservations.map((r: any) => r.User_id)).size;
 
-      this.totalUsers = users.length;
+      // this.totalUsers = users.length; (Handled by getTotalUsers())
+
       
-      // Number of unique users actively interacting with the library (have records)
-      this.activeUsers = new Set(reservations.map((r: any) => r.User_id)).size;
 
       // Prepare recent activity table
       const mappedActivity = reservations.map((r: any) => {
         let displayStatus = 'Active';
         if (r.Status === 'Returned') {
-            displayStatus = 'Returned';
+          displayStatus = 'Returned';
         } else if (r.Status === 'Cancelled') {
-            displayStatus = 'Cancelled';
+          displayStatus = 'Cancelled';
         } else if (r.Status === 'Pending') {
-            displayStatus = 'Pending';
+          displayStatus = 'Pending';
         } else if (r.Status === 'Completed') {
-            const dueDate = new Date(r.Due_date);
-            displayStatus = dueDate < now ? 'Overdue' : 'Active';
+          const dueDate = new Date(r.Due_date);
+          displayStatus = dueDate < now ? 'Overdue' : 'Active';
         }
-        
+
         return {
-            id: r.Reserve_id,
-            bookId: r.Book_id,
-            bookTitle: r.Title || 'Unknown Book',
-            borrower: r.First_name ? `${r.First_name} ${r.Last_name || ''}` : 'Unknown User',
-            dateBorrowed: r.Reserve_date, // Reserve date acts as the initiation date
-            dueDate: r.Due_date,
-            status: displayStatus
+          id: r.Reserve_id,
+          bookId: r.Book_id,
+          bookTitle: r.Title || 'Unknown Book',
+          borrower: r.First_name ? `${r.First_name} ${r.Last_name || ''}` : 'Unknown User',
+          dateBorrowed: r.Reserve_date, // Reserve date acts as the initiation date
+          dueDate: r.Due_date,
+          status: displayStatus
         };
       });
 
@@ -179,6 +179,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   closeEditModal() {
     this.isEditModalOpen = false;
+  }
+
+  async getTotalUsers() {
+    try {
+      const res = await this.authService.getTotalUsers();
+      this.totalUsers = res.total;
+    } catch (error) {
+      console.error('Failed to fetch total users', error);
+    }
   }
 
   async saveProfile() {

@@ -12,7 +12,7 @@ export class apiService {
 
     public async getAllUsers() {
         try {
-            return await lastValueFrom(this.http.get<any[]>(`${this.API_URL}/users`));
+            return await lastValueFrom(this.http.get<any[]>(`${this.API_URL}/auth/users`));
         } catch (e) {
             console.error('Failed to fetch users', e);
             return [];

@@ -81,14 +81,14 @@
               <td class="action-cell">
                 <div class="action-wrapper">
                   <ng-container *ngIf="record.recordType === 'reservation' && record.Status === 'Pending'">
-                    <button class="action-btn btn-green" (click)="approveReservation(record.actionId)">Book Ready</button>
+                    <button class="action-btn btn-green" (click)="approveReservation(record.actionId)">Book
+                      Ready</button>
                     <button class="action-btn btn-brown"
                       (click)="cancelReservation(record.actionId, 'Cancelled')">Cancelled</button>
                   </ng-container>
 
                   <ng-container *ngIf="record.recordType === 'loan' && record.Status === 'Completed'">
-                    <button class="action-btn btn-green"
-                      (click)="returnBook(record.actionId)">Returned</button>
+                    <button class="action-btn btn-green" (click)="returnBook(record.actionId)">Returned</button>
                   </ng-container>
                 </div>
               </td>

@@ -125,4 +125,10 @@ export class AuthService {
       localStorage.clear();
     }
   }
+
+  public async getTotalUsers() {
+    return lastValueFrom(
+      this.http.get<any>(`${this.apiUrl}/total-users`)
+    );
+  }
 }

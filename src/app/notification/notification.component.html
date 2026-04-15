@@ -41,18 +41,16 @@
 
       <!-- Notification list -->
       <div class="notif-list" *ngIf="notifications.length > 0">
-        <div class="notification-card" *ngFor="let notif of notifications"
-             [class.unread]="!notif.is_read"
-             [class.invite-card]="notif.Message.includes('invited to become an Admin')">
+        <div class="notification-card" *ngFor="let notif of notifications" [class.unread]="!notif.is_read"
+          [class.invite-card]="notif.Message.includes('invited to become an Admin')">
 
           <div class="notif-left">
-            <div class="bell-icon">{{ notif.Message.includes('invited to become an Admin') ? '👑' : (notif.is_read ? '🔕' : '🔔') }}</div>
+            <div class="bell-icon">{{ notif.Message.includes('invited to become an Admin') ? '👑' : (notif.is_read ?
+              '🔕' : '🔔') }}</div>
             <div class="notif-body">
               <p class="notif-text">{{ notif.Message }}</p>
               <span class="notif-time">{{ notif.created_at | date:'MMM d, y • h:mm a' }}</span>
-              <button
-                *ngIf="notif.Message.includes('invited to become an Admin')"
-                class="join-admin-btn"
+              <button *ngIf="notif.Message.includes('invited to become an Admin')" class="join-admin-btn"
                 (click)="openInviteConfirm(notif)">
                 👑 Join as Admin
               </button>
@@ -76,7 +74,9 @@
         <div class="success-icon">🎉</div>
         <h3>Welcome, Admin!</h3>
         <p>You have successfully joined as an Admin. Redirecting you to login...</p>
-        <div class="redirect-bar"><div class="redirect-fill"></div></div>
+        <div class="redirect-bar">
+          <div class="redirect-fill"></div>
+        </div>
       </div>
 
       <!-- Confirmation state -->

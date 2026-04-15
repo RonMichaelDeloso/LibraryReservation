@@ -127,8 +127,6 @@ export class BookComponent implements OnInit, OnDestroy {
 
   // ─── Cart Actions ─────────────────────────────────────────────────────────
 
-  // FIX: Remove by Book_id instead of array index so the correct book is
-  // always deleted regardless of checkbox state or change-detection timing.
   removeFromCart(bookId: string | number) {
     const updated = this.reservations.filter(r => String(r.Book_id) !== String(bookId));
     this.saveCart(updated);

@@ -13,7 +13,8 @@
     <header class="topbar">
       <div class="title">Library</div>
       <div class="user-container">
-        <div class="user" (click)="toggleDropdown()">{{ userName }} <img src="/icons/user.png" class="user-icon" alt=""></div>
+        <div class="user" (click)="toggleDropdown()">{{ userName }} <img src="/icons/user.png" class="user-icon" alt="">
+        </div>
         <div class="dropdown" *ngIf="showDropdown">
           <div class="dropdown-item" routerLink="/profile">
             <img src="/icons/user.png" alt=""> Profile

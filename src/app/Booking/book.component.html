@@ -44,12 +44,7 @@
       <div class="header-row">
         <h2>Book Cart</h2>
         <label class="select-all" *ngIf="reservations.length > 0">
-          <input
-            type="checkbox"
-            class="item-checkbox"
-            [checked]="allSelected"
-            (change)="toggleAll($event)"
-          />
+          <input type="checkbox" class="item-checkbox" [checked]="allSelected" (change)="toggleAll($event)" />
           Select All
         </label>
       </div>
@@ -63,12 +58,8 @@
             <input type="checkbox" class="item-checkbox" [(ngModel)]="res.selected" />
 
             <div class="book-placeholder" *ngIf="!res.Image_URL"></div>
-            <img
-              *ngIf="res.Image_URL"
-              [src]="'http://127.0.0.1:3000/' + res.Image_URL"
-              class="book-thumb"
-              alt="Book Cover"
-            >
+            <img *ngIf="res.Image_URL" [src]="'http://127.0.0.1:3000/' + res.Image_URL" class="book-thumb"
+              alt="Book Cover">
 
             <div class="book-info">
               <h3>{{ res.Title || 'Book title' }}</h3>
@@ -90,43 +81,29 @@
           <div class="cart-item" *ngFor="let res of activeReservations">
 
             <div class="book-placeholder" *ngIf="!res.Image_URL"></div>
-            <img
-              *ngIf="res.Image_URL"
-              [src]="'http://127.0.0.1:3000/' + res.Image_URL"
-              class="book-thumb"
-              alt="Book Cover"
-            >
+            <img *ngIf="res.Image_URL" [src]="'http://127.0.0.1:3000/' + res.Image_URL" class="book-thumb"
+              alt="Book Cover">
 
             <div class="book-info book-info--full">
               <div class="title-status-row">
                 <h3>{{ res.Title || 'Book title' }}</h3>
-                <span
-                  class="status-badge"
-                  [ngClass]="{
+                <span class="status-badge" [ngClass]="{
                     'pending':   res.Status === 'Pending',
                     'loaned':    res.Status === 'Completed',
                     'cancelled': res.Status === 'Cancelled'
-                  }"
-                >
+                  }">
                   {{
-                    res.Status === 'Completed' ? 'Checked Out' : res.Status
+                  res.Status === 'Completed' ? 'Checked Out' : res.Status
                   }}
                 </span>
               </div>
               <p class="author">{{ res.Author || 'Author' }}</p>
-              <p
-                class="return-date"
-                *ngIf="res.Status === 'Completed'"
-              >
+              <p class="return-date" *ngIf="res.Status === 'Completed'">
                 Return by: {{ res.Due_date | date:'mediumDate' }}
               </p>
             </div>
 
-            <button
-              class="cancel-btn"
-              *ngIf="res.Status === 'Pending'"
-              (click)="cancelReservation(res.Reserve_id)"
-            >
+            <button class="cancel-btn" *ngIf="res.Status === 'Pending'" (click)="cancelReservation(res.Reserve_id)">
               Cancel Request
             </button>
 
@@ -140,12 +117,8 @@
         <div class="scroll-spacer"></div>
       </div>
 
-      <button
-        class="items-float-btn"
-        [disabled]="!hasSelectedItems"
-        [class.disabled]="!hasSelectedItems"
-        (click)="checkoutItems()"
-      >
+      <button class="items-float-btn" [disabled]="!hasSelectedItems" [class.disabled]="!hasSelectedItems"
+        (click)="checkoutItems()">
         Items
       </button>
 
