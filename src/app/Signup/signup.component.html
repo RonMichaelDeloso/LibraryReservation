@@ -14,7 +14,12 @@
           type="text"
           formControlName="First_name"
           placeholder="Enter your first name"
+          [class.input-error]="First_name?.invalid && First_name?.touched"
         />
+        <span class="field-error" *ngIf="First_name?.invalid && First_name?.touched">
+          <span *ngIf="First_name?.errors?.['required']">First name is required.</span>
+          <span *ngIf="First_name?.errors?.['minlength']">Must be at least 2 characters.</span>
+        </span>
       </div>
 
       <div class="input-group">
@@ -23,7 +28,12 @@
           type="text"
           formControlName="Last_name"
           placeholder="Enter your last name"
+          [class.input-error]="Last_name?.invalid && Last_name?.touched"
         />
+        <span class="field-error" *ngIf="Last_name?.invalid && Last_name?.touched">
+          <span *ngIf="Last_name?.errors?.['required']">Last name is required.</span>
+          <span *ngIf="Last_name?.errors?.['minlength']">Must be at least 2 characters.</span>
+        </span>
       </div>
 
       <div class="input-group">
@@ -32,32 +42,57 @@
           type="email"
           formControlName="Email"
           placeholder="Enter your email"
+          [class.input-error]="Email?.invalid && (Email?.touched || Email?.errors?.['serverError'])"
         />
+        <span class="field-error" *ngIf="Email?.invalid && (Email?.touched || Email?.errors?.['serverError'])">
+          <span *ngIf="Email?.errors?.['required']">Email is required.</span>
+          <span *ngIf="Email?.errors?.['email']">Enter a valid email address.</span>
+          <span *ngIf="Email?.errors?.['serverError']">{{ Email?.errors?.['serverError'] }}</span>
+        </span>
       </div>
 
       <div class="input-group">
         <label>Password</label>
-        <input
-          [type]="showPassword ? 'text' : 'password'"
-          formControlName="Password"
-          placeholder="Create a password"
-        />
-        <button type="button" class="password-toggle" (click)="showPassword = !showPassword">
-          {{ showPassword ? 'Hide' : 'Show' }}
-        </button>
+        <div class="pw-row">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="Password"
+            placeholder="Create a password (min. 6 characters)"
+            [class.input-error]="Password?.invalid && Password?.touched"
+          />
+          <button type="button" class="password-toggle" (click)="showPassword = !showPassword">
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+        <span class="field-error" *ngIf="Password?.invalid && Password?.touched">
+          <span *ngIf="Password?.errors?.['required']">Password is required.</span>
+          <span *ngIf="Password?.errors?.['minlength']">Must be at least 6 characters.</span>
+        </span>
       </div>
 
       <div class="input-group">
         <label>Confirm Password</label>
-        <input
-          [type]="showConfirm ? 'text' : 'password'"
-          formControlName="confirmPassword"
-          placeholder="Confirm your password"
-        />
-        <button type="button" class="password-toggle" (click)="showConfirm = !showConfirm">
-          {{ showConfirm ? 'Hide' : 'Show' }}
-        </button>
+        <div class="pw-row">
+          <input
+            [type]="showConfirm ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            placeholder="Confirm your password"
+            [class.input-error]="confirmPassword?.touched && confirmPassword?.errors?.['passwordMismatch']"
+          />
+          <button type="button" class="password-toggle" (click)="showConfirm = !showConfirm">
+            {{ showConfirm ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+        <span class="field-error" *ngIf="confirmPassword?.touched && confirmPassword?.errors?.['passwordMismatch']">
+          Passwords do not match.
+        </span>
       </div>
+
+      <p *ngIf="message" class="message"
+         [class.message-success]="messageType === 'success'"
+         [class.message-error]="messageType === 'error'">
+        {{ message }}
+      </p>
 
       <button type="submit" [disabled]="isLoading">
         {{ isLoading ? 'Creating account...' : 'Sign Up' }}
@@ -66,12 +101,6 @@
       <p class="login-link">
         Already have an account? <a routerLink="/login">Sign In</a>
       </p>
-
-      <p *ngIf="message" [style.color]="messageType === 'error' ? 'red' : 'green'" class="message">
-        {{ message }}
-      </p>
-
-      
 
     </form>
 

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
@@ -15,6 +15,7 @@ export class SignupComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
+  private cdr = inject(ChangeDetectorRef);
 
   signupForm: FormGroup = this.fb.group({
     First_name: ['', [Validators.required, Validators.minLength(2)]],
@@ -50,6 +51,7 @@ export class SignupComponent {
 
   async onSubmit() {
     if (this.signupForm.invalid) {
+      this.signupForm.markAllAsTouched();
       this.message = "Please fix the errors in the form.";
       this.messageType = 'error';
       return;
@@ -75,8 +77,18 @@ export class SignupComponent {
       
     } catch (error: any) {
       this.isLoading = false;
-      this.message = error.error?.message || 'Server error. Please try again.';
+      console.error("Signup catch error: ", error);
+      this.message = '';
+
+      if (error?.error?.message === "Email already existing") {
+        this.signupForm.get('Email')?.setErrors({ serverError: "Email already exists." });
+      } else if (error?.error?.message) {
+        this.message = error.error.message;
+      } else {
+        this.message = 'Server error. Please try again.';
+      }
       this.messageType = 'error';
+      this.cdr.detectChanges();
     }
   }
 }

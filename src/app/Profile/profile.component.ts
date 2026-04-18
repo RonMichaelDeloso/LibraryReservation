@@ -24,6 +24,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   userName: string = 'Ron Michael Deloso';
   userEmail: string = 'Ron.MichelDeloso@gmail.com';
   userRole: string = '';
+  userPicture: string = '';
+  selectedFile: File | null = null;
   showDropdown: boolean = false;
   unreadCount: number = 0;
   private refreshInterval: any;
@@ -46,6 +48,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.userEmail = user.Email;
       this.editEmail = user.Email;
     }
+
+    this.userPicture = this.authService.getImageUrl(user?.ProfilePic, this.userName);
 
     this.userRole = this.authService.getRole() || 'Student';
 
@@ -70,7 +74,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       const notifications = await this.notificationService.getByUser(userId);
       this.unreadCount = notifications.filter((n: any) => !n.is_read).length;
       this.cdr.detectChanges();
-    } catch (e) {}
+    } catch (e) { }
   }
 
   toggleDropdown() {
@@ -92,23 +96,39 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.isEditModalOpen = false;
   }
 
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
+
   async saveProfile() {
     try {
-      const userId = this.authService.getUserId();
-      await this.authService.updateProfile(userId, {
-        First_name: this.editFirstName,
-        Last_name: this.editLastName,
-        Email: this.editEmail
-      });
-      
-      this.userName = this.editLastName ? `${this.editFirstName} ${this.editLastName}` : this.editFirstName;
-      this.topbarName = this.editFirstName;
-      this.userEmail = this.editEmail;
-      
+      const formData = new FormData();
+      formData.append('User_id', String(this.authService.getUserId()));
+      formData.append('First_name', this.editFirstName);
+      formData.append('Last_name', this.editLastName);
+      formData.append('Email', this.editEmail);
+
+      if (this.selectedFile) {
+        formData.append('image', this.selectedFile);
+      }
+
+      const res = await this.authService.updateProfile(formData);
+
+      const updatedUser = res.user;
+      this.userName = updatedUser.Last_name ? `${updatedUser.First_name} ${updatedUser.Last_name}` : updatedUser.First_name;
+      this.topbarName = updatedUser.First_name;
+      this.userEmail = updatedUser.Email;
+      this.userPicture = this.authService.getImageUrl(updatedUser.ProfilePic, this.userName);
+
       this.closeEditModal();
-      alert('Profile updated successfully!');
-    } catch (err) {
-      alert('Failed to update profile!');
+      this.selectedFile = null;
+      alert(res.message || 'Profile updated successfully!');
+    } catch (err: any) {
+      const errorMsg = err.error?.message || err.message || 'Failed to update profile!';
+      alert(`Error: ${errorMsg}`);
       console.error(err);
     }
   }
@@ -141,7 +161,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       alert("Password must be at least 6 characters.");
       return;
     }
-    
+
     try {
       await this.authService.resetPasswordDirect(this.userEmail, this.newPassword);
       alert("Password logically updated successfully!");

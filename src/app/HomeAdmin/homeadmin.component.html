@@ -1,6 +1,6 @@
 <div class="main">
   <header class="topbar">
-    <div class="title">Library</div>
+   <div class="title">BookBuddy</div>
     <div class="user-container">
       <div class="user" (click)="toggleDropdown()">{{ adminName }} <img src="/icons/user.png" class="user-icon" alt="">
       </div>
@@ -34,8 +34,29 @@
     <section class="content">
       <h2>Library</h2>
 
-      <div class="search">
-        <input type="text" placeholder="Search books..." [(ngModel)]="searchTerm">
+      <div class="search-container">
+        <div class="search">
+          <input type="text" placeholder="Search by title or author" [(ngModel)]="searchTerm">
+        </div>
+
+        <div class="filter-dropdown">
+          <button class="filter-btn" [class.active]="isFilterOpen" (click)="isFilterOpen = !isFilterOpen">
+            <img src="/icons/filter.png" alt="">
+          </button>
+
+          <div class="filter-menu" *ngIf="isFilterOpen">
+            <label *ngFor="let g of genres" class="filter-option">
+              <input type="checkbox" [checked]="selectedGenres.includes(g.Genre)" (change)="toggleGenre(g.Genre)" />
+              {{ g.Genre }}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="active-filters" *ngIf="selectedGenres.length > 0">
+        <span class="filter-pill" *ngFor="let genre of selectedGenres">
+          {{ genre }} <span class="remove-filter" (click)="toggleGenre(genre)">×</span>
+        </span>
       </div>
 
       <div class="books-list">
@@ -65,6 +86,7 @@
               <div class="book-info">
                 <p class="edition">ISBN: {{ book.isbn }}</p>
                 <p class="author">By: {{ book.Author }}</p>
+                <p class="description" *ngIf="book.discription">{{ book.discription }}</p>
               </div>
             </div>
           </div>
@@ -89,6 +111,10 @@
       <div class="form-group">
         <label>ISBN</label>
         <input type="text" [(ngModel)]="newBook.isbn">
+      </div>
+      <div class="form-group">
+        <label>Description (Optional)</label>
+        <textarea [(ngModel)]="newBook.Description" rows="4"></textarea>
       </div>
       <div class="form-group">
         <label>Book Cover Image</label>
@@ -124,6 +150,10 @@
       <div class="form-group">
         <label>ISBN</label>
         <input type="text" [(ngModel)]="editBookData.isbn">
+      </div>
+      <div class="form-group">
+        <label>Description (Optional)</label>
+        <textarea [(ngModel)]="editBookData.Description" rows="4"></textarea>
       </div>
       <div class="form-group">
         <label>Book Cover Image (Leave blank to keep current)</label>

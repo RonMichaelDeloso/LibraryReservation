@@ -64,37 +64,58 @@
 
   input {
     padding: 10px;
-    padding-right: 50px;  // Add space for the show button
+    padding-right: 50px;
     border-radius: 15px;
     border: 1px solid #ccc;
     outline: none;
     font-size: 14px;
     width: 100%;
     box-sizing: border-box;
+    transition: border-color 0.2s;
 
     &:focus {
       border-color: #d49a32;
     }
+
+    &.input-error {
+      border-color: #e05c5c;
+    }
   }
 
-  .password-toggle {
-    position: absolute;
-    right: 12px;
-    top: 37px;  // Position it correctly (label height + input top)
-    background: none;
-    border: none;
-    color: #d49a32;
-    cursor: pointer;
+  .field-error {
     font-size: 12px;
-    width: auto;
-    padding: 0;
-    margin: 0;
-    z-index: 1;
-    
-    &:hover {
-      color: #c18728;
-      text-decoration: underline;
-    }
+    color: #e05c5c;
+    margin-top: 4px;
+  }
+}
+
+.pw-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  input {
+    flex: 1;
+    padding-right: 58px;
+  }
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #d49a32;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 6px;
+  width: auto !important;
+  margin-top: 0 !important;
+
+  &:hover {
+    color: #c18728;
+    text-decoration: underline;
   }
 }
 
@@ -152,7 +173,16 @@ button {
 }
 
 .message {
-  text-align: center;
-  margin-top: 15px;
-  font-size: 14px;
+  text-align: left;
+  font-size: 13px;
+  margin-top: 0;
+  margin-bottom: 15px;
+
+  &.message-success {
+    color: #27ae60;
+  }
+
+  &.message-error {
+    color: #e05c5c;
+  }
 }

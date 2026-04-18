@@ -70,7 +70,7 @@ body {
         transition: background 0.3s;
 
         &:hover {
-          background: #db767258;
+          background: #DBAC72;
         }
 
         img {
@@ -162,7 +162,7 @@ body {
 .account-card {
   background: #dead7f;
   border-radius: 20px;
-  box-shadow: 0 0 0 1px #000000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   margin-bottom: 30px;
   width: 100%;
   box-sizing: border-box;
@@ -173,7 +173,8 @@ body {
 %base-header {
   width: 100%;
   background: white;
-  border-bottom: 1px solid #000000;
+  /* border-bottom removed */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   border-radius: 0 0 20px 20px;
   box-sizing: border-box;
   margin-bottom: 15px;
@@ -233,6 +234,9 @@ body {
     height: 75px;
     border-radius: 50%;
     background: #c3e2f5;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    object-fit: cover;
   }
 
   .info {
@@ -276,7 +280,10 @@ body {
 /* Modal Styling */
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -288,7 +295,10 @@ body {
     padding: 30px;
     border-radius: 20px;
     width: 400px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    /* NEW */
+    max-height: 85vh;
+    overflow-y: auto;
 
     h3 {
       margin-top: 0;
@@ -316,7 +326,7 @@ body {
         font-size: 14px;
         outline: none;
         box-sizing: border-box;
-        
+
         &:focus {
           border-color: #dead7f;
         }
@@ -342,16 +352,25 @@ body {
         background: #eee;
         color: #333;
 
-        &:hover { background: #ddd; }
+        &:hover {
+          background: #ddd;
+        }
       }
 
       .save-modal-btn {
         background: #3eb56b;
         color: white;
 
-        &:hover { background: #35a05e; }
+        &:hover {
+          background: #35a05e;
+        }
       }
     }
   }
 }
-.user-icon { width: 20px; height: 20px; object-fit: contain; }
+
+.user-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}

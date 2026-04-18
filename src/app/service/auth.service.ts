@@ -46,21 +46,44 @@ export class AuthService {
     );
   }
 
+  // Forgot Password - Step 1: Request OTP
+  public async requestOTP(email: string) {
+    return lastValueFrom(
+      this.http.post<any>(`${this.apiUrl}/request-otp`, { Email: email })
+    );
+  }
+
+  // Forgot Password - Step 2: Reset with OTP
+  public async resetPasswordWithOTP(email: string, otp: string, newPassword: string) {
+    return lastValueFrom(
+      this.http.post<any>(`${this.apiUrl}/reset-password-otp`, {
+        Email: email,
+        OTP_code: otp,
+        NewPassword: newPassword
+      })
+    );
+  }
+
+
   // Update User Profile
-  public async updateProfile(userId: number, data: { First_name: string; Last_name: string; Email: string }) {
-    const payload = { User_id: userId, ...data };
+  public async updateProfile(payload: FormData) {
     const res = await lastValueFrom(
       this.http.put<any>(`${this.apiUrl}/update-profile`, payload)
     );
+    console.log('Update Profile Response:', res);
     
-    if (typeof localStorage !== 'undefined') {
-      const currentUser = this.getUser();
-      currentUser.First_name = data.First_name;
-      currentUser.Last_name = data.Last_name;
-      currentUser.Email = data.Email;
-      localStorage.setItem('user', JSON.stringify(currentUser));
+    if (typeof localStorage !== 'undefined' && res.user) {
+      localStorage.setItem('user', JSON.stringify(res.user));
     }
     return res;
+  }
+
+  public getImageUrl(path: string | null, name: string = 'User'): string {
+    if (!path || path === 'null') {
+      return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff&size=512`; 
+    }
+    // Reverted to 127.0.0.1 to match existing book display logic
+    return `http://127.0.0.1:3000/${path}`;
   }
 
   // Send Admin Invite (sends notification to student)

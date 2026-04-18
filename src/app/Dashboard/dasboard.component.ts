@@ -7,7 +7,6 @@ import { NotificationService } from '../service/notification.service';
 import { BookService } from '../service/book.service';
 import { ReservationService } from '../service/reservation.service';
 import { apiService } from '../service/api.service';
-
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -25,6 +24,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   topbarName: string = 'User1';
   userName: string = 'User1';
   userEmail: string = 'User1@gmail.com';
+  userPicture: string = '';
+  selectedFile: File | null = null;
   showDropdown: boolean = false;
   unreadCount: number = 0;
   private refreshInterval: any;
@@ -63,6 +64,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.userEmail = user.Email;
       this.editEmail = user.Email;
     }
+    this.userPicture = this.authService.getImageUrl(user?.ProfilePic, this.userName);
 
     this.loadUnreadCount();
     this.getTotalUsers();
@@ -121,10 +123,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       // Unique students with Active Reservations
       const pendingReservations = reservations.filter((r: any) => r.Status === 'Pending');
       this.activeReservations = new Set(pendingReservations.map((r: any) => r.User_id)).size;
-
-      // this.totalUsers = users.length; (Handled by getTotalUsers())
-
-      
 
       // Prepare recent activity table
       const mappedActivity = reservations.map((r: any) => {
@@ -190,23 +188,39 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
+
   async saveProfile() {
     try {
-      const userId = this.authService.getUserId();
-      await this.authService.updateProfile(userId, {
-        First_name: this.editFirstName,
-        Last_name: this.editLastName,
-        Email: this.editEmail
-      });
+      const formData = new FormData();
+      formData.append('User_id', String(this.authService.getUserId()));
+      formData.append('First_name', this.editFirstName);
+      formData.append('Last_name', this.editLastName);
+      formData.append('Email', this.editEmail);
 
-      this.userName = this.editLastName ? `${this.editFirstName} ${this.editLastName}` : this.editFirstName;
-      this.topbarName = this.editFirstName;
-      this.userEmail = this.editEmail;
+      if (this.selectedFile) {
+        formData.append('image', this.selectedFile);
+      }
+
+      const res = await this.authService.updateProfile(formData);
+
+      const updatedUser = res.user;
+      this.userName = updatedUser.Last_name ? `${updatedUser.First_name} ${updatedUser.Last_name}` : updatedUser.First_name;
+      this.topbarName = updatedUser.First_name;
+      this.userEmail = updatedUser.Email;
+      this.userPicture = this.authService.getImageUrl(updatedUser.ProfilePic, this.userName);
 
       this.closeEditModal();
-      alert('Profile updated successfully!');
-    } catch (err) {
-      alert('Failed to update profile!');
+      this.selectedFile = null;
+      alert(res.message || 'Profile updated successfully!');
+    } catch (err: any) {
+      const errorMsg = err.error?.message || err.message || 'Failed to update profile!';
+      alert(`Error: ${errorMsg}`);
       console.error(err);
     }
   }
@@ -248,5 +262,4 @@ export class DashboardComponent implements OnInit, OnDestroy {
       alert("Failed to update password across the server.");
     }
   }
-
-}
+}

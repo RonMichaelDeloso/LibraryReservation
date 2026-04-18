@@ -22,6 +22,9 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
   
   searchTerm: string = '';
   adminName: string = 'ADMIN';
+  userPicture: string = '';
+  selectedGenres: string[] = [];
+  isFilterOpen: boolean = false;
 
   showDropdown: boolean = false;
 
@@ -49,6 +52,7 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
     isbn: '',
     Title: '',
     Author: '',
+    Description: '',
     Genre_id: [] as number[]
   };
 
@@ -57,12 +61,16 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
     isbn: '',
     Title: '',
     Author: '',
+    Description: '',
     Status: ''
   };
 
   async ngOnInit() {
     const user = this.authService.getUser();
     this.adminName = user?.Last_name ? `${user.First_name} ${user.Last_name}` : (user?.First_name || 'ADMIN');
+    if (user && user.ProfilePic) {
+      this.userPicture = this.authService.getImageUrl(user.ProfilePic);
+    }
     await this.loadBooks();
     await this.loadGenres();
     await this.loadUnreadCount();
@@ -100,11 +108,32 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
   }
 
   get filteredBooks() {
-    if (!this.searchTerm) return this.books;
-    return this.books.filter(book =>
-      book.Title?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      book.Author?.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    let filtered = this.books;
+    
+    if (this.selectedGenres.length > 0) {
+      filtered = filtered.filter(book => 
+        this.selectedGenres.some(g => book.Genres?.includes(g))
+      );
+    }
+
+    if (this.searchTerm) {
+      const term = this.searchTerm.toLowerCase();
+      filtered = filtered.filter(book =>
+        book.Title?.toLowerCase().includes(term) ||
+        book.Author?.toLowerCase().includes(term)
+      );
+    }
+    
+    return filtered;
+  }
+
+  toggleGenre(genre: string) {
+    const idx = this.selectedGenres.indexOf(genre);
+    if (idx > -1) {
+      this.selectedGenres.splice(idx, 1);
+    } else {
+      this.selectedGenres.push(genre);
+    }
   }
 
   openAddBookModal() {
@@ -112,6 +141,7 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
       isbn: '',
       Title: '',
       Author: '',
+      Description: '',
       Genre_id: []
     };
     this.isAddModalOpen = true;
@@ -135,6 +165,7 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
       formData.append('isbn', this.newBook.isbn);
       formData.append('Title', this.newBook.Title);
       formData.append('Author', this.newBook.Author);
+      if (this.newBook.Description) formData.append('Description', this.newBook.Description);
       formData.append('Genre_id', JSON.stringify(this.newBook.Genre_id));
       if (this.selectedFile) {
         formData.append('image', this.selectedFile);
@@ -164,6 +195,7 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
       isbn: book.isbn,
       Title: book.Title,
       Author: book.Author,
+      Description: book.discription || '',
       Status: book.Status
     };
     this.selectedFile = null;
@@ -181,6 +213,7 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
       formData.append('isbn', this.editBookData.isbn);
       formData.append('Title', this.editBookData.Title);
       formData.append('Author', this.editBookData.Author);
+      if (this.editBookData.Description) formData.append('Description', this.editBookData.Description);
       formData.append('Status', this.editBookData.Status);
       if (this.selectedFile) {
         formData.append('image', this.selectedFile);

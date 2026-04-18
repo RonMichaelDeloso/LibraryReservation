@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AuthService } from '../service/auth.service';
 import { CommonModule } from '@angular/common';
@@ -15,15 +15,23 @@ export class ForgotpasswordComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
+  step: number = 1; // 1: Request Email, 2: Enter OTP & New Password
   message: string = '';
   messageType: 'success' | 'error' = 'success';
   isLoading: boolean = false;
   showPassword: boolean = false;
   showConfirm: boolean = false;
 
+  // Form for Step 1
+  emailForm: FormGroup = this.fb.group({
+    email: ['', [Validators.required, Validators.email]]
+  });
+
+  // Form for Step 2
   resetForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    otp: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
     newPassword: ['', [Validators.required, Validators.minLength(6)]],
     confirmPassword: ['', Validators.required]
   }, { validators: this.passwordMatchValidator });
@@ -34,7 +42,39 @@ export class ForgotpasswordComponent {
     return password === confirm ? null : { passwordMismatch: true };
   }
 
-  async onSubmit() {
+  async onRequestOTP() {
+    if (this.emailForm.invalid) {
+      this.emailForm.markAllAsTouched();
+      return;
+    }
+
+    this.isLoading = true;
+    this.message = '';
+
+    try {
+      const { email } = this.emailForm.value;
+      await this.authService.requestOTP(email);
+      this.message = 'OTP sent to your email! Please check your inbox.';
+      this.messageType = 'success';
+      this.step = 2;
+    } catch (error: any) {
+      console.error("Forgot pass error:", error);
+      this.message = '';
+      if (error?.status === 404) {
+        this.emailForm.get('email')?.setErrors({ serverError: "Email not found." });
+      } else if (error?.error?.message) {
+        this.message = error.error.message;
+      } else {
+        this.message = 'Failed to send OTP. Please try again.';
+      }
+      this.messageType = 'error';
+    } finally {
+      this.isLoading = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  async onResetPassword() {
     if (this.resetForm.invalid) {
       this.resetForm.markAllAsTouched();
       return;
@@ -43,10 +83,11 @@ export class ForgotpasswordComponent {
     this.isLoading = true;
     this.message = '';
 
-    const { email, newPassword } = this.resetForm.value;
+    const { email } = this.emailForm.value;
+    const { otp, newPassword } = this.resetForm.value;
 
     try {
-      await this.authService.resetPasswordDirect(email, newPassword);
+      await this.authService.resetPasswordWithOTP(email, otp, newPassword);
       this.message = 'Password reset successfully! Redirecting to login...';
       this.messageType = 'success';
 
@@ -55,10 +96,19 @@ export class ForgotpasswordComponent {
       }, 2000);
 
     } catch (error: any) {
-      this.message = error.error?.message || 'Email not found. Please check and try again.';
+      console.error("Reset pass error:", error);
+      this.message = '';
+      if (error?.status === 400) {
+        this.resetForm.get('otp')?.setErrors({ serverError: "Invalid or expired OTP." });
+      } else if (error?.error?.message) {
+        this.message = error.error.message;
+      } else {
+        this.message = 'Error resetting password. Try again.';
+      }
       this.messageType = 'error';
     } finally {
       this.isLoading = false;
+      this.cdr.detectChanges();
     }
   }
 }

@@ -11,26 +11,47 @@
       <div class="input-group">
         <label>Email</label>
         <input
-          type="text"
+          type="email"
           formControlName="Email"
           autocomplete="off"
+          placeholder="Enter your email"
+          [class.input-error]="loginForm.get('Email')?.invalid && (loginForm.get('Email')?.touched || loginForm.get('Email')?.errors?.['serverError'])"
         />
+        <span class="field-error" *ngIf="loginForm.get('Email')?.invalid && (loginForm.get('Email')?.touched || loginForm.get('Email')?.errors?.['serverError'])">
+          <span *ngIf="loginForm.get('Email')?.errors?.['required']">Email is required.</span>
+          <span *ngIf="loginForm.get('Email')?.errors?.['email']">Enter a valid email address.</span>
+          <span *ngIf="loginForm.get('Email')?.errors?.['serverError']">{{ loginForm.get('Email')?.errors?.['serverError'] }}</span>
+        </span>
       </div>
 
       <div class="input-group">
         <label>Password</label>
-        <input
-          [type]="showPassword ? 'text' : 'Password'"
-          formControlName="Password"
-          autocomplete="new-password"
-        />
-        <button type="button" class="password-toggle" (click)="showPassword = !showPassword">
-          {{ showPassword ? 'Hide' : 'Show' }}
-        </button>
+        <div class="pw-row">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="Password"
+            autocomplete="new-password"
+            placeholder="Enter your password"
+            [class.input-error]="loginForm.get('Password')?.invalid && (loginForm.get('Password')?.touched || loginForm.get('Password')?.errors?.['serverError'])"
+          />
+          <button type="button" class="password-toggle" (click)="showPassword = !showPassword">
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+        <span class="field-error" *ngIf="loginForm.get('Password')?.invalid && (loginForm.get('Password')?.touched || loginForm.get('Password')?.errors?.['serverError'])">
+          <span *ngIf="loginForm.get('Password')?.errors?.['required']">Password is required.</span>
+          <span *ngIf="loginForm.get('Password')?.errors?.['serverError']">{{ loginForm.get('Password')?.errors?.['serverError'] }}</span>
+        </span>
       </div>
 
+      <p *ngIf="message" class="message"
+         [class.message-success]="messageType === 'success'"
+         [class.message-error]="messageType === 'error'">
+        {{ message }}
+      </p>
+
       <div class="forgot-link">
-        <a routerLink="/forgotpassword">Forgot Password</a>
+        <a routerLink="/forgotpassword">Forgot Password?</a>
       </div>
 
       <button type="submit" [disabled]="isLoading">
@@ -39,10 +60,6 @@
 
       <p class="signup-link">
         Don't have an account? <a routerLink="/signup">Create account</a>
-      </p>
-
-      <p *ngIf="message" [style.color]="messageType === 'error' ? 'red' : 'green'" class="message">
-        {{ message }}
       </p>
 
     </form>

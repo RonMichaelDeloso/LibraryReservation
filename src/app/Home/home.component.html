@@ -1,7 +1,7 @@
 <div class="main">
 
   <header class="topbar">
-    <div class="title">Library</div>
+    <div class="title">BookBuddy</div>
 
     <div class="user-container">
       <div class="user" (click)="toggleDropdown()">
@@ -58,6 +58,12 @@
         </div>
       </div>
 
+      <div class="active-filters" *ngIf="selectedGenres.length > 0">
+        <span class="filter-pill" *ngFor="let genre of selectedGenres">
+          {{ genre }} <span class="remove-filter" (click)="toggleGenre(genre)">×</span>
+        </span>
+      </div>
+
       <div class="books-list">
         <div class="book-card" *ngFor="let book of filteredBooks">
           <div class="book-card-inner">
@@ -80,6 +86,7 @@
               </button>
               <p class="edition">ISBN: {{ book.isbn }}</p>
               <p class="author">By: {{ book.Author }}</p>
+              <p class="description" *ngIf="book.discription">{{ book.discription }}</p>
             </div>
           </div>
         </div>

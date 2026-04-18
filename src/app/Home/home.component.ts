@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   
   searchTerm: string = '';
   userName: string = 'USER';
+  userPicture: string = '';
   adminId: any;
   books: any[] = [];
   genres: any[] = [];
@@ -50,6 +51,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     const user = this.authService.getUser();
     this.adminId = user?.First_name || 'USER';
     this.userName = user?.Last_name ? `${user.First_name} ${user.Last_name}` : (user?.First_name || 'USER');
+    if (user && user.ProfilePic) {
+      this.userPicture = this.authService.getImageUrl(user.ProfilePic, this.userName);
+    }
     
     await this.loadBooks();
     await this.loadGenres();

@@ -11,7 +11,7 @@
   <div class="main">
 
     <header class="topbar">
-      <div class="title">Library</div>
+      <div class="title">BookBuddy</div>
       <div class="user-container">
         <div class="user" (click)="toggleDropdown()">{{ userName }} <img src="/icons/user.png" class="user-icon" alt="">
         </div>
@@ -47,7 +47,7 @@
           <div class="account-row">
             <div class="profile-pair">
               <div class="profile-block">
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="user avatar" />
+                <img [src]="userPicture" class="circular-profile" alt="user avatar" />
                 <div class="info">
                   <h4>{{ userName }}</h4>
                   <p style="color: #000000; margin-bottom: 5px;">{{ userRole }}</p>
@@ -80,6 +80,10 @@
         <div class="form-group">
           <label>Email</label>
           <input type="email" [(ngModel)]="editEmail" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <label>Profile Picture</label>
+          <input type="file" (change)="onFileSelected($event)" accept="image/*" class="file-input">
         </div>
         <div class="modal-actions">
           <button class="cancel-btn" (click)="closeEditModal()">Cancel</button>

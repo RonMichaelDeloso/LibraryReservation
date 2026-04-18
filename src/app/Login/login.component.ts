@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
@@ -15,6 +15,7 @@ export class LoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
+  private cdr = inject(ChangeDetectorRef);
 
   loginForm: FormGroup = this.fb.group({
     Email: ['', [Validators.required, Validators.email]], 
@@ -28,6 +29,7 @@ export class LoginComponent {
 
   async onSubmit() {
     if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
       this.message = "Please fill all fields.";
       this.messageType = 'error';
       return;
@@ -55,8 +57,21 @@ export class LoginComponent {
       
     } catch (error: any) {
       this.isLoading = false;
-      this.message = error.error?.message || 'Login failed. Please try again.';
+      console.error("Login catch error: ", error);
+      
+      this.message = ''; // clear global message by default
+
+      if (error?.status === 401) {
+        this.loginForm.get('Password')?.setErrors({ serverError: "Incorrect password." });
+      } else if (error?.status === 404) {
+        this.loginForm.get('Email')?.setErrors({ serverError: "Email not found." });
+      } else if (error?.error?.message) {
+        this.message = error.error.message;
+      } else {
+        this.message = 'Login failed. Please try again.';
+      }
       this.messageType = 'error';
+      this.cdr.detectChanges();
     }
   }
 }
