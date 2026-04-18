@@ -30,8 +30,6 @@ export class LoginComponent {
   async onSubmit() {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
-      this.message = "Please fill all fields.";
-      this.messageType = 'error';
       return;
     }
 

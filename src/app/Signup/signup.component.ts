@@ -52,8 +52,6 @@ export class SignupComponent {
   async onSubmit() {
     if (this.signupForm.invalid) {
       this.signupForm.markAllAsTouched();
-      this.message = "Please fix the errors in the form.";
-      this.messageType = 'error';
       return;
     }
 
