@@ -7,6 +7,7 @@ import { NotificationService } from '../service/notification.service';
 import { BookService } from '../service/book.service';
 import { ReservationService } from '../service/reservation.service';
 import { apiService } from '../service/api.service';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -30,14 +31,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   unreadCount: number = 0;
   private refreshInterval: any;
 
-  // Edit Modal State
   isEditModalOpen: boolean = false;
   editFirstName: string = '';
   editLastName: string = '';
   editEmail: string = '';
   editPassword: string = '';
 
-  // Dashboard Stats
   totalBorrowBooks: number = 0;
   currentlyBorrowed: number = 0;
   activeReservations: number = 0;
@@ -45,8 +44,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
   activeUsers: number = 0;
   totalUsers: number = 0;
 
-  // Recent Activity
   recentActivity: any[] = [];
+
+  chartData = { pending: 0, approved: 0, cancelled: 0, returned: 0 };
+  chartBarWidths = { pending: 0, approved: 0, cancelled: 0, returned: 0 };
+
+  monthLabels: string[] = [];
+  trendPoints: { x: number; y: number }[] = [];
+  trendLinePoints: string = '';
+  trendAreaPoints: string = '';
+  trendYLabels: number[] = [0, 0, 0, 0];
+  trendTotal: number = 0;
+  trendPeakMonth: string = '-';
+  trendLatest: number = 0;
 
   private bookService = inject(BookService);
   private reservationService = inject(ReservationService);
@@ -98,7 +108,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   async loadDashboardData() {
     try {
-      // Fetch data in parallel
       const [reservations, users, books] = await Promise.all([
         this.reservationService.getAllReservation().catch(() => []),
         this.backendApiService.getAllUsers().catch(() => []),
@@ -107,12 +116,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       const now = new Date();
 
-      // Total Books in the catalog
       this.totalBorrowBooks = books.length;
 
       this.currentlyBorrowed = reservations.filter((r: any) => r.Status === 'Completed').length;
 
-      // Unique students with Overdue books
       const overdueReservations = reservations.filter((r: any) => {
         if (r.Status !== 'Completed') return false;
         const dueDate = new Date(r.Due_date);
@@ -120,11 +127,64 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
       this.overdueReturns = new Set(overdueReservations.map((r: any) => r.User_id)).size;
 
-      // Unique students with Active Reservations
       const pendingReservations = reservations.filter((r: any) => r.Status === 'Pending');
       this.activeReservations = new Set(pendingReservations.map((r: any) => r.User_id)).size;
 
-      // Prepare recent activity table
+      this.totalUsers = users.length;
+      this.activeUsers = Math.max(1, Math.floor(users.length * 0.8));
+
+      this.chartData = {
+        pending:   reservations.filter((r: any) => r.Status === 'Pending').length,
+        approved:  reservations.filter((r: any) => r.Status === 'Completed').length,
+        cancelled: reservations.filter((r: any) => r.Status === 'Cancelled').length,
+        returned:  reservations.filter((r: any) => r.Status === 'Returned').length
+      };
+      const maxBar = Math.max(1, this.chartData.pending, this.chartData.approved, this.chartData.cancelled, this.chartData.returned);
+      this.chartBarWidths = {
+        pending:   Math.round((this.chartData.pending   / maxBar) * 100),
+        approved:  Math.round((this.chartData.approved  / maxBar) * 100),
+        cancelled: Math.round((this.chartData.cancelled / maxBar) * 100),
+        returned:  Math.round((this.chartData.returned  / maxBar) * 100)
+      };
+
+      const monthlyCounts: Record<string, number> = {};
+      const shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      for (let i = 5; i >= 0; i--) {
+        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        monthlyCounts[`${d.getFullYear()}-${d.getMonth()}`] = 0;
+      }
+      reservations.forEach((res: any) => {
+        const d = new Date(res.Reserve_date || res.Created_at || now);
+        const key = `${d.getFullYear()}-${d.getMonth()}`;
+        if (key in monthlyCounts) monthlyCounts[key]++;
+      });
+      const keys = Object.keys(monthlyCounts);
+      const counts = keys.map(k => monthlyCounts[k]);
+      this.monthLabels = keys.map(k => {
+        const [, m] = k.split('-').map(Number);
+        return shortMonths[m];
+      });
+      const maxTrend = Math.max(1, ...counts);
+      const chartH = 140, chartTop = 20, xStart = 55, xEnd = 400;
+      const step = (xEnd - xStart) / Math.max(1, counts.length - 1);
+      this.trendPoints = counts.map((v, i) => ({
+        x: Math.round(xStart + i * step),
+        y: Math.round(chartTop + chartH - (v / maxTrend) * chartH)
+      }));
+      this.trendLinePoints = this.trendPoints.map(p => `${p.x},${p.y}`).join(' ');
+      const first = this.trendPoints[0];
+      const last  = this.trendPoints[this.trendPoints.length - 1];
+      this.trendAreaPoints =
+        `${first.x},${chartTop + chartH} ` +
+        this.trendPoints.map(p => `${p.x},${p.y}`).join(' ') +
+        ` ${last.x},${chartTop + chartH}`;
+      const step4 = Math.ceil(maxTrend / 4);
+      this.trendYLabels = [step4, step4 * 2, step4 * 3, step4 * 4];
+      this.trendTotal = counts.reduce((a, b) => a + b, 0);
+      const peakIdx = counts.indexOf(Math.max(...counts));
+      this.trendPeakMonth = this.monthLabels[peakIdx] ?? '-';
+      this.trendLatest = counts[counts.length - 1] ?? 0;
+
       const mappedActivity = reservations.map((r: any) => {
         let displayStatus = 'Active';
         if (r.Status === 'Returned') {
@@ -137,19 +197,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
           const dueDate = new Date(r.Due_date);
           displayStatus = dueDate < now ? 'Overdue' : 'Active';
         }
-
         return {
           id: r.Reserve_id,
           bookId: r.Book_id,
           bookTitle: r.Title || 'Unknown Book',
           borrower: r.First_name ? `${r.First_name} ${r.Last_name || ''}` : 'Unknown User',
-          dateBorrowed: r.Reserve_date, // Reserve date acts as the initiation date
+          dateBorrowed: r.Reserve_date,
           dueDate: r.Due_date,
           status: displayStatus
         };
       });
 
-      // Sort by latest reserve date and grab top 5
       this.recentActivity = mappedActivity
         .sort((a: any, b: any) => new Date(b.dateBorrowed).getTime() - new Date(a.dateBorrowed).getTime())
         .slice(0, 5);
@@ -225,7 +283,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Password Modal Logic
   isPasswordModalOpen: boolean = false;
   newPassword: string = '';
   confirmPassword: string = '';
@@ -262,4 +319,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
       alert("Failed to update password across the server.");
     }
   }
-}
+
+}

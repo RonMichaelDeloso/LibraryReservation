@@ -18,20 +18,70 @@ body {
   width: 100%;
 }
 
-.topbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #dead7f; 
-  .title { font-size: 18px; font-weight: bold; color: white; } 
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: #dead7f;
+
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+  }
+
   .user-container {
     position: relative;
+
     .user {
-      color: #333; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; border-radius: 8px; transition: background 0.3s;
-      &:hover { background: rgba(255, 255, 255, 0.2); }
+      color: #333;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 8px;
+      transition: background 0.3s;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
     }
+
     .dropdown {
-      position: absolute; top: 100%; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); margin-top: 8px; padding: 8px 0; min-width: 150px; z-index: 10;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-top: 8px;
+      padding: 8px 0;
+      min-width: 150px;
+      z-index: 10;
+
       .dropdown-item {
-        padding: 10px 16px; cursor: pointer; color: #99692D; font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: background 0.3s;
-        &:hover { background: #DBAC72; }
-        img { width: 16px; height: 16px; object-fit: contain; }
+        padding: 10px 16px;
+        cursor: pointer;
+        color: #99692D;
+        font-weight: bold;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.3s;
+
+        &:hover {
+          background: #DBAC72;
+        }
+
+        img {
+          width: 16px;
+          height: 16px;
+          object-fit: contain;
+        }
       }
     }
   }
@@ -223,7 +273,7 @@ body {
       height: 120px;
       object-fit: cover;
       border-radius: 6px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .book-details {
@@ -266,10 +316,12 @@ body {
         background: #e8f5e9;
         color: #4caf50;
       }
+
       &.loaned {
         background: #e3f2fd;
         color: #1e88e5;
       }
+
       &.reserved {
         background: #fff3e0;
         color: #ff9800;
@@ -280,8 +332,8 @@ body {
   .admin-actions {
     display: flex;
     gap: 8px;
-    
-    img{
+
+    img {
       width: 20px;
       height: 20px;
       object-fit: contain;

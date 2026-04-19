@@ -31,7 +31,6 @@ export class SignupComponent {
   showPassword: boolean = false;
   showConfirm: boolean = false;
 
-  // Getters for error display
   get First_name() { return this.signupForm.get('First_name'); }
   get Last_name() { return this.signupForm.get('Last_name'); }
   get Email() { return this.signupForm.get('Email'); }

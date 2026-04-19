@@ -23,7 +23,6 @@ export class NotificationComponent implements OnInit, OnDestroy {
 
   showDropdown: boolean = false;
 
-  // Invite confirmation modal state
   pendingInviteNotif: any = null;
   inviteAccepting: boolean = false;
   inviteAccepted: boolean = false;
@@ -101,7 +100,6 @@ export class NotificationComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Show confirmation modal before accepting
   openInviteConfirm(notif: any) {
     this.pendingInviteNotif = notif;
     this.inviteAccepted = false;
@@ -112,7 +110,6 @@ export class NotificationComponent implements OnInit, OnDestroy {
     this.inviteAccepting = false;
   }
 
-  // 👑 Accept Admin Invite
   async confirmAcceptInvite() {
     if (!this.pendingInviteNotif) return;
     this.inviteAccepting = true;
@@ -121,7 +118,6 @@ export class NotificationComponent implements OnInit, OnDestroy {
       await this.authService.acceptAdminInvite(this.pendingInviteNotif.Notification_id, userId);
       this.inviteAccepted = true;
       this.inviteAccepting = false;
-      // After 2.5s, log out and redirect to login
       setTimeout(() => {
         this.authService.logout();
         this.router.navigate(['/login']);

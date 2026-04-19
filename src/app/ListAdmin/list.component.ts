@@ -45,7 +45,6 @@ export class ListComponent implements OnInit, OnDestroy {
     await this.loadAllData();
     await this.loadUnreadCount();
     this.cdr.detectChanges();
-
     if (typeof window !== 'undefined') {
       this.refreshInterval = setInterval(() => {
         this.loadAllData();

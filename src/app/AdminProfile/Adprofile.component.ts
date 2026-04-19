@@ -30,19 +30,16 @@ export class AdprofileComponent implements OnInit, OnDestroy {
   unreadCount: number = 0;
   private refreshInterval: any;
 
-  // Edit Modal State
   isEditModalOpen: boolean = false;
   editFirstName: string = '';
   editLastName: string = '';
   editEmail: string = '';
   editPassword: string = '';
 
-  // Password Modal State
   isPasswordModalOpen: boolean = false;
   newPassword: string = '';
   confirmPassword: string = '';
 
-  // Admin Invite State
   inviteEmail: string = '';
   inviteSuccess: boolean = false;
   inviteError: string = '';

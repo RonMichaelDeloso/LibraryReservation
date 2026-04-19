@@ -29,14 +29,12 @@ export class AuthService {
     )
   }
 
-  // Forgot Password - Step 1: Verify email exists
   public async verifyEmail(email: string) {
     return lastValueFrom(
       this.http.post<any>(`${this.apiUrl}/verify-email`, { Email: email })
     );
   }
 
-  // Forgot Password - Step 2: Reset password directly (no OTP)
   public async resetPasswordDirect(email: string, newPassword: string) {
     return lastValueFrom(
       this.http.post<any>(`${this.apiUrl}/reset-direct`, {
@@ -82,7 +80,6 @@ export class AuthService {
     if (!path || path === 'null') {
       return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff&size=512`; 
     }
-    // Reverted to 127.0.0.1 to match existing book display logic
     return `http://127.0.0.1:3000/${path}`;
   }
 
@@ -93,7 +90,6 @@ export class AuthService {
     );
   }
 
-  // Accept Admin Invite (upgrades student to Admin)
   public async acceptAdminInvite(notificationId: number, userId: number) {
     return lastValueFrom(
       this.http.post<any>(`${this.apiUrl}/accept-invite`, { Notification_id: notificationId, User_id: userId })

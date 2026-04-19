@@ -135,7 +135,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         return;
       }
 
-      // Check enforcing 5 items maximum limit
       const userId = this.authService.getUserId();
       let activeCount = 0;
       try {

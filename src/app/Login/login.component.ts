@@ -39,7 +39,6 @@ export class LoginComponent {
     try {
       const response = await this.authService.login(this.loginForm.value);
       
-      // Save session after successful login
       this.authService.saveSession(response);
       
       this.message = response.message || 'Login successful!';

@@ -277,24 +277,38 @@ body {
     }
   }
 
-  .recent-reservations-section {
+  .chart-board {
     margin-top: 50px;
     background: white;
     border-radius: 24px;
     padding: 30px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    animation: fadeInUp 0.7s ease-out forwards;
 
-    .section-header {
+    .chart-board-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 25px;
+      margin-bottom: 28px;
 
-      h3 {
-        font-size: 22px;
-        font-weight: 700;
-        color: #7f5539;
-        margin: 0;
+      .chart-board-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        h3 {
+          font-size: 22px;
+          font-weight: 700;
+          color: #7f5539;
+          margin: 0;
+        }
+
+        .chart-title-icon {
+          width: 26px;
+          height: 26px;
+          color: #dead7f;
+          stroke: #dead7f;
+        }
       }
 
       .btn-primary {
@@ -313,60 +327,174 @@ body {
       }
     }
 
-    .table-container {
-      overflow-x: auto;
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
 
-      .library-table {
-        width: 100%;
-        border-collapse: collapse;
-        text-align: left;
+      @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+      }
+    }
 
-        th {
-          padding: 15px;
-          background: #fdfaf0;
-          color: #a46d3e;
-          font-weight: bold;
-          font-size: 14px;
-          border-bottom: 2px solid #f1ebd8;
-        }
+    .chart-card {
+      background: #fdfaf0;
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid #f1ebd8;
+      transition: box-shadow 0.3s;
 
-        td {
-          padding: 15px;
-          color: #5e3b22;
+      &:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      .chart-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+
+        .chart-card-title {
           font-size: 15px;
-          border-bottom: 1px solid #f1ebd8;
-          font-weight: 500;
+          font-weight: 700;
+          color: #7f5539;
         }
 
-        tbody tr {
-          transition: background 0.2s;
-
-          &:hover {
-            background: #fdfaf0;
-          }
-        }
-
-        .status {
-          padding: 6px 12px;
+        .chart-card-badge {
+          font-size: 11px;
+          font-weight: 700;
+          background: #fce8cc;
+          color: #b85c0d;
+          padding: 3px 10px;
           border-radius: 20px;
-          font-size: 12px;
-          font-weight: bold;
-          display: inline-block;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
 
-          &.badge-active {
-            background: #e6f4ea;
-            color: #1e8e3e;
-          }
-
-          &.badge-overdue {
-            background: #fce8e6;
-            color: #d93025;
-          }
-
-          &.badge-returned {
+          &.trend-badge {
             background: #e8f0fe;
             color: #1a73e8;
           }
+        }
+      }
+    }
+
+    /* ---- Bar chart ---- */
+    .bar-chart-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .bar-group {
+      display: grid;
+      grid-template-columns: 72px 1fr 36px;
+      align-items: center;
+      gap: 10px;
+
+      .bar-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #7f5539;
+        white-space: nowrap;
+      }
+
+      .bar-track {
+        background: #f1ebd8;
+        border-radius: 8px;
+        height: 14px;
+        overflow: hidden;
+        position: relative;
+
+        .bar-fill {
+          height: 100%;
+          border-radius: 8px;
+          transition: width 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          min-width: 4px;
+
+          &.bar-pending   { background: linear-gradient(90deg, #f5a623, #f7c165); }
+          &.bar-approved  { background: linear-gradient(90deg, #27ae60, #6fcf97); }
+          &.bar-cancelled { background: linear-gradient(90deg, #e74c3c, #f28b82); }
+          &.bar-returned  { background: linear-gradient(90deg, #2980b9, #74b9e8); }
+        }
+      }
+
+      .bar-count {
+        font-size: 14px;
+        font-weight: 700;
+        color: #5e3b22;
+        text-align: right;
+      }
+    }
+
+    /* Legend */
+    .legend-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      align-items: center;
+      margin-top: 6px;
+
+      span {
+        font-size: 12px;
+        color: #7f5539;
+        font-weight: 600;
+      }
+
+      .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+
+        &.dot-pending   { background: #f5a623; }
+        &.dot-approved  { background: #27ae60; }
+        &.dot-cancelled { background: #e74c3c; }
+        &.dot-returned  { background: #2980b9; }
+      }
+    }
+
+    /* ---- Trend SVG chart ---- */
+    .svg-chart-wrap {
+      width: 100%;
+      margin-bottom: 16px;
+
+      .trend-svg {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+    }
+
+    .trend-summary-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+
+      .trend-summary-item {
+        flex: 1;
+        min-width: 80px;
+        background: white;
+        border: 1px solid #f1ebd8;
+        border-radius: 14px;
+        padding: 10px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+
+        .ts-label {
+          font-size: 11px;
+          color: #a46d3e;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.4px;
+        }
+
+        .ts-value {
+          font-size: 20px;
+          font-weight: 800;
+          color: #7f5539;
         }
       }
     }
@@ -516,7 +644,7 @@ body {
   }
 }
 
-/* Modal Styling */
+
 .modal-overlay {
   position: fixed;
   top: 0;

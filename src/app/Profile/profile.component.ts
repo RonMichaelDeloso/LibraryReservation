@@ -133,7 +133,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Password Modal Logic
   isPasswordModalOpen: boolean = false;
   newPassword: string = '';
   confirmPassword: string = '';
