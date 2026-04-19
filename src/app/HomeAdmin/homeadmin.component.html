@@ -1,6 +1,6 @@
 <div class="main">
   <header class="topbar">
-   <div class="title">BookBuddy</div>
+    <div class="title">BookBuddy</div>
     <div class="user-container">
       <div class="user" (click)="toggleDropdown()">{{ adminName }} <img src="/icons/user.png" class="user-icon" alt="">
       </div>
@@ -8,9 +8,7 @@
         <div class="dropdown-item" routerLink="/adprofile">
           <img src="/icons/user.png" alt=""> Profile
         </div>
-        <div class="dropdown-item" routerLink="/dashboard">
-          <img src="/icons/home.png" alt=""> Dashboard
-        </div>
+
         <div class="dropdown-item" (click)="logout()">
           <img src="/icons/logout.png" alt=""> Logout
         </div>
@@ -22,6 +20,7 @@
     <aside class="sidebar">
       <ul class="menu">
         <li class="active" routerLink="/adhome"><img src="/icons/home.png" alt=""> Home</li>
+        <li routerLink="/dashboard"><img src="/icons/dashboard.png" alt=""> Dashboard</li>
         <li routerLink="/adnot">
           <img src="/icons/notification.png" alt=""> Notification
           <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
@@ -59,38 +58,40 @@
         </span>
       </div>
 
-      <div class="books-list">
-        <div class="book-card" *ngFor="let book of filteredBooks">
-          <div class="book-card-inner">
-            <div class="book-img" *ngIf="book.Image_URL">
-              <img [src]="'http://127.0.0.1:3000/' + book.Image_URL" class="book-cover-img" alt="Book Cover">
-            </div>
-
-            <div class="book-details">
-              <div class="title-row">
-                <div class="title-section">
-                  <h3 [title]="book.Title">{{ book.Title }}</h3>
-                  <span class="status" [class.available]="book.Status === 'Available'"
-                    [class.loaned]="book.Status === 'Loaned'" [class.reserved]="book.Status === 'Reserved'">
-                    {{ book.Status === 'Loaned' ? 'Unavailable' : book.Status }}
-                  </span>
-                </div>
-                <div class="admin-actions">
-                  <button class="edit-btn" (click)="editBook(book)"><img src="/icons/edit.png" alt=""></button>
-                  <button class="delete-btn" (click)="deleteBook(book.Book_id)"><img src="/icons/delete.png"
-                      alt=""></button>
-                </div>
+      <div class="scroll-area">
+        <div class="books-list">
+          <div class="book-card" *ngFor="let book of filteredBooks">
+            <div class="book-card-inner">
+              <div class="book-img" *ngIf="book.Image_URL">
+                <img [src]="'http://127.0.0.1:3000/' + book.Image_URL" class="book-cover-img" alt="Book Cover">
               </div>
 
+              <div class="book-details">
+                <div class="title-row">
+                  <div class="title-section">
+                    <h3 [title]="book.Title">{{ book.Title }}</h3>
+                    <span class="status" [class.available]="book.Status === 'Available'"
+                      [class.loaned]="book.Status === 'Loaned'" [class.reserved]="book.Status === 'Reserved'">
+                      {{ book.Status === 'Loaned' ? 'Unavailable' : book.Status }}
+                    </span>
+                  </div>
+                  <div class="admin-actions">
+                    <button class="edit-btn" (click)="editBook(book)"><img src="/icons/edit.png" alt=""></button>
+                    <button class="delete-btn" (click)="deleteBook(book.Book_id)"><img src="/icons/delete.png"
+                        alt=""></button>
+                  </div>
+                </div>
 
-              <div class="book-info">
-                <p class="edition">ISBN: {{ book.isbn }}</p>
-                <p class="author">By: {{ book.Author }}</p>
-                <p class="description" *ngIf="book.discription">{{ book.discription }}</p>
+                <div class="book-info">
+                  <p class="edition">ISBN: {{ book.isbn }}</p>
+                  <p class="author">By: {{ book.Author }}</p>
+                  <p class="description" *ngIf="book.discription">{{ book.discription }}</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <div class="scroll-spacer"></div>
       </div>
 
       <button class="add-book-btn" (click)="openAddBookModal()">+ Add Books</button>

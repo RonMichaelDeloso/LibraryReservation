@@ -156,10 +156,10 @@ body {
     animation: fadeInDown 0.6s ease-out;
 
     h2 {
+      font-size: 22px;
+      font-weight: 600;
+      color: #333;
       margin-bottom: 8px;
-      color: #7f5539;
-      font-size: 32px;
-      font-weight: 800;
       letter-spacing: -0.5px;
     }
 
@@ -412,10 +412,21 @@ body {
           transition: width 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
           min-width: 4px;
 
-          &.bar-pending   { background: linear-gradient(90deg, #f5a623, #f7c165); }
-          &.bar-approved  { background: linear-gradient(90deg, #27ae60, #6fcf97); }
-          &.bar-cancelled { background: linear-gradient(90deg, #e74c3c, #f28b82); }
-          &.bar-returned  { background: linear-gradient(90deg, #2980b9, #74b9e8); }
+          &.bar-pending {
+            background: linear-gradient(90deg, #f5a623, #f7c165);
+          }
+
+          &.bar-approved {
+            background: linear-gradient(90deg, #27ae60, #6fcf97);
+          }
+
+          &.bar-cancelled {
+            background: linear-gradient(90deg, #e74c3c, #f28b82);
+          }
+
+          &.bar-returned {
+            background: linear-gradient(90deg, #2980b9, #74b9e8);
+          }
         }
       }
 
@@ -447,10 +458,21 @@ body {
         border-radius: 50%;
         display: inline-block;
 
-        &.dot-pending   { background: #f5a623; }
-        &.dot-approved  { background: #27ae60; }
-        &.dot-cancelled { background: #e74c3c; }
-        &.dot-returned  { background: #2980b9; }
+        &.dot-pending {
+          background: #f5a623;
+        }
+
+        &.dot-approved {
+          background: #27ae60;
+        }
+
+        &.dot-cancelled {
+          background: #e74c3c;
+        }
+
+        &.dot-returned {
+          background: #2980b9;
+        }
       }
     }
 

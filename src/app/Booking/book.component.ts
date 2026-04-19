@@ -76,9 +76,9 @@ export class BookComponent implements OnInit, OnDestroy {
       const userId = this.authService.getUserId();
 
       const rawReservations = await this.reservationService.getReservationsByUser(userId);
-      // Show Pending and Ongoing — hide only Cancelled
+      // Show Pending and Ongoing — hide Cancelled and Returned
       this.activeReservations = rawReservations
-        .filter((r: any) => r.Status !== 'Cancelled')
+        .filter((r: any) => r.Status !== 'Cancelled' && r.Status !== 'Returned')
         .map((r: any) => ({ ...r, uniqueId: `res_${r.Reserve_id}` }));
 
       this.cdr.detectChanges();
@@ -130,14 +130,19 @@ export class BookComponent implements OnInit, OnDestroy {
   removeFromCart(bookId: string | number) {
     const updated = this.reservations.filter(r => String(r.Book_id) !== String(bookId));
     this.saveCart(updated);
-    window.location.reload();
+    this.reservations = updated;
+    this.cdr.detectChanges();
   }
 
   async cancelReservation(id: number) {
     if (!confirm('Cancel this pending request?')) return;
     try {
       await this.reservationService.cancelReservation(id);
-      window.location.reload();
+      // Remove from local list immediately, then refresh from DB
+      this.activeReservations = this.activeReservations.filter(r => r.Reserve_id !== id);
+      this.cdr.detectChanges();
+      await this.loadActiveReservations();
+      this.showToast('Request cancelled.', 'success');
     } catch (e: any) {
       const msg = e?.error?.message || e?.message || 'Failed to cancel. Please try again.';
       this.showToast(msg, 'error');
@@ -162,6 +167,13 @@ export class BookComponent implements OnInit, OnDestroy {
     }
 
     const userId = this.authService.getUserId();
+    console.log('checkoutItems → userId =', userId);
+
+    if (!userId || userId === 0) {
+      this.showToast('Session expired. Please log out and log back in.', 'error');
+      return;
+    }
+
     const reserveDate = new Date().toISOString().split('T')[0];
     const due = new Date();
     due.setDate(due.getDate() + 7);
@@ -191,8 +203,11 @@ export class BookComponent implements OnInit, OnDestroy {
         r => !successfulBookIds.has(String(r.Book_id))
       );
       this.saveCart(remaining);
-      // Reload page so Angular reads fresh localStorage → cart is empty, pending shows new items
-      window.location.reload();
+      this.reservations = remaining;
+      // Reload pending list from DB so new items appear instantly
+      await this.loadActiveReservations();
+      this.showToast(`${successCount} book(s) successfully requested!`, 'success');
+      this.cdr.detectChanges();
     } else {
       this.showToast('Could not check out. Books may already be reserved or unavailable.', 'error');
     }

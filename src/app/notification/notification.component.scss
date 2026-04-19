@@ -1,7 +1,22 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-html, body { height: 100%; width: 100%; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
 
-.main { display: flex; flex-direction: column; height: 100vh; width: 100%; }
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
 
 .topbar {
   display: flex;
@@ -10,25 +25,74 @@ html, body { height: 100%; width: 100%; }
   padding: 12px 20px;
   background: #dead7f;
 
-  .title { font-size: 18px; font-weight: bold; color: white; }
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+  }
+
   .user-container {
     position: relative;
+
     .user {
-      color: #333; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; border-radius: 8px; transition: background 0.3s;
-      &:hover { background: rgba(255, 255, 255, 0.2); }
+      color: #333;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 8px;
+      transition: background 0.3s;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
     }
+
     .dropdown {
-      position: absolute; top: 100%; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); margin-top: 8px; padding: 8px 0; min-width: 150px; z-index: 10;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-top: 8px;
+      padding: 8px 0;
+      min-width: 150px;
+      z-index: 10;
+
       .dropdown-item {
-        padding: 10px 16px; cursor: pointer; color: #99692D; font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: background 0.3s;
-        &:hover { background: #DBAC72; }
-        img { width: 16px; height: 16px; object-fit: contain; }
+        padding: 10px 16px;
+        cursor: pointer;
+        color: #99692D;
+        font-weight: bold;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.3s;
+
+        &:hover {
+          background: #DBAC72;
+        }
+
+        img {
+          width: 16px;
+          height: 16px;
+          object-fit: contain;
+        }
       }
     }
   }
 }
 
-.container { display: flex; flex: 1; background: #fdfaf0; overflow: hidden; }
+.container {
+  display: flex;
+  flex: 1;
+  background: #fdfaf0;
+  overflow: hidden;
+}
 
 .sidebar {
   width: 220px;
@@ -95,8 +159,7 @@ html, body { height: 100%; width: 100%; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 auto 24px auto;
-  max-width: 800px;
+  margin-bottom: 24px;
 
   h2 {
     font-size: 22px;
@@ -126,24 +189,27 @@ html, body { height: 100%; width: 100%; }
   text-align: center;
   padding: 60px 20px;
   color: #aaa;
-  max-width: 800px;
-  margin: 0 auto;
 
-  .empty-icon { 
+  .empty-icon {
     img {
       width: 120px;
       height: 120px;
-      opacity: 0.5; 
+      opacity: 0.5;
     }
+
     margin-bottom: 12px;
   }
-  p { 
-    font-size: 16px; 
-    font-weight: 600; 
-    color: #777777; 
-    margin-bottom: 6px; }
-  span { 
-    font-size: 13px; }
+
+  p {
+    font-size: 16px;
+    font-weight: 600;
+    color: #777777;
+    margin-bottom: 6px;
+  }
+
+  span {
+    font-size: 13px;
+  }
 }
 
 // ── Notification Cards ────────────────────────────────────
@@ -151,8 +217,6 @@ html, body { height: 100%; width: 100%; }
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-width: 800px;
-  margin: 0 auto;
 }
 
 .notification-card {
@@ -160,7 +224,7 @@ html, body { height: 100%; width: 100%; }
   border-radius: 16px;
   padding: 16px 20px;
   border: 1.5px solid #eee;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -212,8 +276,8 @@ html, body { height: 100%; width: 100%; }
           font-size: 12px;
           font-weight: 700;
           color: #dead7f;
-          transition: color 0.2s;      
-          cursor: pointer;          
+          transition: color 0.2s;
+          cursor: pointer;
 
           &:hover {
             color: #b07840;
@@ -234,11 +298,17 @@ html, body { height: 100%; width: 100%; }
     padding: 0 4px;
     flex-shrink: 0;
 
-    &:hover { color: #e05c5c; }
+    &:hover {
+      color: #e05c5c;
+    }
   }
 }
 
-.user-icon { width: 20px; height: 20px; object-fit: contain; }
+.user-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
 
 
 
@@ -289,8 +359,15 @@ html, body { height: 100%; width: 100%; }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .invite-confirm {
@@ -313,7 +390,9 @@ html, body { height: 100%; width: 100%; }
     line-height: 1.6;
     margin-bottom: 8px;
 
-    strong { color: #a46d3e; }
+    strong {
+      color: #a46d3e;
+    }
   }
 
   .invite-note {
@@ -338,19 +417,28 @@ html, body { height: 100%; width: 100%; }
     border: none;
     transition: all 0.2s;
 
-    &:disabled { opacity: 0.6; cursor: not-allowed; }
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
   }
 
   .cancel-invite-btn {
     background: #f0f0f0;
     color: #555;
-    &:hover:not(:disabled) { background: #ddd; }
+
+    &:hover:not(:disabled) {
+      background: #ddd;
+    }
   }
 
   .accept-invite-btn {
     background: #dead7f;
     color: white;
-    &:hover:not(:disabled) { background: #b8894a; }
+
+    &:hover:not(:disabled) {
+      background: #b8894a;
+    }
   }
 }
 
@@ -377,9 +465,19 @@ html, body { height: 100%; width: 100%; }
 }
 
 @keyframes pop {
-  0%   { transform: scale(0.5); opacity: 0; }
-  80%  { transform: scale(1.1); }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  80% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .redirect-bar {
@@ -399,6 +497,11 @@ html, body { height: 100%; width: 100%; }
 }
 
 @keyframes fillBar {
-  from { width: 0%; }
-  to   { width: 100%; }
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 100%;
+  }
 }

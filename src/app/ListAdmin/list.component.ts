@@ -61,9 +61,9 @@ export class ListComponent implements OnInit, OnDestroy {
     try {
       const reservations = await this.reservationService.getAllReservation();
 
-      // Show Pending and Completed — hide Cancelled (deleted rows auto-disappear)
+      // Show Pending and Completed — hide Cancelled and Returned
       this.allRecords = reservations
-        .filter((r: any) => r.Status !== 'Cancelled')
+        .filter((r: any) => r.Status !== 'Cancelled' && r.Status !== 'Returned')
         .map((r: any) => ({
           ...r,
           // Completed = book given to student (shows Returned button)
@@ -103,7 +103,7 @@ export class ListComponent implements OnInit, OnDestroy {
     if (!confirm('Mark this book as ready for pickup?')) return;
     try {
       await this.reservationService.approveReservation(id);
-      window.location.reload();
+      await this.loadAllData();
     } catch (e: any) {
       const msg = e?.error?.message || e?.message || 'Failed to approve reservation.';
       alert(`Error: ${msg}`);
@@ -114,8 +114,8 @@ export class ListComponent implements OnInit, OnDestroy {
   async cancelReservation(id: number, type: string) {
     if (!confirm('Are you sure you want to cancel this reservation?')) return;
     try {
-      await this.reservationService.cancelReservation(id);
-      window.location.reload();
+      await this.reservationService.cancelReservation(id, 'admin');
+      await this.loadAllData();
     } catch (e: any) {
       const msg = e?.error?.message || e?.message || 'Failed to cancel reservation.';
       alert(`Error: ${msg}`);
@@ -123,12 +123,11 @@ export class ListComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Mark book as returned — deletes the reservation row and sets book back to Available
   async returnBook(id: number) {
     if (!confirm('Confirm book has been returned?')) return;
     try {
       await this.reservationService.returnReservation(id);
-      window.location.reload();
+      await this.loadAllData();
     } catch (e: any) {
       const msg = e?.error?.message || e?.message || 'Failed to mark book as returned.';
       alert(`Error: ${msg}`);
@@ -143,6 +142,6 @@ export class ListComponent implements OnInit, OnDestroy {
       const notifications = await this.notificationService.getByUser(userId);
       this.unreadCount = notifications.filter((n: any) => !n.is_read).length;
       this.cdr.detectChanges();
-    } catch (e) {}
+    } catch (e) { }
   }
 }

@@ -8,9 +8,7 @@
         <div class="dropdown-item" routerLink="/adprofile">
           <img src="/icons/user.png" alt=""> Profile
         </div>
-        <div class="dropdown-item" routerLink="/dashboard">
-          <img src="/icons/home.png" alt=""> Dashboard
-        </div>
+
         <div class="dropdown-item" (click)="logout()">
           <img src="/icons/logout.png" alt=""> Logout
         </div>
@@ -22,6 +20,7 @@
     <aside class="sidebar">
       <ul class="menu">
         <li routerLink="/adhome"><img src="/icons/home.png" alt=""> Home</li>
+        <li routerLink="/dashboard"><img src="/icons/dashboard.png" alt=""> Dashboard</li>
         <li class="active" routerLink="/adnot">
           <img src="/icons/notification.png" alt=""> Notification
           <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
@@ -48,9 +47,7 @@
 
       <!-- Notification list -->
       <div class="notif-list" *ngIf="notifications.length > 0">
-        <div class="notification-card"
-          *ngFor="let notif of notifications"
-          [class.unread]="!notif.is_read">
+        <div class="notification-card" *ngFor="let notif of notifications" [class.unread]="!notif.is_read">
 
           <div class="notif-left">
             <div class="bell-icon">🔔</div>
@@ -58,7 +55,8 @@
               <p class="notif-text">{{ notif.Message }}</p>
               <div class="notif-meta">
                 <span class="notif-time">{{ notif.created_at | date:'MMM d, y • h:mm a' }}</span>
-                <span *ngIf="isPendingNotif(notif)" class="notif-action-text" (click)="handleNotifClick(notif, $event)"> View in List →</span>
+                <span *ngIf="isPendingNotif(notif)" class="notif-action-text" (click)="handleNotifClick(notif, $event)">
+                  View in List →</span>
               </div>
             </div>
           </div>

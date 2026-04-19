@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { lastValueFrom} from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://127.0.0.1:3000/api/auth'; 
+  private apiUrl = 'http://127.0.0.1:3000/api/auth';
 
   public async register(data: {
     First_name: string;
@@ -69,7 +69,7 @@ export class AuthService {
       this.http.put<any>(`${this.apiUrl}/update-profile`, payload)
     );
     console.log('Update Profile Response:', res);
-    
+
     if (typeof localStorage !== 'undefined' && res.user) {
       localStorage.setItem('user', JSON.stringify(res.user));
     }
@@ -78,7 +78,7 @@ export class AuthService {
 
   public getImageUrl(path: string | null, name: string = 'User'): string {
     if (!path || path === 'null') {
-      return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff&size=512`; 
+      return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff&size=512`;
     }
     return `http://127.0.0.1:3000/${path}`;
   }

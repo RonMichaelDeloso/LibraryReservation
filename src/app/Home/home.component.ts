@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private notificationService = inject(NotificationService);
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
-  
+
   searchTerm: string = '';
   userName: string = 'USER';
   userPicture: string = '';
@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (user && user.ProfilePic) {
       this.userPicture = this.authService.getImageUrl(user.ProfilePic, this.userName);
     }
-    
+
     await this.loadBooks();
     await this.loadGenres();
     await this.loadUnreadCount();
@@ -95,9 +95,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   get filteredBooks() {
     let filtered = this.books;
-    
+
     if (this.selectedGenres.length > 0) {
-      filtered = filtered.filter(book => 
+      filtered = filtered.filter(book =>
         this.selectedGenres.some(g => book.Genres?.includes(g))
       );
     }
@@ -109,7 +109,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         book.Author?.toLowerCase().includes(term)
       );
     }
-    
+
     return filtered;
   }
 
@@ -127,8 +127,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       let cart = [];
       try {
         cart = JSON.parse(localStorage.getItem('cart') || '[]');
-      } catch (e) {}
-      
+      } catch (e) { }
+
       const exists = cart.find((b: any) => b.Book_id === book.Book_id);
       if (exists) {
         console.warn(`"${book.Title}" is already in your cart.`);
@@ -164,7 +164,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       const notifications = await this.notificationService.getByUser(userId);
       this.unreadCount = notifications.filter((n: any) => !n.is_read).length;
       this.cdr.detectChanges();
-    } catch (e) {}
+    } catch (e) { }
   }
 
   updateCartIds() {
@@ -172,7 +172,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       try {
         const cart = JSON.parse(localStorage.getItem('cart') || '[]');
         this.cartItemIds = new Set(cart.map((b: any) => b.Book_id));
-      } catch (e) {}
+      } catch (e) { }
     }
   }
 }

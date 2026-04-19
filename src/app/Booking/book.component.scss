@@ -166,9 +166,9 @@ body {
     flex-shrink: 0;
 
     h2 {
+      font-size: 22px;
+      font-weight: 600;
       color: #333;
-      font-size: 20px;
-      font-weight: normal;
       margin: 0;
     }
 
@@ -200,9 +200,9 @@ body {
   padding-right: 30px;
 
   h2 {
+    font-size: 22px;
+    font-weight: 600;
     color: #333;
-    font-size: 20px;
-    font-weight: normal;
   }
 }
 
@@ -261,7 +261,7 @@ body {
     height: 75px;
     object-fit: cover;
     border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     flex-shrink: 0;
   }
 
@@ -274,13 +274,14 @@ body {
       font-size: 18px;
       color: #000;
       margin: 0;
-      font-weight: 500;
+      font-weight: 600;
     }
 
-      .author {
+    .author {
       font-size: 12px;
       color: #666;
       margin: 0;
+      font-weight: 500;
     }
 
     .return-date {
@@ -389,9 +390,9 @@ body {
   gap: 15px;
 }
 
-.pending-heading {
+.scroll-area .pending-heading {
   margin-top: 40px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   color: #333;
   font-size: 20px;
   font-weight: normal;
@@ -420,7 +421,7 @@ body {
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   z-index: 9999;
   white-space: nowrap;
   animation: slideUp 0.3s ease;
@@ -431,6 +432,13 @@ body {
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }

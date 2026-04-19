@@ -19,9 +19,7 @@
           <div class="dropdown-item" routerLink="/adprofile">
             <img src="/icons/user.png" alt=""> Profile
           </div>
-          <div class="dropdown-item" routerLink="/dashboard">
-            <img src="/icons/home.png" alt=""> Dashboard
-          </div>
+
           <div class="dropdown-item" (click)="logout()">
             <img src="/icons/logout.png" alt=""> Logout
           </div>
@@ -33,6 +31,7 @@
       <aside class="sidebar">
         <ul class="menu">
           <li routerLink="/adhome"><img src="/icons/home.png" alt=""> Home</li>
+          <li routerLink="/dashboard"><img src="/icons/dashboard.png" alt=""> Dashboard</li>
           <li routerLink="/adnot">
             <img src="/icons/notification.png" alt=""> Notification
             <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>

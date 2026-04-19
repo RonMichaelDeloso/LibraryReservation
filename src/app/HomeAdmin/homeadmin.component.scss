@@ -150,13 +150,19 @@ body {
 
 .content {
   flex: 1;
-  padding: 30px;
-  overflow-y: auto;
+  padding: 30px 30px 0 30px;
+  overflow: hidden;
   background: #fdfaf0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 
   h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
     margin-bottom: 20px;
-    color: #000000;
+    flex-shrink: 0;
   }
 }
 
@@ -244,6 +250,18 @@ body {
       }
     }
   }
+}
+
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  margin-right: -30px;
+  padding-right: 30px;
+}
+
+.scroll-spacer {
+  height: 100px;
+  flex-shrink: 0;
 }
 
 .books-list {
@@ -372,17 +390,20 @@ body {
     font-size: 14px;
     color: #000000;
     margin: 0 0 5px 0;
+    font-weight: 500;
   }
 
   .author {
     font-size: 14px;
     color: #000000;
     margin: 0;
+    font-weight: 500;
   }
 
   .description {
     font-size: 13px;
     color: #6a5342;
+    font-weight: 500;
     margin-top: 10px;
     padding: 12px 14px;
     background: white;
@@ -396,16 +417,24 @@ body {
 }
 
 .add-book-btn {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
   background: #cfa46b;
   color: white;
-  border: black;
-  padding: 10px 24px;
-  border-radius: 8px;
+  border: none;
+  padding: 16px 40px;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
 
   &:hover {
     background: #b8894a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -451,6 +480,7 @@ body {
       border-radius: 4px;
       font-family: inherit;
     }
+
     textarea {
       resize: vertical;
     }
@@ -495,7 +525,12 @@ body {
     }
   }
 }
-.user-icon { width: 20px; height: 20px; object-fit: contain; }
+
+.user-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
 
 .active-filters {
   display: flex;

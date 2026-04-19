@@ -65,7 +65,7 @@
       </div>
 
       <div class="books-list">
-        <div class="book-card" *ngFor="let book of filteredBooks"> 
+        <div class="book-card" *ngFor="let book of filteredBooks">
           <div class="book-card-inner">
             <div class="book-img" *ngIf="book.Image_URL">
               <img [src]="'http://127.0.0.1:3000/' + book.Image_URL" class="book-cover-img" alt="Book Cover">

@@ -39,9 +39,9 @@ export class ReservationService {
         );
     }
 
-    public async cancelReservation(id: number) {
+    public async cancelReservation(id: number, cancelledBy: 'admin' | 'student' = 'student') {
         return lastValueFrom(
-            this.http.put<any>(`${this.apiUrl}/cancel/${id}`, {})
+            this.http.put<any>(`${this.apiUrl}/cancel/${id}`, { cancelledBy })
         );
     }
 

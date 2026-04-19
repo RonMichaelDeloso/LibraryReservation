@@ -155,10 +155,10 @@ body {
   background: #fdfaf0;
 
   h2 {
-    margin-bottom: 15px;
-    color: #000;
     font-size: 22px;
-    font-weight: normal;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
   }
 }
 
@@ -263,6 +263,7 @@ body {
       color: #000;
       border-right: 1px solid #e0d8c8;
       vertical-align: middle;
+      font-weight: 500;
 
       &:last-child {
         border-right: none;

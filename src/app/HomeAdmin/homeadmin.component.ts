@@ -19,7 +19,7 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
   private notificationService = inject(NotificationService);
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
-  
+
   searchTerm: string = '';
   adminName: string = 'ADMIN';
   userPicture: string = '';
@@ -109,9 +109,9 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
 
   get filteredBooks() {
     let filtered = this.books;
-    
+
     if (this.selectedGenres.length > 0) {
-      filtered = filtered.filter(book => 
+      filtered = filtered.filter(book =>
         this.selectedGenres.some(g => book.Genres?.includes(g))
       );
     }
@@ -123,7 +123,7 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
         book.Author?.toLowerCase().includes(term)
       );
     }
-    
+
     return filtered;
   }
 
@@ -170,12 +170,12 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
       if (this.selectedFile) {
         formData.append('image', this.selectedFile);
       }
-      
+
       await this.bookService.addBook(formData);
       console.log('Book added successfully');
       this.closeAddModal();
       this.loadBooks();
-    } catch(e: any) {
+    } catch (e: any) {
       console.error(e.error?.message || 'Failed to add book');
     }
   }
@@ -218,12 +218,12 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
       if (this.selectedFile) {
         formData.append('image', this.selectedFile);
       }
-      
+
       await this.bookService.updateBook(this.editBookData.Book_id, formData);
       console.log('Book updated successfully');
       this.closeEditModal();
       this.loadBooks();
-    } catch(e: any) {
+    } catch (e: any) {
       console.error(e.error?.message || 'Failed to update book');
     }
   }
@@ -247,6 +247,6 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
       const notifications = await this.notificationService.getByUser(userId);
       this.unreadCount = notifications.filter((n: any) => !n.is_read).length;
       this.cdr.detectChanges();
-    } catch (e) {}
+    } catch (e) { }
   }
 }
