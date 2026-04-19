@@ -24,7 +24,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
 
-  // ── User / UI state ──────────────────────────────────────────────────────
   topbarName: string = 'Ron Michel Deloso';
   userName: string = 'Ron Michel Deloso';
   userEmail: string = '';
@@ -34,21 +33,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
   unreadCount: number = 0;
   private refreshInterval: any;
 
-  // ── Profile modal ─────────────────────────────────────────────────────────
   isEditModalOpen: boolean = false;
   editFirstName: string = '';
   editLastName: string = '';
   editEmail: string = '';
 
-  // ── Stat cards ────────────────────────────────────────────────────────────
-  totalBorrowBooks: number = 0;   // total books in catalogue
-  currentlyBorrowed: number = 0;  // reservations with Status = 'Completed'
-  activeReservations: number = 0; // unique students with Status = 'Pending'
-  overdueReturns: number = 0;     // unique students with Completed + overdue
+  totalBorrowBooks: number = 0;
+  currentlyBorrowed: number = 0;
+  activeReservations: number = 0;
+  overdueReturns: number = 0;
   activeUsers: number = 0;
   totalUsers: number = 0;
 
-  // ── Chart board ───────────────────────────────────────────────────────────
   chartData = { pending: 0, approved: 0, cancelled: 0, returned: 0 };
   chartBarWidths = { pending: 0, approved: 0, cancelled: 0, returned: 0 };
 
@@ -61,12 +57,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   trendPeakMonth: string = '-';
   trendLatest: number = 0;
 
-  // ── Password modal ────────────────────────────────────────────────────────
   isPasswordModalOpen: boolean = false;
   newPassword: string = '';
   confirmPassword: string = '';
-
-  // ─────────────────────────────────────────────────────────────────────────
 
   ngOnInit() {
     const user = this.authService.getUser();
@@ -97,8 +90,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.refreshInterval) clearInterval(this.refreshInterval);
   }
 
-  // ── Data loaders ──────────────────────────────────────────────────────────
-
   async loadUnreadCount() {
     try {
       const userId = this.authService.getUserId();
@@ -113,7 +104,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   async loadDashboardData() {
     try {
-      // Parallel fetch: reservations, books, users
       const [reservations, books, users] = await Promise.all([
         this.reservationService.getAllReservation().catch(() => []),
         this.bookService.getAllBooks().catch(() => []),
@@ -122,16 +112,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       const now = new Date();
 
-      // ── Stat cards ────────────────────────────────────────────────────────
-      // Total books in the catalogue
       this.totalBorrowBooks = books.length;
 
-      // Currently borrowed = reservations approved (Status = 'Completed')
       this.currentlyBorrowed = reservations.filter(
         (r: any) => r.Status === 'Completed'
       ).length;
 
-      // Students with overdue = Completed reservations past Due_date (unique users)
       const overdueSet = new Set(
         reservations
           .filter((r: any) => r.Status === 'Completed' && r.Due_date && new Date(r.Due_date) < now)
@@ -139,17 +125,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       );
       this.overdueReturns = overdueSet.size;
 
-      // Students actively reserving = unique users with Pending status
       const pendingSet = new Set(
         reservations.filter((r: any) => r.Status === 'Pending').map((r: any) => r.User_id)
       );
       this.activeReservations = pendingSet.size;
 
-      // Users
       this.totalUsers = users.length;
       this.activeUsers = users.filter((u: any) => u.status === 'Active').length || Math.max(1, Math.floor(users.length * 0.8));
 
-      // ── Chart: status breakdown ───────────────────────────────────────────
       this.chartData = {
         pending: reservations.filter((r: any) => r.Status === 'Pending').length,
         approved: reservations.filter((r: any) => r.Status === 'Completed').length,
@@ -164,7 +147,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         returned: Math.round((this.chartData.returned / maxBar) * 100)
       };
 
-      // ── Chart: monthly trend (last 6 months) ─────────────────────────────
       const shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       const monthlyCounts: Record<string, number> = {};
 
@@ -173,7 +155,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         monthlyCounts[`${d.getFullYear()}-${d.getMonth()}`] = 0;
       }
 
-      // Reserve_date is the actual DB field name from the reservation table
       reservations.forEach((r: any) => {
         const dateStr = r.Reserve_date || r.Created_at;
         if (!dateStr) return;
@@ -219,8 +200,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       console.error('Failed to load dashboard data', e);
     }
   }
-
-  // ── UI helpers ────────────────────────────────────────────────────────────
 
   toggleDropdown() { this.showDropdown = !this.showDropdown; }
 
