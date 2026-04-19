@@ -72,6 +72,22 @@ export class NotificationAdminComponent implements OnInit, OnDestroy {
     return this.notifications.filter(n => !n.is_read).length;
   }
 
+  /** True when the notification is about a pending book reservation (but not cancelled) */
+  isPendingNotif(notif: any): boolean {
+    const msg: string = notif.Message?.toLowerCase() || '';
+    if (msg.includes('cancel')) {
+      return false;
+    }
+    return msg.includes('pending') || msg.includes('reserved') || msg.includes('reservation') || msg.includes('requested a book') || msg.includes('book request');
+  }
+
+  /** Navigate to List page when a pending notification is clicked */
+  handleNotifClick(notif: any, event: MouseEvent) {
+    if (this.isPendingNotif(notif)) {
+      this.router.navigate(['/list']);
+    }
+  }
+
   async dismiss(notif: any) {
     try {
       await this.notificationService.deleteNotification(notif.Notification_id);
@@ -95,4 +111,4 @@ export class NotificationAdminComponent implements OnInit, OnDestroy {
       console.error('Failed to clear notifications:', e);
     }
   }
-}
+}

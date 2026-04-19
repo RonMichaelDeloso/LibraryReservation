@@ -91,11 +91,10 @@ export class ListComponent implements OnInit, OnDestroy {
 
     if (this.searchTerm) {
       const lower = this.searchTerm.toLowerCase();
-      filtered = filtered.filter(r =>
-        r.First_name?.toLowerCase().includes(lower) ||
-        r.Last_name?.toLowerCase().includes(lower) ||
-        r.Title?.toLowerCase().includes(lower)
-      );
+      filtered = filtered.filter(r => {
+        const fullName = `${r.First_name || ''} ${r.Last_name || ''}`.toLowerCase();
+        return fullName.includes(lower) || r.Title?.toLowerCase().includes(lower);
+      });
     }
 
     return filtered;

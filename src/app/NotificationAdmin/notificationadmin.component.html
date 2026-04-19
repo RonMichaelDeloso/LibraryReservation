@@ -48,17 +48,22 @@
 
       <!-- Notification list -->
       <div class="notif-list" *ngIf="notifications.length > 0">
-        <div class="notification-card" *ngFor="let notif of notifications" [class.unread]="!notif.is_read">
+        <div class="notification-card"
+          *ngFor="let notif of notifications"
+          [class.unread]="!notif.is_read">
 
           <div class="notif-left">
-            <div class="bell-icon">{{ notif.is_read ? '🔕' : '🔔' }}</div>
+            <div class="bell-icon">🔔</div>
             <div class="notif-body">
               <p class="notif-text">{{ notif.Message }}</p>
-              <span class="notif-time">{{ notif.created_at | date:'MMM d, y • h:mm a' }}</span>
+              <div class="notif-meta">
+                <span class="notif-time">{{ notif.created_at | date:'MMM d, y • h:mm a' }}</span>
+                <span *ngIf="isPendingNotif(notif)" class="notif-action-text" (click)="handleNotifClick(notif, $event)"> View in List →</span>
+              </div>
             </div>
           </div>
 
-          <button class="close-btn" (click)="dismiss(notif)" title="Delete notification">
+          <button class="close-btn" (click)="dismiss(notif); $event.stopPropagation()" title="Delete notification">
             ×
           </button>
         </div>

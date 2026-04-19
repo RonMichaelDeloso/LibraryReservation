@@ -76,6 +76,19 @@ export class NotificationComponent implements OnInit, OnDestroy {
     return this.notifications.filter(n => !n.is_read).length;
   }
 
+  /** True when the notification is about the book being ready for pickup */
+  isBookReadyNotif(notif: any): boolean {
+    const msg: string = notif.Message?.toLowerCase() || '';
+    return msg.includes('ready') || msg.includes('pickup') || msg.includes('pick up') || msg.includes('book is ready');
+  }
+
+  /** Navigate to Book Cart when a book-ready notification is clicked */
+  handleNotifClick(notif: any, event: MouseEvent) {
+    if (this.isBookReadyNotif(notif)) {
+      this.router.navigate(['/book']);
+    }
+  }
+
   async dismiss(notif: any) {
     try {
       await this.notificationService.deleteNotification(notif.Notification_id);
